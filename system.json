@@ -1,55 +1,47 @@
 {
-    "id": "mysystem",
-    "title": "Minimal World Building",
-    "description": "A human-readable description of your system.",
-    "version": "0.0.1-preview",
-    "compatibility": {
-      "minimum": 12,
-      "verified": 12
-    },
-    "authors": [{
-      "name": "Sarungard",
-      "url": "_",
-      "email": "sarungard@gmail.com",
-      "discord": "Sarungard"
-    }],
-    "esmodules": ["mysystem.mjs"],
-    "styles": ["styles/system-styles.css"],
-    "packs": [{
-      "name": "monsters",
-      "label": "My Monsters",
-      "type": "Actor"
-    },
+  "id": "wispers",
+  "title": "Wispers",
+  "description": "The Wispers system for FoundryVTT!",
+  "authors": [
     {
-      "name": "items",
-      "label": "My Items",
-      "type": "Item"
-    }],
-    "languages": [{
+      "name": "Sarungard",
+      "discord": "Sarungard"
+    }
+  ],
+  "url": "Replace this with a link to your public repository",
+  "license": "LICENSE.txt",
+  "readme": "README.md",
+  "bugs": "Replace this with a link to file issues or tickets",
+  "changelog": "CHANGELOG.md",
+  "media": [
+    {
+      "type": "setup",
+      "url": "systems/wispers/assets/anvil-impact.png",
+      "thumbnail": "systems/wispers/assets/anvil-impact.png"
+    }
+  ],
+  "version": "0.0.1-preview",
+  "compatibility": {
+    "minimum": 12,
+    "verified": 12
+  },
+  "esmodules": ["module/wispers.mjs"],
+  "styles": ["css/wispers.css"],
+  "languages": [
+    {
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
-    }],
-    "documentTypes": {
-      "Actor": {
-        "hero": { "htmlFields": ["background.biography"] },
-        "villain": { "htmlFields": ["background.biography"] },
-        "pawn": {}
-      },
-      "Item": {
-        "weapon": {},
-        "spell": {}
-      }
-    },
-    "socket": false,
-    "initiative": "1d20",
-    "grid": {
-      "distance": 10,
-      "units": "ft"
-    },
-    "primaryTokenAttribute": "resources.health",
-    "secondaryTokenAttribute": "resources.power",
-    "url": "https://your/hosted/system/repo/",
-    "manifest": "https://your/hosted/system/repo/system.json",
-    "download": "https://your/packaged/download/archive.zip"
-  }
+    }
+  ],
+  "packs": [],
+  "packFolders": [],
+  "socket": false,
+  "manifest": "Replace this with a link to the /latest release system.json so people can receive updates after they've installed the system",
+  "download": "This must link to a .zip file of the current version",
+  "background": "systems/wispers/assets/anvil-impact.png",
+  "gridDistance": 5,
+  "gridUnits": "ft",
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "power"
+}
