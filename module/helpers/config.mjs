@@ -5,19 +5,33 @@ export const WISPERS = {};
  * @type {Object}
  */
 WISPERS.abilities = {
-  str: 'WISPERS.Ability.Str.long',
-  dex: 'WISPERS.Ability.Dex.long',
-  con: 'WISPERS.Ability.Con.long',
-  int: 'WISPERS.Ability.Int.long',
-  wis: 'WISPERS.Ability.Wis.long',
-  cha: 'WISPERS.Ability.Cha.long',
+  str: 'Strength',
+  agi: 'Agility',
+  con: 'Constitution',
+  kno: 'Knowledge',
+  wis: 'Wisdom',
+  pre: 'Presence',
+  spi: 'Spirit'
 };
 
 WISPERS.abilityAbbreviations = {
-  str: 'WISPERS.Ability.Str.abbr',
-  dex: 'WISPERS.Ability.Dex.abbr',
-  con: 'WISPERS.Ability.Con.abbr',
-  int: 'WISPERS.Ability.Int.abbr',
-  wis: 'WISPERS.Ability.Wis.abbr',
-  cha: 'WISPERS.Ability.Cha.abbr',
+  str: 'Str',
+  agi: 'Agi',
+  con: 'Con',
+  kno: 'Kno',
+  wis: 'Wis',
+  pre: 'Pre',
+  spi: 'Spi'
 };
+
+WISPERS.saves = {
+  ref: 'Reflex',
+  tou: 'Toughness',
+  res: 'Resolve'
+};
+
+WISPERS.saveAbbreviations = {
+  ref: 'Ref',
+  tou: 'Tou',
+  res: 'Res'
+}

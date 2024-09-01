@@ -25,22 +25,37 @@
       },
       "abilities": {
         "str": {
-          "value": 10
+          "value": 0
         },
-        "dex": {
-          "value": 10
+        "agi": {
+          "value": 0
         },
         "con": {
-          "value": 10
+          "value": 0
         },
-        "int": {
-          "value": 10
+        "kno": {
+          "value": 0
         },
         "wis": {
-          "value": 10
+          "value": 0
         },
-        "cha": {
-          "value": 10
+        "pre": {
+          "value": 0
+        },
+        "spi":
+        {
+          "value": 0
+        }
+      },
+      "saves": {
+        "ref": {
+          "value": 0
+        },
+        "tou": {
+          "value": 0
+        },
+        "res": {
+          "value": 0
         }
       }
     },
