@@ -1,0 +1,52 @@
+{
+  "SYSTEM": {
+    "SystemName": "Wispers",
+    "LevelShort": "Lvl",
+    "LevelFull": "Level"
+  },
+
+  "CONSTANTS": {
+    "Attribute": {
+      "Str": { "long": "Strength", "abbr": "str" },
+      "Agi": { "long": "Agility", "abbr": "agi" },
+      "Con": { "long": "Constitution", "abbr": "con" },
+      "Kno": { "long": "Knowledge", "abbr": "kno" },
+      "Pre": { "long": "Presence", "abbr": "pre" },
+      "Spi": { "long": "Spirit", "abbr": "spi" }
+    },
+    "SheetLabels": {
+      "Actor": "Wispers Actor Sheet",
+      "Item": "Wispers Item Sheet"
+    },
+    "Item": {
+      "Spell": {
+        "SpellLVL": "Level {level} Spells",
+        "AddLVL": "Add LVL {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Toggle Effect",
+      "Temporary": "Temporary Effects",
+      "Passive": "Passive Effects",
+      "Inactive": "Inactive Effects"
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC"
+    },
+    "Item": {
+      "armor": "Armor",
+      "shield": "Shield",
+      "weapon": "Weapon",
+      "consumable": "Consumable",
+      "loot": "Loot",
+      "item": "Item",
+      "feature": "Feature",
+      "spell": "Spell"
+    }
+  }
+}

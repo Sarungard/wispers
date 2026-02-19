@@ -1,0 +1,534 @@
+.wispers.sheet.character .sheet {
+  width: 580px;
+  height: 580px;
+}
+.wispers.sheet.character .sheet2 {
+  width: 480px;
+  height: 480px;
+}
+.wispers.sheet.character .headerBox {
+  float: left;
+  width: 100%;
+  height: 80px;
+}
+.wispers.sheet.character .logoBox {
+  float: left;
+  height: 100%;
+  width: 190px;
+  position: relative;
+}
+.wispers.sheet.character .logoImg {
+  height: 89%;
+  width: 38%;
+  margin-left: 55px;
+  background-image: url(assets/img/wispersSymbol.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: invert(1);
+}
+.wispers.sheet.character .logoText {
+  position: absolute;
+  top: 22px;
+  left: -23px;
+  font-size: 25px;
+  font-weight: bold;
+  color: black;
+  text-shadow: -2px -2px 0 #ffffff, 2px -2px 0 #ffffff, -2px 2px 0 #ffffff, 2px 2px 0 #ffffff;
+}
+.wispers.sheet.character .imgBox {
+  float: left;
+  width: 135px;
+  height: 175px;
+  position: relative;
+  margin-left: 8px;
+  margin-top: 10px;
+  margin-bottom: 3px;
+  border: 3px #e99d76 solid;
+}
+.wispers.sheet.character .charImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wispers.sheet.character .imgOverlay {
+  width: 135px;
+  height: 210px;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  background-image: url(assets/img/imageBorder.png);
+  pointer-events: none;
+}
+.wispers.sheet.character .menuBox {
+  float: left;
+  width: 400px;
+  height: 26px;
+  position: relative;
+}
+.wispers.sheet.character .menuBG {
+  position: absolute;
+  width: 435px;
+  height: 21px;
+  border-image: url(assets/img/BannerTop.png);
+  border-image-slice: 2 2 fill;
+  border-left-width: 4px;
+  border-right-width: 4px;
+  border-top-width: 3px;
+  border-bottom-width: 3px;
+  border-style: solid;
+  z-index: 5;
+  top: 3px;
+}
+.wispers.sheet.character .menuLbl {
+  width: 120px;
+  height: 21px;
+  position: absolute;
+  padding-left: 12px;
+  padding-top: 5px;
+  z-index: 8;
+  font-size: 12px;
+}
+.wispers.sheet.character .menuIcon {
+  width: 35px;
+  height: 35px;
+  padding-top: 7px;
+  position: absolute;
+  z-index: 8;
+  font-size: 16px;
+  background-image: url(assets/img/OneValueBorderFilled.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: -2px;
+  text-align: center;
+  line-height: 0;
+}
+.wispers.sheet.character .menuSetup {
+  width: 35px;
+  height: 35px;
+  padding-top: 7px;
+  position: absolute;
+  z-index: 8;
+  font-size: 16px;
+  top: -2px;
+  text-align: center;
+  line-height: 0;
+}
+.wispers.sheet.character .menuTabs {
+  border: 0px;
+}
+.wispers.sheet.character .charInfoBox {
+  float: right;
+  width: 69%;
+  height: 100%;
+  padding-top: 8px;
+  padding-left: 5px;
+}
+.wispers.sheet.character .bigInputText {
+  width: 340px;
+  height: 32px;
+  font-size: 21px;
+}
+.wispers.sheet.character .lvlBox {
+  float: right;
+  width: 52px;
+  height: 70px;
+  background-image: url(assets/img/LvlValueBorder.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.wispers.sheet.character .lvlLable {
+  float: left;
+  width: 45px;
+  height: 25px;
+  padding-top: 15px;
+  padding-left: 15px;
+  font-size: 10px;
+}
+.wispers.sheet.character .lvlValue {
+  float: left;
+  width: 30px;
+  height: 27px;
+  padding-top: 2px;
+  padding-left: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+.wispers.sheet.character .charClass {
+  float: right;
+  width: 368px;
+  height: 34px;
+  margin-top: 4px;
+}
+.wispers.sheet.character .bodyBox {
+  float: left;
+  width: 185px;
+  min-height: 500px;
+  border-image: url(assets/img/banner.png);
+  border-image-slice: 21 18 52 fill;
+  border-left-width: 18px;
+  border-right-width: 18px;
+  border-top-width: 21px;
+  border-bottom-width: 52px;
+  border-style: solid;
+  margin-top: 3px;
+}
+.wispers.sheet.character .charReaSpeed {
+  float: left;
+  height: 25px;
+  width: 100%;
+  margin-top: 160px;
+  padding-left: 1px;
+  text-align: center;
+  font-size: 21px;
+  font-weight: bold;
+}
+.wispers.sheet.character .charRes1 {
+  float: left;
+  width: 50px;
+  height: 43px;
+  background-image: url(assets/img/OneValueBorder.png);
+  background-size: contain;
+  text-align: center;
+  padding-top: 2px;
+  line-height: 16px;
+}
+.wispers.sheet.character .charResFirst {
+  margin-right: 35px;
+}
+.wispers.sheet.character .charResMiddle {
+  margin-top: 44px;
+  margin-left: 40px;
+}
+.wispers.sheet.character .charResHead {
+  font-size: 11px;
+}
+.wispers.sheet.character .charResValue {
+  font-size: 21px;
+  font-weight: bold;
+}
+.wispers.sheet.character .bodyFill1 {
+  float: left;
+  height: 65px;
+  width: 100%;
+}
+.wispers.sheet.character .bodyFill2 {
+  float: left;
+  height: 20px;
+  width: 100%;
+}
+.wispers.sheet.character .bodyFill3 {
+  float: left;
+  height: 5px;
+  width: 100%;
+}
+.wispers.sheet.character .ressBarBox {
+  float: left;
+  height: 40px;
+  width: 100%;
+}
+.wispers.sheet.character .ressBarHeader {
+  font-size: 16px;
+  margin-left: 5px;
+}
+.wispers.sheet.character .ressBar {
+  height: 13px;
+  width: 95%;
+  margin: 5px 5px 0px;
+  border: 2px solid gray;
+  border-radius: 4px;
+}
+.wispers.sheet.character .ressBarBar {
+  height: 10px;
+  background-color: green;
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 1rem 1rem;
+}
+.wispers.sheet.character .ressBarValue {
+  width: 100%;
+  padding-right: 5px;
+  text-align: right;
+  font-size: 12px;
+}
+.wispers.sheet.character .ressBarHealth {
+  background-color: green;
+}
+.wispers.sheet.character .ressBarStamina {
+  background-color: yellow;
+}
+.wispers.sheet.character .ressBarMana {
+  background-color: blue;
+}
+.wispers.sheet.character .ressBarLuck {
+  background-color: silver;
+}
+.wispers.sheet.character .contentBox {
+  float: left;
+  width: 430px;
+  min-height: 500px;
+}
+.wispers.sheet.character .charSheetBox {
+  float: left;
+  width: 430px;
+  min-height: 50px;
+}
+.wispers.sheet.character .charStatfieldset {
+  float: left;
+  width: 205px;
+  height: 80px;
+  border: solid;
+  border-radius: 1em;
+  margin: 1em 5px 3px;
+  padding: 0 1em 1em;
+  background-color: rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+.wispers.sheet.character .charStatlegend {
+  transform: translatey(-50%);
+  width: max-content;
+  padding: 0 0.15em;
+  font-size: 32px;
+}
+.wispers.sheet.character .charStatBox {
+  float: left;
+  width: 50px;
+  height: 50px;
+  padding-top: 3px;
+  font-size: 16px;
+  background-image: url(assets/img/OneValueBorderFilled.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 22px;
+  color: white;
+  text-align: center;
+  line-height: 14px;
+}
+.wispers.sheet.character .subMain {
+  clear: both;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 3px 0;
+  align-items: center;
+  font-size: 20px;
+}
+.wispers.sheet.character .menuhrbox {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.wispers.sheet.character .menuhr {
+  border: none;
+  border-top: 2px solid #cb0101;
+  border-bottom: 1px solid #d5412f;
+}
+.wispers.sheet.character .charinputfullbox {
+  float: left;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.wispers.sheet.character .charinputhalfbox {
+  float: left;
+  width: 50%;
+  margin-bottom: 5px;
+}
+.wispers.sheet.character .charinputlbl {
+  font-size: 14px;
+  line-height: 18px;
+  padding-left: 8px;
+}
+.wispers.sheet.character .charinputbox {
+  padding-left: 5px;
+  padding-right: 8px;
+}
+.wispers.sheet.character .charinputhalf {
+  height: 24px;
+}
+.wispers.sheet.character .charinputfull {
+  min-height: 70px;
+  width: 100%;
+}
+.wispers.sheet.character .chartraitbox {
+  height: 130px;
+  width: 195px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-left: 5px;
+  padding-right: 8px;
+}
+.wispers.sheet.character .charvirtubox {
+  width: 160px;
+  position: relative;
+  background-color: #d9850c;
+  border-style: dashed;
+  border-color: orange;
+  border-radius: 5px;
+  padding-left: 7px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+.wispers.sheet.character .charflawbox {
+  width: 160px;
+  position: relative;
+  background-color: #0887b9;
+  border-style: dashed;
+  border-color: #10c2da;
+  border-radius: 5px;
+  padding-left: 7px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+.wispers.sheet.character .traiticon {
+  position: static;
+  margin-right: 8px;
+}
+.wispers.sheet.character .charcombatstatbox {
+  width: 100%;
+  height: 70px;
+}
+.wispers.sheet.character .charcombatinnerstatbox {
+  width: 280px;
+  height: 60px;
+  position: relative;
+  margin: 0 auto;
+}
+.wispers.sheet.character .charcombatstat {
+  float: left;
+  width: 65px;
+  height: 65px;
+  padding-top: 3px;
+  font-size: 16px;
+  background-image: url(assets/img/OneValueBorderFilled.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  color: white;
+  text-align: center;
+  line-height: 10px;
+}
+.wispers.sheet.character .charcombatstatvalue {
+  position: absolute;
+  bottom: 21px;
+  left: 22px;
+  font-size: 21px;
+  font-weight: bold;
+}
+.wispers.sheet.character .charprogressbox {
+  float: left;
+  width: 100%;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.wispers.sheet.character .charprogresslbl {
+  float: left;
+  width: 100px;
+  padding-top: 2px;
+  padding-left: 8px;
+  font-size: 14px;
+  line-height: 18px;
+}
+.wispers.sheet.character .charprogressinput {
+  width: 70px;
+  height: 24px;
+  margin: 0px 4px;
+  text-align: right;
+}
+.wispers.sheet.character .charprogressbnt {
+  float: right;
+  width: 83px;
+  height: 24px;
+  margin-right: 15px;
+  padding-top: 2px;
+  text-align: center;
+  color: white;
+  border: 2px solid;
+  border-radius: 6px;
+  border-color: #e99d76;
+  background-color: #cc0001;
+}
+.wispers.sheet.character .charcompetence {
+  width: 90px;
+  position: relative;
+  background-color: #d81d15;
+  border-style: dashed;
+  border-width: 2px;
+  border-color: #f0a07b;
+  border-radius: 3px;
+  margin-left: 2px;
+  font-size: 12px;
+  padding-top: 1px;
+  padding-left: 4px;
+}
+.wispers.sheet.character .charprogressattbox {
+  float: left;
+}
+.wispers.sheet.character .charprogressattmenubox {
+  float: left;
+  padding-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+.wispers.sheet.character .charprogressatttypebnt {
+  float: left;
+  width: 100px;
+  height: 24px;
+  margin-right: 5px;
+  padding-top: 2px;
+  text-align: center;
+  color: white;
+  border: 2px solid;
+  border-radius: 6px;
+  border-color: #e99d76;
+  background-color: #cc0001;
+}
+.wispers.sheet.character .charprogressatttable {
+  margin: 0;
+  margin-left: 5px;
+}
+.wispers.sheet.character .charprogressatttr {
+  height: 45px;
+}
+.wispers.sheet.character .charprogressatttrdiv {
+  height: 8px;
+}
+.wispers.sheet.character .charprogressattlbl {
+  width: 90px;
+  padding: 0;
+  padding-left: 10px;
+}
+.wispers.sheet.character .charprogressattstatvalue {
+  width: 35px;
+  padding: 2px;
+  text-align: center;
+}
+.wispers.sheet.character .charprogressattdivider1 {
+  width: 25px;
+  padding: 0px;
+  text-align: center;
+}
+.wispers.sheet.character .charprogressattinput {
+  width: 35px;
+  height: 25px;
+}
+.wispers.sheet.character .charprogressincreasbnt {
+  float: right;
+  width: 25px;
+  height: 24px;
+  padding-top: 2px;
+  text-align: center;
+  color: white;
+  border: 2px solid;
+  border-radius: 13px;
+  border-color: #e99d76;
+  background-color: #cc0001;
+}
+.wispers.sheet.character .charprogressattstatbnt {
+  width: 35px;
+  padding: 0px;
+}
+.wispers.sheet.character .charprogressattstatcost {
+  width: 55px;
+  padding: 0px;
+  text-align: center;
+}

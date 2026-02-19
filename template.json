@@ -1,0 +1,186 @@
+{
+  "Actor": {
+    "types": ["Character", "NPC"],
+    "templates": {
+      "base": {
+        "level": { "value": 1, "max": 20 },
+        "abilities": {
+          "str": { "value": 2, "start": 2, "bonus": 0 },
+          "agi": { "value": 2, "start": 2, "bonus": 0 },
+          "con": { "value": 2, "start": 2, "bonus": 0 },
+          "kno": { "value": 2, "start": 2, "bonus": 0 },
+          "pre": { "value": 2, "start": 2, "bonus": 0 },
+          "spi": { "value": 2, "start": 2, "bonus": 0 }
+        },
+        "wounds": {
+          "total": { "value": 0 },
+          "active": []
+        },
+        "initiative": { "total": 0, "remaining": 0 },
+        "biography": ""
+      },
+      "skills": {
+        "skills": {
+          "combat": {
+            "proficiency": { "value": 0, "max": 5 },
+            "linkedAttribute": "str",
+            "label": "Combat"
+          },
+          "athletics": {
+            "proficiency": { "value": 0, "max": 5 },
+            "linkedAttribute": "str",
+            "label": "Athletics"
+          },
+          "stealth": {
+            "proficiency": { "value": 0, "max": 5 },
+            "linkedAttribute": "agi",
+            "label": "Stealth"
+          },
+          "academics": {
+            "proficiency": { "value": 0, "max": 5 },
+            "linkedAttribute": "kno",
+            "label": "Academics"
+          },
+          "persuasion": {
+            "proficiency": { "value": 0, "max": 5 },
+            "linkedAttribute": "pre",
+            "label": "Persuasion"
+          },
+          "willpower": {
+            "proficiency": { "value": 0, "max": 5 },
+            "linkedAttribute": "spi",
+            "label": "Willpower"
+          }
+        },
+        "spellSchools": {
+          "arcana": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Arcana"
+          },
+          "elementalism": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Elementalism"
+          },
+          "entropy": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Entropy"
+          },
+          "sacratropy": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Sacratrope"
+          },
+          "sinistrope": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Sinistrope"
+          },
+          "primalism": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Primalism"
+          },
+          "rune-scribe": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Rune-Scribe"
+          }
+        },
+        "savingthrows": {
+          "reflex": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Reflex"
+          },
+          "toughness": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Toughness"
+          },
+          "resolve": {
+            "proficiency": { "value": 0, "max": 5 },
+            "label": "Resolve"
+          }
+        }
+      }
+    },
+    "Character": {
+      "templates": ["base", "skills"],
+      "race": 0,
+      "class": 0,
+      "background":
+      {
+        "socialBackground":0,
+        "culturalBackground":0
+      },
+      "details": {
+        "age": 0,
+        "height": "",
+        "weight": "",
+        "biography": "",
+        "notes": ""
+      }
+    },
+    "NPC": {
+      "templates": ["base", "skills"],
+      "details": {
+        "description": "",
+        "special": ""
+      }
+    }
+  },
+  "Item": {
+    "types": ["weapon", "armor", "shield", "spell", "consumable", "loot"],
+    "templates": {
+      "base": {
+        "description": "",
+        "source": "",
+        "quantity": { "value": 1 },
+        "weight": { "value": 0 },
+        "price": { "value": 0, "currency": "gold" }
+      },
+      "equipment": {
+        "proficiency": {
+          "value": 0,
+          "max": 5
+        },
+        "equipped": { "value": false },
+        "type": ""
+      },
+      "damage": {
+        "dice": { "value": "1d6" },
+        "circumstanceDice": { "value": "1d6" },
+        "damageType": { "value": "physical" }
+      }
+    },
+    "weapon": {
+      "templates": ["base", "equipment", "damage"],
+      "weaponType": { "value": "melee" },
+      "range": { "value": 5, "units": "feet" },
+      "properties": []
+    },
+    "armor": {
+      "templates": ["base", "equipment"],
+      "armorType": { "value": "light" },
+      "armorValue": { "value": 10 },
+      "properties": []
+    },
+    "shield": {
+      "templates": ["base", "equipment"],
+      "armorValue": { "value": 2 },
+      "properties": []
+    },
+    "spell": {
+      "templates": ["base"],
+      "school": { "value": "" },
+      "level": { "value": 1, "max": 5 },
+      "castingTime": { "value": 1, "min": 1, "max": 6 },
+      "range": { "value": "touch" },
+      "duration": { "value": "instantaneous" },
+      "components": {
+        "verbal": false,
+        "somatic": false,
+        "material": false,
+        "materialComponents": ""
+      },
+      "damage": {
+        "dice": { "value": "1d6" },
+        "damageType": { "value": "fire" }
+      }
+    }
+  }
+}

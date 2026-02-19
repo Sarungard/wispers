@@ -1,0 +1,41 @@
+{
+  "WISPERS": {
+    "Ability": {
+      "Str": { "long": "Erő", "abbr": "str" },
+      "Dex": { "long": "Ügyesség", "abbr": "dex" },
+      "Con": { "long": "Állóképesség", "abbr": "con" },
+      "Kno": { "long": "Tudás", "abbr": "int" },
+      "Pre": { "long": "Jelenlét", "abbr": "wis" },
+      "Spi": { "long": "Szellem", "abbr": "cha" }
+    },
+    "SheetLabels": {
+      "Actor": "WisperSys Actor Sheet",
+      "Item": "WisperSys Item Sheet"
+    },
+    "Item": {
+      "Spell": {
+        "SpellLVL": "Level {level} Spells",
+        "AddLVL": "Add LVL {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Toggle Effect",
+      "Temporary": "Temporary Effects",
+      "Passive": "Passive Effects",
+      "Inactive": "Inactive Effects"
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC"
+    },
+    "Item": {
+      "item": "Item",
+      "feature": "Feature",
+      "spell": "Spell"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "wispers",
+  "title": "Wispers Core System",
+  "description": "The Wispers system for FoundryVTT!",
+  "authors": [
+    {
+      "name": "Sarungard",
+      "discord": "Sarungard"
+    }
+  ],
+  "license": "LICENSE.txt",
+  "readme": "README.md",
+  "bugs": "Replace this with a link to file issues or tickets",
+  "changelog": "CHANGELOG.md",
+  "media": [
+    {
+      "type": "setup",
+      "url": "systems/wispers-system/assets/anvil-impact.png",
+      "thumbnail": "systems/wispers-system/assets/anvil-impact.png"
+    }
+  ],
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": 13,
+    "verified": "13.351",
+    "maximum": 13
+  },
+  "esmodules": ["wispers.js"],
+  "styles": ["wispers.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "hu",
+      "name": "Magyar",
+      "path": "lang/hu.json"
+    }
+  ],
+  "packs": [],
+  "packFolders": [],
+  "socket": false,
+  "url": "https://github.com/Sarungard/wispers",
+  "manifest": "https://github.com/Sarungard/wispers/releases/latest/download/system.json",
+  "download": "https://github.com/Sarungard/wispers/releases/download/system.zip",
+  "background": "systems/wispers-system/assets/anvil-impact.png",
+  "grid":
+  {
+    "distance": 5,
+    "units": "ft"
+  },
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "mental"
+}
