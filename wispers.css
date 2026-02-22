@@ -1,10 +1,51 @@
-.wispers.sheet.character .sheet {
-  width: 580px;
-  height: 580px;
+.wispers.sheet.character .untrained {
+  background-color: rgba(255, 0, 0, 0.25);
+  background-image: url(assets/img/OneValueBorder.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
 }
-.wispers.sheet.character .sheet2 {
-  width: 480px;
-  height: 480px;
+.wispers.sheet.character .d4 {
+  background-color: rgba(255, 165, 0, 0.25);
+  background-image: url(assets/img/d4.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+.wispers.sheet.character .d6 {
+  background-color: rgba(255, 255, 0, 0.25);
+  background-image: url(assets/img/d6.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+.wispers.sheet.character .d8 {
+  background-color: rgba(0, 128, 0, 0.25);
+  background-image: url(assets/img/d8.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+.wispers.sheet.character .d10 {
+  background-color: rgba(0, 0, 255, 0.25);
+  background-image: url(assets/img/d10.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+.wispers.sheet.character .d12 {
+  background-color: rgba(128, 0, 128, 0.25);
+  background-image: url(assets/img/d12.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+.wispers.sheet.character .d20 {
+  background-color: rgba(255, 215, 0, 0.25);
+  background-image: url(assets/img/d20.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
 }
 .wispers.sheet.character .headerBox {
   float: left;
@@ -136,14 +177,6 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
-.wispers.sheet.character .lvlLable {
-  float: left;
-  width: 45px;
-  height: 25px;
-  padding-top: 15px;
-  padding-left: 15px;
-  font-size: 10px;
-}
 .wispers.sheet.character .lvlValue {
   float: left;
   width: 30px;
@@ -222,46 +255,6 @@
   height: 5px;
   width: 100%;
 }
-.wispers.sheet.character .ressBarBox {
-  float: left;
-  height: 40px;
-  width: 100%;
-}
-.wispers.sheet.character .ressBarHeader {
-  font-size: 16px;
-  margin-left: 5px;
-}
-.wispers.sheet.character .ressBar {
-  height: 13px;
-  width: 95%;
-  margin: 5px 5px 0px;
-  border: 2px solid gray;
-  border-radius: 4px;
-}
-.wispers.sheet.character .ressBarBar {
-  height: 10px;
-  background-color: green;
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-size: 1rem 1rem;
-}
-.wispers.sheet.character .ressBarValue {
-  width: 100%;
-  padding-right: 5px;
-  text-align: right;
-  font-size: 12px;
-}
-.wispers.sheet.character .ressBarHealth {
-  background-color: green;
-}
-.wispers.sheet.character .ressBarStamina {
-  background-color: yellow;
-}
-.wispers.sheet.character .ressBarMana {
-  background-color: blue;
-}
-.wispers.sheet.character .ressBarLuck {
-  background-color: silver;
-}
 .wispers.sheet.character .contentBox {
   float: left;
   width: 430px;
@@ -274,13 +267,16 @@
 }
 .wispers.sheet.character .charStatfieldset {
   float: left;
-  width: 205px;
-  height: 80px;
-  border: solid;
-  border-radius: 1em;
+  top: 1rem;
+  width: 9rem;
+  height: 30rem;
   margin: 1em 5px 3px;
-  padding: 0 1em 1em;
-  background-color: rgba(0, 0, 0, 0.25);
+  padding: 0 0 1em;
+  position: relative;
+}
+.wispers.sheet.character .charStatCard {
+  float: left;
+  width: 100%;
   position: relative;
 }
 .wispers.sheet.character .charStatlegend {
@@ -303,6 +299,14 @@
   color: white;
   text-align: center;
   line-height: 14px;
+}
+.wispers.sheet.character .charStatText {
+  position: absolute;
+  vertical-align: right;
+  top: 26px;
+  right: 2px;
+  font-size: 21px;
+  font-weight: bold;
 }
 .wispers.sheet.character .subMain {
   clear: both;

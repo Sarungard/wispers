@@ -5,95 +5,95 @@
       "base": {
         "level": { "value": 1, "max": 20 },
         "abilities": {
-          "str": { "value": 2, "start": 2, "bonus": 0 },
-          "agi": { "value": 2, "start": 2, "bonus": 0 },
-          "con": { "value": 2, "start": 2, "bonus": 0 },
-          "kno": { "value": 2, "start": 2, "bonus": 0 },
-          "pre": { "value": 2, "start": 2, "bonus": 0 },
-          "spi": { "value": 2, "start": 2, "bonus": 0 }
+          "str": { "id": "Str", "value": 2, "start": 2, "bonus": 0 },
+          "agi": { "id": "Agi", "value": 2, "start": 2, "bonus": 0 },
+          "con": { "id": "Con", "value": 2, "start": 2, "bonus": 0 },
+          "kno": { "id": "Kno", "value": 2, "start": 2, "bonus": 0 },
+          "pre": { "id": "Pre", "value": 2, "start": 2, "bonus": 0 },
+          "spi": { "id": "Spi", "value": 2, "start": 2, "bonus": 0 }
         },
         "wounds": {
           "total": { "value": 0 },
           "active": []
         },
         "initiative": { "total": 0, "remaining": 0 },
-        "biography": ""
-      },
-      "skills": {
+        "biography": "",
         "skills": {
-          "combat": {
-            "proficiency": { "value": 0, "max": 5 },
-            "linkedAttribute": "str",
-            "label": "Combat"
+          "skills": {
+            "combat": {
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "str",
+              "label": "Combat"
+            },
+            "athletics": {
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "str",
+              "label": "Athletics"
+            },
+            "stealth": {
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "agi",
+              "label": "Stealth"
+            },
+            "academics": {
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "kno",
+              "label": "Academics"
+            },
+            "persuasion": {
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "pre",
+              "label": "Persuasion"
+            },
+            "willpower": {
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "spi",
+              "label": "Willpower"
+            }
           },
-          "athletics": {
-            "proficiency": { "value": 0, "max": 5 },
-            "linkedAttribute": "str",
-            "label": "Athletics"
+          "spellSchools": {
+            "arcana": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Arcana"
+            },
+            "elementalism": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Elementalism"
+            },
+            "entropy": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Entropy"
+            },
+            "sacratropy": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Sacratrope"
+            },
+            "sinistrope": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Sinistrope"
+            },
+            "primalism": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Primalism"
+            },
+            "rune-scribe": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Rune-Scribe"
+            }
           },
-          "stealth": {
-            "proficiency": { "value": 0, "max": 5 },
-            "linkedAttribute": "agi",
-            "label": "Stealth"
-          },
-          "academics": {
-            "proficiency": { "value": 0, "max": 5 },
-            "linkedAttribute": "kno",
-            "label": "Academics"
-          },
-          "persuasion": {
-            "proficiency": { "value": 0, "max": 5 },
-            "linkedAttribute": "pre",
-            "label": "Persuasion"
-          },
-          "willpower": {
-            "proficiency": { "value": 0, "max": 5 },
-            "linkedAttribute": "spi",
-            "label": "Willpower"
-          }
-        },
-        "spellSchools": {
-          "arcana": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Arcana"
-          },
-          "elementalism": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Elementalism"
-          },
-          "entropy": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Entropy"
-          },
-          "sacratropy": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Sacratrope"
-          },
-          "sinistrope": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Sinistrope"
-          },
-          "primalism": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Primalism"
-          },
-          "rune-scribe": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Rune-Scribe"
-          }
-        },
-        "savingthrows": {
-          "reflex": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Reflex"
-          },
-          "toughness": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Toughness"
-          },
-          "resolve": {
-            "proficiency": { "value": 0, "max": 5 },
-            "label": "Resolve"
+          "savingthrows": {
+            "reflex": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Reflex"
+            },
+            "toughness": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Toughness"
+            },
+            "resolve": {
+              "proficiency": { "value": 0, "max": 5 },
+              "label": "Resolve"
+            }
           }
         }
       }
@@ -102,10 +102,9 @@
       "templates": ["base", "skills"],
       "race": 0,
       "class": 0,
-      "background":
-      {
-        "socialBackground":0,
-        "culturalBackground":0
+      "background": {
+        "socialBackground": 0,
+        "culturalBackground": 0
       },
       "details": {
         "age": 0,

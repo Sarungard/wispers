@@ -6,13 +6,13 @@
   },
 
   "CONSTANTS": {
-    "Attribute": {
-      "Str": { "long": "Strength", "abbr": "str" },
-      "Agi": { "long": "Agility", "abbr": "agi" },
-      "Con": { "long": "Constitution", "abbr": "con" },
-      "Kno": { "long": "Knowledge", "abbr": "kno" },
-      "Pre": { "long": "Presence", "abbr": "pre" },
-      "Spi": { "long": "Spirit", "abbr": "spi" }
+    "Attributes": {
+      "Str": { "long": "Strength", "abbr": "Str" },
+      "Agi": { "long": "Agility", "abbr": "Agi" },
+      "Con": { "long": "Constitution", "abbr": "Con" },
+      "Kno": { "long": "Knowledge", "abbr": "Kno" },
+      "Pre": { "long": "Presence", "abbr": "Pre" },
+      "Spi": { "long": "Spirit", "abbr": "Spi" }
     },
     "SheetLabels": {
       "Actor": "Wispers Actor Sheet",

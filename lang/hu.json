@@ -1,8 +1,14 @@
 {
-  "WISPERS": {
-    "Ability": {
+  "SYSTEM": {
+    "SystemName": "Wispers",
+    "LevelShort": "Lvl",
+    "LevelFull": "Level"
+  },
+
+  "CONSTANTS": {
+    "Attributes": {
       "Str": { "long": "Erő", "abbr": "str" },
-      "Dex": { "long": "Ügyesség", "abbr": "dex" },
+      "Agi": { "long": "Ügyesség", "abbr": "agi" },
       "Con": { "long": "Állóképesség", "abbr": "con" },
       "Kno": { "long": "Tudás", "abbr": "int" },
       "Pre": { "long": "Jelenlét", "abbr": "wis" },

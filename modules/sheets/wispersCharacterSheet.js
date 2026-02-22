@@ -1,7 +1,7 @@
 const api = foundry.applications.api;
 const sheets = foundry.applications.sheets;
 
-export default class WispersSheet extends api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
+export default class wispersCharacterSheet extends api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
 
     sheetContext = {};
 
@@ -24,7 +24,7 @@ export default class WispersSheet extends api.HandlebarsApplicationMixin(sheets.
     static PARTS = {
 
         header: { template: "systems/wispers/templates/sheets/character/header.hbs" },
-        sidebar: { template: "systems/wispers/templates/sheets/character/sidebar.hbs" },
+        body: { template: "systems/wispers/templates/sheets/character/body.hbs" },
         // footer: { template: "systems/wispers/templates/sheets/character/footer.hbs" }
     }
 
@@ -37,7 +37,7 @@ export default class WispersSheet extends api.HandlebarsApplicationMixin(sheets.
     _configureRenderOptions(options) {
 
         if (this.document.limited) options.parts = ["header"]
-        else options.parts = ["header", "sidebar"];
+        else options.parts = ["header", "body"];
 
         super._configureRenderOptions(options);
     }
@@ -63,7 +63,7 @@ export default class WispersSheet extends api.HandlebarsApplicationMixin(sheets.
             actor: baseData.document,
             system: baseData.document.system,
             items: baseData.document.items,
-            config: CONFIG.NETHER,
+            config: CONFIG.WISPERS,
             isGM: baseData.user.isGM,
             effects: baseData.document.effects
         };

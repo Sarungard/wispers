@@ -1,4 +1,6 @@
 import { WISPERS } from "./modules/config.js";
+import  wispersActor from "./modules/objects/wispersActor.js";
+import wispersCharacterSheet from "./modules/sheets/wispersCharacterSheet.js";
 
 Hooks.once("init", async () => {
 
@@ -7,16 +9,16 @@ Hooks.once("init", async () => {
     // Setting up the Global Configuration Object
     CONFIG.WISPERS = WISPERS;
     CONFIG.INIT = true;
-    CONFIG.Actor.documentClass = WispersActor;
+    CONFIG.Actor.documentClass = wispersActor;
     // CONFIG.Item.documentClass = WispersItem;
 
     // Register custom Sheets and unregister the start Sheets
     // Items.unregisterSheet("core", ItemSheet);
     // Actors.unregisterSheet("core", ActorSheet);
 
-    const DocumentSheetConfig = foundry.applications.sheets.DocumentSheetConfig;
-    DocumentSheetConfig.unRegisterSheet(Actor, "core", foundry.appv1.sheets.ActorSheet);
-    DocumentSheetConfig.registerSheet(Actor, "wispers", WispersCharacterSheet, { types: ["character"], makeDefault: true, label: "WISPERS.SheetClassCharacter" });
+    const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
+    DocumentSheetConfig.unregisterSheet(Actor, "core", foundry.appv1.sheets.ActorSheet);
+    DocumentSheetConfig.registerSheet(Actor, "wispers", wispersCharacterSheet, { makeDefault: true, label: "WISPERS.SheetClassCharacter" });
 
     // Load all Partial-Handlebar Files
     preloadHandlebarsTemplates();
@@ -41,12 +43,12 @@ function preloadHandlebarsTemplates() {
 
     const templatePaths = [
 
-        "systems/wispers/templates/partials/character-sheet-character.hbs",
-        "systems/wispers/templates/partials/character-sheet-background.hbs",
-        "systems/wispers/templates/partials/character-sheet-skill.hbs",
-        "systems/wispers/templates/partials/character-sheet-combat.hbs",
-        "systems/wispers/templates/partials/character-sheet-progression.hbs",
-
+        "systems/wispers/templates/partials/character/attributes.hbs",
+        "systems/wispers/templates/partials/character/biography.hbs",
+        "systems/wispers/templates/partials/character/effects.hbs",
+        "systems/wispers/templates/partials/character/features.hbs",
+        "systems/wispers/templates/partials/character/inventory.hbs",
+        "systems/wispers/templates/partials/character/spellbook.hbs"
     ];
     
     return foundry.applications.handlebars.loadTemplates(templatePaths);
@@ -61,6 +63,9 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
 });
 
+Handlebars.registerHelper("log", function(message) {
+  console.log(message);
+});
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
