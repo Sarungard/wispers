@@ -5,10 +5,10 @@
             <img class="charImg" src="{{actor.img}}" data-edit="img" data-action="editImage" title="{{actor.name}}" >
             <div class="imgOverlay">
                 <div class="charReaSpeed"></div>
-                <div class="charRes1 charResFirst"><span class="charResHead">Reflex</span><br><span class="charResValue">+3</span></div>
-                <div class="charRes1"><span class="charResHead">Toughness</span><br><span class="charResValue">+4</span></div>
+                <div class="charRes1 {{proficiencyDie system.skills.savingthrows.reflex.proficiency.value}} charResFirst"><span class="charResHead">Reflex</span><br><span class="charResValue">+3</span></div>
+                <div class="charRes1 {{proficiencyDie system.skills.savingthrows.toughness.proficiency.value}}"><span class="charResHead">Toughness</span><br><span class="charResValue">+4</span></div>
             </div>
-            <div class="charRes1 charResMiddle"><span class="charResHead">Resolve</span><br><span class="charResValue">+5</span></div>
+            <div class="charRes1 {{proficiencyDie system.skills.savingthrows.resolve.proficiency.value}} charResMiddle"><span class="charResHead">Resolve</span><br><span class="charResValue">+5</span></div>
         </div>
 
         <div class="bodyFill1"></div>
@@ -17,10 +17,9 @@
         <h1 class="charStatlegend">Attributes</h1>
         <div>
         {{#each system.abilities as |ability|}}
-        {{log ability}}
-            <li class='item flexrow flex-group-center'>
-                <label for="system.abilities.{{ability.id}}" class="resource-label rollable flexlarge align-left">{{localize (concat "CONSTANTS.Attributes." ability.id ".long")}}</label>
-                <input type="text" name="system.abilities.{{ability.id}}" value="{{ability.value}}" data-dtype="Number"/>
+            <li class='item flexrow flex-group-center charStatCard'>
+                <label for="system.abilities.{{ability.id}}" class="resource-label rollable flexlarge charStatText">{{localize (concat "CONSTANTS.Attributes." ability.id ".long")}}</label>
+                <input type="text" class="charStatBox {{attributeDie ability.value}}" name="system.abilities.{{ability.id}}" value="{{ability.value}}" data-dtype="Number"/>
             </li>
         {{/each}}
         </div>
@@ -98,5 +97,10 @@
                 {{> "systems/wispers/templates/partials/character/biography.hbs"}}
             </div>
         </section>
+    </div>
+    <div class="window-resizable-handle" style="">
+        <i inert="" class="fa-solid fa-left-right fa-rotate-by">
+            ::before
+        </i>
     </div>
 </div>

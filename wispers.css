@@ -1,51 +1,63 @@
-.wispers.sheet.character .untrained {
-  background-color: rgba(255, 0, 0, 0.25);
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbWmT.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjammT.ttf) format('truetype');
+}
+.wispers.sheet.character {
+  /* Global styles */
+  /* Styles limited to wispers sheets */
+}
+.wispers.sheet.character .noDie {
   background-image: url(assets/img/OneValueBorder.png);
   background-repeat: no-repeat;
   background-size: contain;
-  position: absolute;
 }
 .wispers.sheet.character .d4 {
-  background-color: rgba(255, 165, 0, 0.25);
   background-image: url(assets/img/d4.png);
   background-repeat: no-repeat;
   background-size: contain;
-  position: absolute;
+  background-position: center;
 }
 .wispers.sheet.character .d6 {
-  background-color: rgba(255, 255, 0, 0.25);
   background-image: url(assets/img/d6.png);
   background-repeat: no-repeat;
   background-size: contain;
-  position: absolute;
+  background-position: center;
 }
 .wispers.sheet.character .d8 {
-  background-color: rgba(0, 128, 0, 0.25);
   background-image: url(assets/img/d8.png);
   background-repeat: no-repeat;
   background-size: contain;
-  position: absolute;
+  background-position: center;
 }
 .wispers.sheet.character .d10 {
-  background-color: rgba(0, 0, 255, 0.25);
   background-image: url(assets/img/d10.png);
   background-repeat: no-repeat;
   background-size: contain;
-  position: absolute;
+  background-position: center;
 }
 .wispers.sheet.character .d12 {
-  background-color: rgba(128, 0, 128, 0.25);
   background-image: url(assets/img/d12.png);
   background-repeat: no-repeat;
   background-size: contain;
-  position: absolute;
+  background-position: center;
 }
 .wispers.sheet.character .d20 {
-  background-color: rgba(255, 215, 0, 0.25);
   background-image: url(assets/img/d20.png);
   background-repeat: no-repeat;
   background-size: contain;
-  position: absolute;
+  background-position: center;
 }
 .wispers.sheet.character .headerBox {
   float: left;
@@ -197,6 +209,7 @@
   float: left;
   width: 185px;
   min-height: 500px;
+  max-height: 90%;
   border-image: url(assets/img/banner.png);
   border-image-slice: 21 18 52 fill;
   border-left-width: 18px;
@@ -220,8 +233,6 @@
   float: left;
   width: 50px;
   height: 43px;
-  background-image: url(assets/img/OneValueBorder.png);
-  background-size: contain;
   text-align: center;
   padding-top: 2px;
   line-height: 16px;
@@ -270,14 +281,23 @@
   top: 1rem;
   width: 9rem;
   height: 30rem;
-  margin: 1em 5px 3px;
-  padding: 0 0 1em;
+  margin: 1em 5px 5px;
+  padding: 0.75em 1em 1em 1em;
   position: relative;
+  align-content: center;
 }
 .wispers.sheet.character .charStatCard {
   float: left;
+  size: 80%;
+  max-block-size: 80%;
   width: 100%;
   position: relative;
+  border: #191813 solid;
+  border-style: groove;
+  border-radius: 5%;
+  border-width: 1px;
+  padding: 0.25em 0.25em 0.25em 0.25em;
+  margin: 0.15em 0.15em 0.15em 0.15em;
 }
 .wispers.sheet.character .charStatlegend {
   transform: translatey(-50%);
@@ -286,24 +306,24 @@
   font-size: 32px;
 }
 .wispers.sheet.character .charStatBox {
-  float: left;
-  width: 50px;
+  width: 95px;
+  max-width: 95px;
   height: 50px;
+  max-height: 50px;
   padding-top: 3px;
-  font-size: 16px;
-  background-image: url(assets/img/OneValueBorderFilled.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  top: 22px;
-  color: white;
+  font-size: 28px;
+  position: relative;
+  top: 5px;
   text-align: center;
-  line-height: 14px;
+  align-self: center;
+  border-width: 0px;
 }
 .wispers.sheet.character .charStatText {
-  position: absolute;
-  vertical-align: right;
-  top: 26px;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  align-items: center;
+  top: 5px;
   right: 2px;
   font-size: 21px;
   font-weight: bold;
@@ -325,6 +345,167 @@
   border: none;
   border-top: 2px solid #cb0101;
   border-bottom: 1px solid #d5412f;
+}
+.wispers.sheet.character .window-app {
+  font-family: "Roboto", sans-serif;
+  resize: both;
+}
+.wispers.sheet.character .rollable:hover,
+.wispers.sheet.character .rollable:focus {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
+.wispers.sheet.character .grid,
+.wispers.sheet.character .grid-2col {
+  display: grid;
+  grid-column: span 2 / span 2;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+  padding: 0;
+}
+.wispers.sheet.character .grid-3col {
+  grid-column: span 3 / span 3;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-4col {
+  grid-column: span 4 / span 4;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-5col {
+  grid-column: span 5 / span 5;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-6col {
+  grid-column: span 6 / span 6;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-7col {
+  grid-column: span 7 / span 7;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-8col {
+  grid-column: span 8 / span 8;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-9col {
+  grid-column: span 9 / span 9;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-10col {
+  grid-column: span 10 / span 10;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-11col {
+  grid-column: span 11 / span 11;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-12col {
+  grid-column: span 12 / span 12;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+.wispers.sheet.character .grid-start-2 {
+  grid-column-start: 2;
+}
+.wispers.sheet.character .grid-start-3 {
+  grid-column-start: 3;
+}
+.wispers.sheet.character .grid-start-4 {
+  grid-column-start: 4;
+}
+.wispers.sheet.character .grid-start-5 {
+  grid-column-start: 5;
+}
+.wispers.sheet.character .grid-start-6 {
+  grid-column-start: 6;
+}
+.wispers.sheet.character .grid-start-7 {
+  grid-column-start: 7;
+}
+.wispers.sheet.character .grid-start-8 {
+  grid-column-start: 8;
+}
+.wispers.sheet.character .grid-start-9 {
+  grid-column-start: 9;
+}
+.wispers.sheet.character .grid-start-10 {
+  grid-column-start: 10;
+}
+.wispers.sheet.character .grid-start-11 {
+  grid-column-start: 11;
+}
+.wispers.sheet.character .grid-start-12 {
+  grid-column-start: 12;
+}
+.wispers.sheet.character .grid-span-2 {
+  grid-column-end: span 2;
+}
+.wispers.sheet.character .grid-span-3 {
+  grid-column-end: span 3;
+}
+.wispers.sheet.character .grid-span-4 {
+  grid-column-end: span 4;
+}
+.wispers.sheet.character .grid-span-5 {
+  grid-column-end: span 5;
+}
+.wispers.sheet.character .grid-span-6 {
+  grid-column-end: span 6;
+}
+.wispers.sheet.character .grid-span-7 {
+  grid-column-end: span 7;
+}
+.wispers.sheet.character .grid-span-8 {
+  grid-column-end: span 8;
+}
+.wispers.sheet.character .grid-span-9 {
+  grid-column-end: span 9;
+}
+.wispers.sheet.character .grid-span-10 {
+  grid-column-end: span 10;
+}
+.wispers.sheet.character .grid-span-11 {
+  grid-column-end: span 11;
+}
+.wispers.sheet.character .grid-span-12 {
+  grid-column-end: span 12;
+}
+.wispers.sheet.character .flex-group-center,
+.wispers.sheet.character .flex-group-left,
+.wispers.sheet.character .flex-group-right {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.wispers.sheet.character .flex-group-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+.wispers.sheet.character .flex-group-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+.wispers.sheet.character .flexshrink {
+  flex: 0;
+}
+.wispers.sheet.character .flex-between {
+  justify-content: space-between;
+}
+.wispers.sheet.character .flexlarge {
+  flex: 2;
+}
+.wispers.sheet.character .align-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+.wispers.sheet.character .align-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+.wispers.sheet.character .align-center {
+  justify-content: center;
+  text-align: center;
 }
 .wispers.sheet.character .charinputfullbox {
   float: left;
@@ -352,187 +533,168 @@
   min-height: 70px;
   width: 100%;
 }
-.wispers.sheet.character .chartraitbox {
-  height: 130px;
-  width: 195px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  padding-left: 5px;
-  padding-right: 8px;
+.wispers.sheet.character .wispers .item-form {
+  font-family: "Roboto", sans-serif;
+  resize: both;
 }
-.wispers.sheet.character .charvirtubox {
-  width: 160px;
-  position: relative;
-  background-color: #d9850c;
-  border-style: dashed;
-  border-color: orange;
-  border-radius: 5px;
-  padding-left: 7px;
-  margin-top: 5px;
-  margin-left: 10px;
+.wispers.sheet.character .wispers .sheet-header {
+  flex: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
 }
-.wispers.sheet.character .charflawbox {
-  width: 160px;
-  position: relative;
-  background-color: #0887b9;
-  border-style: dashed;
-  border-color: #10c2da;
-  border-radius: 5px;
-  padding-left: 7px;
-  margin-top: 5px;
-  margin-left: 10px;
+.wispers.sheet.character .wispers .sheet-header .profile-img {
+  flex: 0 0 100px;
+  height: 100px;
+  margin-right: 10px;
 }
-.wispers.sheet.character .traiticon {
-  position: static;
-  margin-right: 8px;
+.wispers.sheet.character .wispers .sheet-header .header-fields {
+  flex: 1;
 }
-.wispers.sheet.character .charcombatstatbox {
+.wispers.sheet.character .wispers .sheet-header h1.charname {
+  height: 50px;
+  padding: 0px;
+  margin: 5px 0;
+  border-bottom: 0;
+}
+.wispers.sheet.character .wispers .sheet-header h1.charname input {
   width: 100%;
-  height: 70px;
+  height: 100%;
+  margin: 0;
 }
-.wispers.sheet.character .charcombatinnerstatbox {
-  width: 280px;
-  height: 60px;
-  position: relative;
-  margin: 0 auto;
+.wispers.sheet.character .wispers .sheet-tabs {
+  flex: 0;
 }
-.wispers.sheet.character .charcombatstat {
-  float: left;
-  width: 65px;
-  height: 65px;
-  padding-top: 3px;
-  font-size: 16px;
-  background-image: url(assets/img/OneValueBorderFilled.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  color: white;
-  text-align: center;
-  line-height: 10px;
+.wispers.sheet.character .wispers .sheet-body,
+.wispers.sheet.character .wispers .sheet-body .tab,
+.wispers.sheet.character .wispers .sheet-body .tab .editor {
+  height: 100%;
 }
-.wispers.sheet.character .charcombatstatvalue {
-  position: absolute;
-  bottom: 21px;
-  left: 22px;
-  font-size: 21px;
+.wispers.sheet.character .wispers .tox .tox-editor-container {
+  background: #fff;
+}
+.wispers.sheet.character .wispers .tox .tox-edit-area {
+  padding: 0 8px;
+}
+.wispers.sheet.character .wispers .resource-label {
   font-weight: bold;
 }
-.wispers.sheet.character .charprogressbox {
-  float: left;
-  width: 100%;
-  height: 40px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-.wispers.sheet.character .charprogresslbl {
-  float: left;
-  width: 100px;
-  padding-top: 2px;
-  padding-left: 8px;
-  font-size: 14px;
-  line-height: 18px;
-}
-.wispers.sheet.character .charprogressinput {
-  width: 70px;
-  height: 24px;
-  margin: 0px 4px;
-  text-align: right;
-}
-.wispers.sheet.character .charprogressbnt {
-  float: right;
-  width: 83px;
-  height: 24px;
-  margin-right: 15px;
-  padding-top: 2px;
-  text-align: center;
-  color: white;
-  border: 2px solid;
-  border-radius: 6px;
-  border-color: #e99d76;
-  background-color: #cc0001;
-}
-.wispers.sheet.character .charcompetence {
-  width: 90px;
-  position: relative;
-  background-color: #d81d15;
-  border-style: dashed;
-  border-width: 2px;
-  border-color: #f0a07b;
-  border-radius: 3px;
-  margin-left: 2px;
-  font-size: 12px;
-  padding-top: 1px;
-  padding-left: 4px;
-}
-.wispers.sheet.character .charprogressattbox {
-  float: left;
-}
-.wispers.sheet.character .charprogressattmenubox {
-  float: left;
-  padding-left: 10px;
-  margin-top: 5px;
-  margin-bottom: 15px;
-}
-.wispers.sheet.character .charprogressatttypebnt {
-  float: left;
-  width: 100px;
-  height: 24px;
-  margin-right: 5px;
-  padding-top: 2px;
-  text-align: center;
-  color: white;
-  border: 2px solid;
-  border-radius: 6px;
-  border-color: #e99d76;
-  background-color: #cc0001;
-}
-.wispers.sheet.character .charprogressatttable {
-  margin: 0;
-  margin-left: 5px;
-}
-.wispers.sheet.character .charprogressatttr {
-  height: 45px;
-}
-.wispers.sheet.character .charprogressatttrdiv {
-  height: 8px;
-}
-.wispers.sheet.character .charprogressattlbl {
-  width: 90px;
+.wispers.sheet.character .wispers .items-header {
+  height: 28px;
+  margin: 2px 0;
   padding: 0;
-  padding-left: 10px;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
 }
-.wispers.sheet.character .charprogressattstatvalue {
-  width: 35px;
-  padding: 2px;
+.wispers.sheet.character .wispers .items-header > * {
+  font-size: 14px;
   text-align: center;
 }
-.wispers.sheet.character .charprogressattdivider1 {
-  width: 25px;
-  padding: 0px;
+.wispers.sheet.character .wispers .items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: flex;
+}
+.wispers.sheet.character .wispers .items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: #444;
+}
+.wispers.sheet.character .wispers .items-list .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wispers.sheet.character .wispers .items-list .item-name {
+  flex: 2;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  align-items: center;
+  display: flex;
+}
+.wispers.sheet.character .wispers .items-list .item-name h3,
+.wispers.sheet.character .wispers .items-list .item-name h4 {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+.wispers.sheet.character .wispers .items-list .item-controls {
+  display: flex;
+  flex: 0 0 100px;
+  justify-content: flex-end;
+}
+.wispers.sheet.character .wispers .items-list .item-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+}
+.wispers.sheet.character .wispers .items-list .item {
+  align-items: center;
+  padding: 0 2px;
+  border-bottom: 1px solid #c9c7b8;
+}
+.wispers.sheet.character .wispers .items-list .item:last-child {
+  border-bottom: none;
+}
+.wispers.sheet.character .wispers .items-list .item .item-name {
+  color: #191813;
+}
+.wispers.sheet.character .wispers .items-list .item .item-name .item-image {
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+}
+.wispers.sheet.character .wispers .items-list .item-prop {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+.wispers.sheet.character .wispers .items-list .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
+}
+.wispers.sheet.character .wispers .items-list .items-header > * {
+  font-size: 12px;
   text-align: center;
 }
-.wispers.sheet.character .charprogressattinput {
-  width: 35px;
-  height: 25px;
+.wispers.sheet.character .wispers .items-list .items-header .item-name {
+  padding-left: 5px;
+  text-align: left;
 }
-.wispers.sheet.character .charprogressincreasbnt {
-  float: right;
-  width: 25px;
-  height: 24px;
-  padding-top: 2px;
+.wispers.sheet.character .wispers .item-formula {
+  flex: 0 0 200px;
+  padding: 0 8px;
+}
+.wispers.sheet.character .wispers .effects .item .effect-source,
+.wispers.sheet.character .wispers .effects .item .effect-duration,
+.wispers.sheet.character .wispers .effects .item .effect-controls {
   text-align: center;
-  color: white;
-  border: 2px solid;
-  border-radius: 13px;
-  border-color: #e99d76;
-  background-color: #cc0001;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
 }
-.wispers.sheet.character .charprogressattstatbnt {
-  width: 35px;
-  padding: 0px;
+.wispers.sheet.character .wispers .effects .item .effect-controls {
+  border: none;
 }
-.wispers.sheet.character .charprogressattstatcost {
-  width: 55px;
-  padding: 0px;
-  text-align: center;
+.wispers.sheet.character .window-resizable-handle {
+  cursor: var(--cursor-grab);
 }
