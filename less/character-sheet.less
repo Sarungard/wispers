@@ -1,87 +1,46 @@
 // main: ./wispers.less
-  @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 .wispers.sheet.character {
-  //Background for different proficiency levels
-  .noDie {
-    background-image: url(assets/img/OneValueBorder.png);
-    background-repeat: no-repeat;
-    background-size: contain;
+  resize: both;
+  margin: 1;
+
+  .window-content {
+    display: grid;
+    grid-template-columns: 15% 1px 1fr;
+    grid-template-rows: 10% 1px 1fr;
+    height: 100vh;
   }
-  .d4 {
-    background-image: url(assets/img/d4.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+
+  /* Bal oldali zöld sáv */
+  .sidebar {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    background: #2ecc71;
   }
-  .d6 {
-    background-image: url(assets/img/d6.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+
+  /* Felső piros rész */
+  .header {
+    grid-column: 3;
+    grid-row: 1;
+    background: #ff1a1a;
   }
-  .d8 {
-    background-image: url(assets/img/d8.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-  }
-  .d10 {
-    background-image: url(assets/img/d10.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-  }
-  .d12 {
-    background-image: url(assets/img/d12.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-  }
-  .d20 {
-    background-image: url(assets/img/d20.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+
+  /* Alsó kék rész */
+  .content {
+    grid-column: 3;
+    grid-row: 3;
+    background: #1e97c6;
   }
 
   //Div Box holding the CharacterSheet Header
-  .headerBox {
-    float: left;
-    width: 100%;
-    height: 80px;
-  }
-  .logoBox {
-    float: left;
-    height: 100%;
-    width: 190px;
-    position: relative;
-  }
-  .logoImg {
-    height: 89%;
-    width: 38%;
-    margin-left: 55px;
+  .logo {
     background-image: url(assets/img/wispersSymbol.png);
     background-repeat: no-repeat;
     background-size: contain;
-    filter: invert(1);
-  }
-  .logoText {
-    position: absolute;
-    top: 22px;
-    left: -23px;
-    font-size: 25px;
-    font-weight: bold;
-    color: black;
-    text-shadow:
-      -2px -2px 0 #ffffff,
-      2px -2px 0 #ffffff,
-      -2px 2px 0 #ffffff,
-      2px 2px 0 #ffffff;
   }
 
-  //Div Box holding the CharacterSheet Image & IMG
-  .imgBox {
-    float: left;
+  //Div Box holding the CharacterSheet Image
+  .character-image-container {
     width: 135px;
     height: 175px;
     position: relative;
@@ -90,12 +49,12 @@
     margin-bottom: 3px;
     border: 3px #e99d76 solid;
   }
-  .charImg {
+  .character-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  .imgOverlay {
+  .character-image-overlay {
     width: 135px;
     height: 210px;
     position: absolute;
@@ -105,648 +64,35 @@
     pointer-events: none;
   }
 
-  //Menu Bar
-  .menuBox {
-    float: left;
-    width: 400px;
-    height: 26px;
-    position: relative;
+  /* Styles limited to wispers sheets */
+  .item-form {
+    font-family: "Roboto", sans-serif;
   }
-  .menuBG {
-    position: absolute;
-    width: 435px;
-    height: 21px;
-    border-image: url(assets/img/BannerTop.png);
-    border-image-slice: 2 2 fill;
-    border-left-width: 4px;
-    border-right-width: 4px;
-    border-top-width: 3px;
-    border-bottom-width: 3px;
-    border-style: solid;
-    z-index: 5;
-    top: 3px;
+  .sheet-header {
+    grid-column: 3;
+    grid-row: 1;
+    background: #ff1a1a;
+    color: #191813;
   }
-  .menuLbl {
-    width: 120px;
-    height: 21px;
-    position: absolute;
-    padding-left: 12px;
-    padding-top: 5px;
-    z-index: 8;
-    font-size: 12px;
+  .sheet-tabs {
+    flex: 0;
   }
-  .menuIcon {
-    width: 35px;
-    height: 35px;
-    padding-top: 7px;
-    position: absolute;
-    z-index: 8;
-    font-size: 16px;
-    background-image: url(assets/img/OneValueBorderFilled.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    top: -2px;
-    text-align: center;
-    line-height: 0;
-  }
-  .menuSetup {
-    width: 35px;
-    height: 35px;
-    padding-top: 7px;
-    position: absolute;
-    z-index: 8;
-    font-size: 16px;
-    top: -2px;
-    text-align: center;
-    line-height: 0;
-  }
-  .menuTabs {
-    border: 0px;
-  }
-
-  //Div Box holding Main Infos about Character
-  .charInfoBox {
-    float: right;
-    width: 69%;
+  .sheet-body,
+  .sheet-body .tab,
+  .sheet-body .tab .editor {
     height: 100%;
-    padding-top: 8px;
-    padding-left: 5px;
+    grid-area: body;
   }
-  .bigInputText {
-    width: 340px;
-    height: 32px;
-    font-size: 21px;
+  .tox .tox-editor-container {
+    background: #fff;
   }
-  .lvlBox {
-    float: right;
-    width: 52px;
-    height: 70px;
-    background-image: url(assets/img/LvlValueBorder.png);
-    background-size: contain;
-    background-repeat: no-repeat;
+  .tox .tox-edit-area {
+    padding: 0 8px;
   }
-  .lvlValue {
-    float: left;
-    width: 30px;
-    height: 27px;
-    padding-top: 2px;
-    padding-left: 12px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .charClass {
-    float: right;
-    width: 368px;
-    height: 34px;
-    margin-top: 4px;
-  }
-
-  //Div Box holding the body
-  .bodyBox {
-    float: left;
-    width: 185px;
-    min-height: 500px;
-    max-height: 90%;
-    border-image: url(assets/img/banner.png);
-    border-image-slice: 21 18 52 fill;
-    border-left-width: 18px;
-    border-right-width: 18px;
-    border-top-width: 21px;
-    border-bottom-width: 52px;
-    border-style: solid;
-    margin-top: 3px;
-  }
-  .charReaSpeed {
-    float: left;
-    height: 25px;
-    width: 100%;
-    margin-top: 160px;
-    padding-left: 1px;
-    text-align: center;
-    font-size: 21px;
+  .resource-label {
     font-weight: bold;
   }
-  .charRes1 {
-    float: left;
-    width: 50px;
-    height: 43px;
-    text-align: center;
-    padding-top: 2px;
-    line-height: 16px;
-  }
-  .charResFirst {
-    margin-right: 35px;
-  }
-  .charResMiddle {
-    margin-top: 44px;
-    margin-left: 40px;
-  }
-  .charResHead {
-    font-size: 11px;
-  }
-  .charResValue {
-    font-size: 21px;
-    font-weight: bold;
-  }
-  .bodyFill1 {
-    float: left;
-    height: 65px;
-    width: 100%;
-  }
-  .bodyFill2 {
-    float: left;
-    height: 20px;
-    width: 100%;
-  }
-  .bodyFill3 {
-    float: left;
-    height: 5px;
-    width: 100%;
-  }
-
-  //Main Box for Displaying Content in Sheet
-  .contentBox {
-    float: left;
-    width: 430px;
-    min-height: 500px;
-  }
-  .charSheetBox {
-    float: left;
-    width: 430px;
-    min-height: 50px;
-  }
-
-  //Attributes Display
-  .charStatfieldset {
-    float: left;
-    top: 1rem;
-    width: 9rem;
-    height: 30rem;
-    margin: 1em 5px 5px;
-    padding: 0.75em 1em 1em 1em;
-    position: relative;
-    align-content: center;
-  }
-  .charStatCard {
-    float: left;
-    size: 80%;
-    max-block-size: 80%;
-    width: 100%;
-    position: relative;
-    border:#191813 solid;
-    border-style: groove;
-    border-radius: 5%;
-    border-width: 1px;
-    padding: 0.25em 0.25em 0.25em 0.25em;
-    margin: 0.15em 0.15em 0.15em 0.15em;
-  }
-  .charStatlegend {
-    transform: translatey(-50%);
-    width: max-content;
-    padding: 0 0.15em;
-    font-size: 32px;
-  }
-  .charStatBox {
-    width: 95px;
-    max-width: 95px;
-    height: 50px;
-    max-height: 50px;
-    padding-top: 3px;
-    font-size: 28px;
-    position: relative;
-    top: 5px;
-    text-align: center;
-    align-self: center;
-    border-width: 0px;
-  }
-  .charStatText {
-    position: relative;
-    vertical-align: middle;
-    text-align: center;
-    align-items: center;
-    top: 5px;
-    right: 2px;
-    font-size: 21px;
-    font-weight: bold;
-  }
-
-  //Character Sheet HR Classes
-  .subMain {
-    clear: both;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: 3px 0;
-    align-items: center;
-    font-size: 20px;
-  }
-  .menuhrbox {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  .menuhr {
-    border: none;
-    border-top: 2px solid #cb0101;
-    border-bottom: 1px solid #d5412f;
-  }
-
-/* Global styles */
-.window-app {
-  font-family: "Roboto", sans-serif;
-  resize: both;
-}
-
-.rollable:hover, .rollable:focus {
-  color: #000;
-  text-shadow: 0 0 10px red;
-  cursor: pointer;
-}
-
-.grid,
-.grid-2col {
-  display: grid;
-  grid-column: span 2/span 2;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0;
-  padding: 0;
-}
-
-.grid-3col {
-  grid-column: span 3/span 3;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.grid-4col {
-  grid-column: span 4/span 4;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.grid-5col {
-  grid-column: span 5/span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.grid-6col {
-  grid-column: span 6/span 6;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
-.grid-7col {
-  grid-column: span 7/span 7;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-}
-
-.grid-8col {
-  grid-column: span 8/span 8;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-}
-
-.grid-9col {
-  grid-column: span 9/span 9;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-}
-
-.grid-10col {
-  grid-column: span 10/span 10;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-
-.grid-11col {
-  grid-column: span 11/span 11;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
-}
-
-.grid-12col {
-  grid-column: span 12/span 12;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-.grid-start-2 {
-  grid-column-start: 2;
-}
-
-.grid-start-3 {
-  grid-column-start: 3;
-}
-
-.grid-start-4 {
-  grid-column-start: 4;
-}
-
-.grid-start-5 {
-  grid-column-start: 5;
-}
-
-.grid-start-6 {
-  grid-column-start: 6;
-}
-
-.grid-start-7 {
-  grid-column-start: 7;
-}
-
-.grid-start-8 {
-  grid-column-start: 8;
-}
-
-.grid-start-9 {
-  grid-column-start: 9;
-}
-
-.grid-start-10 {
-  grid-column-start: 10;
-}
-
-.grid-start-11 {
-  grid-column-start: 11;
-}
-
-.grid-start-12 {
-  grid-column-start: 12;
-}
-
-.grid-span-2 {
-  grid-column-end: span 2;
-}
-
-.grid-span-3 {
-  grid-column-end: span 3;
-}
-
-.grid-span-4 {
-  grid-column-end: span 4;
-}
-
-.grid-span-5 {
-  grid-column-end: span 5;
-}
-
-.grid-span-6 {
-  grid-column-end: span 6;
-}
-
-.grid-span-7 {
-  grid-column-end: span 7;
-}
-
-.grid-span-8 {
-  grid-column-end: span 8;
-}
-
-.grid-span-9 {
-  grid-column-end: span 9;
-}
-
-.grid-span-10 {
-  grid-column-end: span 10;
-}
-
-.grid-span-11 {
-  grid-column-end: span 11;
-}
-
-.grid-span-12 {
-  grid-column-end: span 12;
-}
-
-.flex-group-center,
-.flex-group-left,
-.flex-group-right {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.flex-group-left {
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.flex-group-right {
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.flexshrink {
-  flex: 0;
-}
-
-.flex-between {
-  justify-content: space-between;
-}
-
-.flexlarge {
-  flex: 2;
-}
-
-.align-left {
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.align-right {
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.align-center {
-  justify-content: center;
-  text-align: center;
-}
-
-//Char Input Fields Half
-  .charinputfullbox {
-    float: left;
-    width: 100%;
-    margin-bottom: 5px;
-  }
-  .charinputhalfbox {
-    float: left;
-    width: 50%;
-    margin-bottom: 5px;
-  }
-  .charinputlbl {
-    font-size: 14px;
-    line-height: 18px;
-    padding-left: 8px;
-  }
-  .charinputbox {
-    padding-left: 5px;
-    padding-right: 8px;
-  }
-  .charinputhalf {
-    height: 24px;
-  }
-  .charinputfull {
-    min-height: 70px;
-    width: 100%;
-  }
-
-/* Styles limited to wispers sheets */
-.wispers .item-form {
-  font-family: "Roboto", sans-serif;
-  resize: both;
-}
-.wispers .sheet-header {
-  flex: 0 auto;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-}
-.wispers .sheet-header .profile-img {
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 10px;
-}
-.wispers .sheet-header .header-fields {
-  flex: 1;
-}
-.wispers .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
-}
-.wispers .sheet-header h1.charname input {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-.wispers .sheet-tabs {
-  flex: 0;
-}
-.wispers .sheet-body,
-.wispers .sheet-body .tab,
-.wispers .sheet-body .tab .editor {
-  height: 100%;
-}
-.wispers .tox .tox-editor-container {
-  background: #fff;
-}
-.wispers .tox .tox-edit-area {
-  padding: 0 8px;
-}
-.wispers .resource-label {
-  font-weight: bold;
-}
-.wispers .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.wispers .items-header > * {
-  font-size: 14px;
-  text-align: center;
-}
-.wispers .items-header .item-name {
-  font-weight: bold;
-  padding-left: 5px;
-  text-align: left;
-  display: flex;
-}
-.wispers .items-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  color: #444;
-}
-.wispers .items-list .item-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.wispers .items-list .item-name {
-  flex: 2;
-  margin: 0;
-  overflow: hidden;
-  font-size: 13px;
-  text-align: left;
-  align-items: center;
-  display: flex;
-}
-.wispers .items-list .item-name h3, .wispers .items-list .item-name h4 {
-  margin: 0;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-.wispers .items-list .item-controls {
-  display: flex;
-  flex: 0 0 100px;
-  justify-content: flex-end;
-}
-.wispers .items-list .item-controls a {
-  font-size: 12px;
-  text-align: center;
-  margin: 0 6px;
-}
-.wispers .items-list .item {
-  align-items: center;
-  padding: 0 2px;
-  border-bottom: 1px solid #c9c7b8;
-}
-.wispers .items-list .item:last-child {
-  border-bottom: none;
-}
-.wispers .items-list .item .item-name {
-  color: #191813;
-}
-.wispers .items-list .item .item-name .item-image {
-  flex: 0 0 30px;
-  height: 30px;
-  background-size: 30px;
-  border: none;
-  margin-right: 5px;
-}
-.wispers .items-list .item-prop {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.wispers .items-list .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.wispers .items-list .items-header > * {
-  font-size: 12px;
-  text-align: center;
-}
-.wispers .items-list .items-header .item-name {
-  padding-left: 5px;
-  text-align: left;
-}
-.wispers .item-formula {
-  flex: 0 0 200px;
-  padding: 0 8px;
-}
-.wispers .effects .item .effect-source,
-.wispers .effects .item .effect-duration,
-.wispers .effects .item .effect-controls {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.wispers .effects .item .effect-controls {
-  border: none;
-}
-.window-resizable-handle {
+  .window-resizable-handle {
     cursor: var(--cursor-grab);
-}
+  }
 }

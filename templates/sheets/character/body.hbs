@@ -1,41 +1,59 @@
-<div>
-    <div class="bodyBox">
-
-        <div class="imgBox">
-            <img class="charImg" src="{{actor.img}}" data-edit="img" data-action="editImage" title="{{actor.name}}" >
-            <div class="imgOverlay">
-                <div class="charReaSpeed"></div>
-                <div class="charRes1 {{proficiencyDie system.skills.savingthrows.reflex.proficiency.value}} charResFirst"><span class="charResHead">Reflex</span><br><span class="charResValue">+3</span></div>
-                <div class="charRes1 {{proficiencyDie system.skills.savingthrows.toughness.proficiency.value}}"><span class="charResHead">Toughness</span><br><span class="charResValue">+4</span></div>
-            </div>
-            <div class="charRes1 {{proficiencyDie system.skills.savingthrows.resolve.proficiency.value}} charResMiddle"><span class="charResHead">Resolve</span><br><span class="charResValue">+5</span></div>
+<div class="">
+    <div class="sidebar">
+      <div class="">
+        <img
+          class="character-image"
+          src="{{actor.img}}"
+          data-edit="img"
+          data-action="editImage"
+          title="{{actor.name}}" />
+        <div class="">
+          <div class=""></div>
+          <div class="">
+            <span class="">Reflex</span>
+            <br/>
+            <span class="{{proficiencyDie
+                system.skills.savingthrows.reflex.proficiency.value
+              }}">+3</span>
+          </div>
+          <div class=""><span class="">Toughness</span>
+          <br/>
+          <span class="{{proficiencyDie
+                system.skills.savingthrows.toughness.proficiency.value
+              }}">+4</span></div>
         </div>
+        <div class=""><span class="">Resolve</span>
+        <br/>
+        <span class="{{proficiencyDie
+              system.skills.savingthrows.resolve.proficiency.value
+            }}">+5</span>
+        </div>
+      </div>
 
-        <div class="bodyFill1"></div>
-
-    <div class="charStatfieldset" style="color: #2A2622;">
-        <h1 class="charStatlegend">Attributes</h1>
+      <div class="">
+        <h1 class="">Attributes</h1>
         <div>
-        {{#each system.abilities as |ability|}}
-            <li class='item flexrow flex-group-center charStatCard'>
-                <label for="system.abilities.{{ability.id}}" class="resource-label rollable flexlarge charStatText">{{localize (concat "CONSTANTS.Attributes." ability.id ".long")}}</label>
-                <input type="text" class="charStatBox {{attributeDie ability.value}}" name="system.abilities.{{ability.id}}" value="{{ability.value}}" data-dtype="Number"/>
+          {{#each system.abilities as |ability|}}
+            <li class="">
+              <label for="system.abilities.{{ability.id}}" class="" >
+                {{localize (concat "CONSTANTS.Attributes." ability.id ".long") }}
+              </label>
+              <input
+                type="text"
+                class="sidebar-stat-box {{attributeDie ability.value}}"
+                name="system.abilities.{{ability.id}}"
+                value="{{ability.value}}"
+                data-dtype="Number" />
             </li>
-        {{/each}}
+          {{/each}}
         </div>
+      </div>
     </div>
 
-        <div class="bodyFill2"></div>
-
-        <div class="bodyFill3"></div>
-
-    </div>
-
-    <div class="menuBox">
-
+    <div class="content">
+      <div class="menuBox">
         <div class="menuBG"></div>
         <div class="menuLbl"></div>
-
         <nav class="tabs menuTabs" data-group="primary-tabs">
             <div class="menuIcon" style="left: 135px;">
                 <a class="item" data-tab="tab1" data-group="primary-tabs">
@@ -69,10 +87,10 @@
             </div>
         </nav>
 
-    </div>
+      </div>
 
-    <div class="contentBox">
-        <section class="content">
+      <div class="">
+        <section class="">
             <div class="tab" data-tab="tab1" data-group="primary-tabs">
                 {{> "systems/wispers/templates/partials/character/attributes.hbs"}}
             </div>
@@ -97,10 +115,6 @@
                 {{> "systems/wispers/templates/partials/character/biography.hbs"}}
             </div>
         </section>
-    </div>
-    <div class="window-resizable-handle" style="">
-        <i inert="" class="fa-solid fa-left-right fa-rotate-by">
-            ::before
-        </i>
+      </div>
     </div>
 </div>

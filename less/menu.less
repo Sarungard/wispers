@@ -1,0 +1,79 @@
+// main: ./wispers.less
+.menu-box {
+  .menu-container {
+    width: 400px;
+    height: 26px;
+    position: relative;
+  }
+  .menu-background {
+    position: absolute;
+    width: 435px;
+    height: 21px;
+    border-image: url(assets/img/BannerTop.png);
+    border-image-slice: 2 2 fill;
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-style: solid;
+    z-index: 5;
+    top: 3px;
+  }
+  .menu-label {
+    width: 120px;
+    height: 21px;
+    position: absolute;
+    padding-left: 12px;
+    padding-top: 5px;
+    z-index: 8;
+    font-size: 12px;
+  }
+  .menu-icon {
+    width: 35px;
+    height: 35px;
+    padding-top: 7px;
+    position: absolute;
+    z-index: 8;
+    font-size: 16px;
+    background-image: url(assets/img/OneValueBorderFilled.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    top: -2px;
+    text-align: center;
+    line-height: 0;
+  }
+  .menu-setup {
+    width: 35px;
+    height: 35px;
+    padding-top: 7px;
+    position: absolute;
+    z-index: 8;
+    font-size: 16px;
+    top: -2px;
+    text-align: center;
+    line-height: 0;
+  }
+  .menu-tab {
+    border: 0px;
+  }
+}
+
+.subMain { // Should have been verified
+  clear: both;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 3px 0;
+  align-items: center;
+  font-size: 20px;
+}
+
+.menu-hr-container {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.menu-hr {
+  border: none;
+  border-top: 2px solid #cb0101;
+  border-bottom: 1px solid #d5412f;
+}

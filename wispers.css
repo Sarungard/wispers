@@ -15,81 +15,40 @@
   src: url(https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjammT.ttf) format('truetype');
 }
 .wispers.sheet.character {
-  /* Global styles */
+  resize: both;
+  margin: 1;
+  /* Bal oldali zöld sáv */
+  /* Felső piros rész */
+  /* Alsó kék rész */
   /* Styles limited to wispers sheets */
 }
-.wispers.sheet.character .noDie {
-  background-image: url(assets/img/OneValueBorder.png);
-  background-repeat: no-repeat;
-  background-size: contain;
+.wispers.sheet.character .window-content {
+  display: grid;
+  grid-template-columns: 15% 1px 1fr;
+  grid-template-rows: 10% 1px 1fr;
+  height: 100vh;
 }
-.wispers.sheet.character .d4 {
-  background-image: url(assets/img/d4.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+.wispers.sheet.character .sidebar {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  background: #2ecc71;
 }
-.wispers.sheet.character .d6 {
-  background-image: url(assets/img/d6.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+.wispers.sheet.character .header {
+  grid-column: 3;
+  grid-row: 1;
+  background: #ff1a1a;
 }
-.wispers.sheet.character .d8 {
-  background-image: url(assets/img/d8.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+.wispers.sheet.character .content {
+  grid-column: 3;
+  grid-row: 3;
+  background: #1e97c6;
 }
-.wispers.sheet.character .d10 {
-  background-image: url(assets/img/d10.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-.wispers.sheet.character .d12 {
-  background-image: url(assets/img/d12.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-.wispers.sheet.character .d20 {
-  background-image: url(assets/img/d20.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-.wispers.sheet.character .headerBox {
-  float: left;
-  width: 100%;
-  height: 80px;
-}
-.wispers.sheet.character .logoBox {
-  float: left;
-  height: 100%;
-  width: 190px;
-  position: relative;
-}
-.wispers.sheet.character .logoImg {
-  height: 89%;
-  width: 38%;
-  margin-left: 55px;
+.wispers.sheet.character .logo {
   background-image: url(assets/img/wispersSymbol.png);
   background-repeat: no-repeat;
   background-size: contain;
-  filter: invert(1);
 }
-.wispers.sheet.character .logoText {
-  position: absolute;
-  top: 22px;
-  left: -23px;
-  font-size: 25px;
-  font-weight: bold;
-  color: black;
-  text-shadow: -2px -2px 0 #ffffff, 2px -2px 0 #ffffff, -2px 2px 0 #ffffff, 2px 2px 0 #ffffff;
-}
-.wispers.sheet.character .imgBox {
-  float: left;
+.wispers.sheet.character .character-image-container {
   width: 135px;
   height: 175px;
   position: relative;
@@ -98,12 +57,12 @@
   margin-bottom: 3px;
   border: 3px #e99d76 solid;
 }
-.wispers.sheet.character .charImg {
+.wispers.sheet.character .character-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.wispers.sheet.character .imgOverlay {
+.wispers.sheet.character .character-image-overlay {
   width: 135px;
   height: 210px;
   position: absolute;
@@ -112,13 +71,83 @@
   background-image: url(assets/img/imageBorder.png);
   pointer-events: none;
 }
-.wispers.sheet.character .menuBox {
-  float: left;
+.wispers.sheet.character .item-form {
+  font-family: "Roboto", sans-serif;
+}
+.wispers.sheet.character .sheet-header {
+  grid-column: 3;
+  grid-row: 1;
+  background: #ff1a1a;
+  color: #191813;
+}
+.wispers.sheet.character .sheet-tabs {
+  flex: 0;
+}
+.wispers.sheet.character .sheet-body,
+.wispers.sheet.character .sheet-body .tab,
+.wispers.sheet.character .sheet-body .tab .editor {
+  height: 100%;
+  grid-area: body;
+}
+.wispers.sheet.character .tox .tox-editor-container {
+  background: #fff;
+}
+.wispers.sheet.character .tox .tox-edit-area {
+  padding: 0 8px;
+}
+.wispers.sheet.character .resource-label {
+  font-weight: bold;
+}
+.wispers.sheet.character .window-resizable-handle {
+  cursor: var(--cursor-grab);
+}
+.noDie {
+  background-image: url(assets/img/OneValueBorder.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.d4 {
+  background-image: url(assets/img/d4.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.d6 {
+  background-image: url(assets/img/d6.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.d8 {
+  background-image: url(assets/img/d8.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.d10 {
+  background-image: url(assets/img/d10.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.d12 {
+  background-image: url(assets/img/d12.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.d20 {
+  background-image: url(assets/img/d20.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.menu-box .menu-container {
   width: 400px;
   height: 26px;
   position: relative;
 }
-.wispers.sheet.character .menuBG {
+.menu-box .menu-background {
   position: absolute;
   width: 435px;
   height: 21px;
@@ -132,7 +161,7 @@
   z-index: 5;
   top: 3px;
 }
-.wispers.sheet.character .menuLbl {
+.menu-box .menu-label {
   width: 120px;
   height: 21px;
   position: absolute;
@@ -141,7 +170,7 @@
   z-index: 8;
   font-size: 12px;
 }
-.wispers.sheet.character .menuIcon {
+.menu-box .menu-icon {
   width: 35px;
   height: 35px;
   padding-top: 7px;
@@ -155,7 +184,7 @@
   text-align: center;
   line-height: 0;
 }
-.wispers.sheet.character .menuSetup {
+.menu-box .menu-setup {
   width: 35px;
   height: 35px;
   padding-top: 7px;
@@ -166,47 +195,187 @@
   text-align: center;
   line-height: 0;
 }
-.wispers.sheet.character .menuTabs {
+.menu-box .menu-tab {
   border: 0px;
 }
-.wispers.sheet.character .charInfoBox {
-  float: right;
-  width: 69%;
-  height: 100%;
-  padding-top: 8px;
-  padding-left: 5px;
+.subMain {
+  clear: both;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 3px 0;
+  align-items: center;
+  font-size: 20px;
 }
-.wispers.sheet.character .bigInputText {
-  width: 340px;
-  height: 32px;
-  font-size: 21px;
+.menu-hr-container {
+  margin-left: 5px;
+  margin-right: 5px;
 }
-.wispers.sheet.character .lvlBox {
-  float: right;
-  width: 52px;
-  height: 70px;
-  background-image: url(assets/img/LvlValueBorder.png);
-  background-size: contain;
-  background-repeat: no-repeat;
+.menu-hr {
+  border: none;
+  border-top: 2px solid #cb0101;
+  border-bottom: 1px solid #d5412f;
 }
-.wispers.sheet.character .lvlValue {
-  float: left;
-  width: 30px;
-  height: 27px;
-  padding-top: 2px;
-  padding-left: 12px;
-  font-size: 18px;
-  font-weight: bold;
+/* Global styles */
+.window-app {
+  font-family: "Roboto", sans-serif;
+}
+.rollable:hover,
+.rollable:focus {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
+.flex-group-center,
+.flex-group-left,
+.flex-group-right {
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
-.wispers.sheet.character .charClass {
-  float: right;
-  width: 368px;
-  height: 34px;
-  margin-top: 4px;
+.flex-group-left {
+  justify-content: flex-start;
+  text-align: left;
 }
-.wispers.sheet.character .bodyBox {
-  float: left;
+.flex-group-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+.flexshrink {
+  flex: 0;
+}
+.flex-between {
+  justify-content: space-between;
+}
+.flexlarge {
+  flex: 2;
+}
+.align-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+.align-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+.align-center {
+  justify-content: center;
+  text-align: center;
+}
+.items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
+}
+.items-header > * {
+  font-size: 14px;
+  text-align: center;
+}
+.items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: flex;
+}
+.items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: #444;
+}
+.items-list .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.items-list .item-name {
+  flex: 2;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  align-items: center;
+  display: flex;
+}
+.items-list .item-name h3,
+.items-list .item-name h4 {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+.items-list .item-controls {
+  display: flex;
+  flex: 0 0 100px;
+  justify-content: flex-end;
+}
+.items-list .item-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+}
+.items-list .item {
+  align-items: center;
+  padding: 0 2px;
+  border-bottom: 1px solid #c9c7b8;
+}
+.items-list .item:last-child {
+  border-bottom: none;
+}
+.items-list .item .item-name {
+  color: #191813;
+}
+.items-list .item .item-name .item-image {
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+}
+.items-list .item-prop {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+.items-list .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
+}
+.items-list .items-header > * {
+  font-size: 12px;
+  text-align: center;
+}
+.items-list .items-header .item-name {
+  padding-left: 5px;
+  text-align: left;
+}
+.item-formula {
+  flex: 0 0 200px;
+  padding: 0 8px;
+}
+.effects .item .effect-source,
+.effects .item .effect-duration,
+.effects .item .effect-controls {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+.effects .item .effect-controls {
+  border: none;
+}
+.sidebar-container {
   width: 185px;
   min-height: 500px;
   max-height: 90%;
@@ -218,9 +387,11 @@
   border-bottom-width: 52px;
   border-style: solid;
   margin-top: 3px;
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
 }
-.wispers.sheet.character .charReaSpeed {
-  float: left;
+.sidebar-tetra-whatever {
   height: 25px;
   width: 100%;
   margin-top: 160px;
@@ -229,55 +400,40 @@
   font-size: 21px;
   font-weight: bold;
 }
-.wispers.sheet.character .charRes1 {
-  float: left;
+.sidebar-saving-throws-first {
   width: 50px;
   height: 43px;
   text-align: center;
   padding-top: 2px;
   line-height: 16px;
 }
-.wispers.sheet.character .charResFirst {
+.sidebar-saving-throws-second {
   margin-right: 35px;
 }
-.wispers.sheet.character .charResMiddle {
+.sidebar-saving-throws-middle {
   margin-top: 44px;
   margin-left: 40px;
 }
-.wispers.sheet.character .charResHead {
+.sidebar-resources-header {
   font-size: 11px;
 }
-.wispers.sheet.character .charResValue {
+.sidebar-resources-value {
   font-size: 21px;
   font-weight: bold;
 }
-.wispers.sheet.character .bodyFill1 {
-  float: left;
+.sidebar-filler-1 {
   height: 65px;
   width: 100%;
 }
-.wispers.sheet.character .bodyFill2 {
-  float: left;
+.sidebar-filler-2 {
   height: 20px;
   width: 100%;
 }
-.wispers.sheet.character .bodyFill3 {
-  float: left;
+.sidebar-filler-3 {
   height: 5px;
   width: 100%;
 }
-.wispers.sheet.character .contentBox {
-  float: left;
-  width: 430px;
-  min-height: 500px;
-}
-.wispers.sheet.character .charSheetBox {
-  float: left;
-  width: 430px;
-  min-height: 50px;
-}
-.wispers.sheet.character .charStatfieldset {
-  float: left;
+.sidebar-stat-container {
   top: 1rem;
   width: 9rem;
   height: 30rem;
@@ -286,8 +442,7 @@
   position: relative;
   align-content: center;
 }
-.wispers.sheet.character .charStatCard {
-  float: left;
+.sidebar-stat-card {
   size: 80%;
   max-block-size: 80%;
   width: 100%;
@@ -299,13 +454,13 @@
   padding: 0.25em 0.25em 0.25em 0.25em;
   margin: 0.15em 0.15em 0.15em 0.15em;
 }
-.wispers.sheet.character .charStatlegend {
+.sidebar-stat-legend {
   transform: translatey(-50%);
   width: max-content;
   padding: 0 0.15em;
   font-size: 32px;
 }
-.wispers.sheet.character .charStatBox {
+.sidebar-stat-box {
   width: 95px;
   max-width: 95px;
   height: 50px;
@@ -318,7 +473,7 @@
   align-self: center;
   border-width: 0px;
 }
-.wispers.sheet.character .charStatText {
+.sidebar-stat-text {
   position: relative;
   vertical-align: middle;
   text-align: center;
@@ -328,373 +483,27 @@
   font-size: 21px;
   font-weight: bold;
 }
-.wispers.sheet.character .subMain {
-  clear: both;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 3px 0;
-  align-items: center;
-  font-size: 20px;
-}
-.wispers.sheet.character .menuhrbox {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-.wispers.sheet.character .menuhr {
-  border: none;
-  border-top: 2px solid #cb0101;
-  border-bottom: 1px solid #d5412f;
-}
-.wispers.sheet.character .window-app {
-  font-family: "Roboto", sans-serif;
-  resize: both;
-}
-.wispers.sheet.character .rollable:hover,
-.wispers.sheet.character .rollable:focus {
-  color: #000;
-  text-shadow: 0 0 10px red;
-  cursor: pointer;
-}
-.wispers.sheet.character .grid,
-.wispers.sheet.character .grid-2col {
-  display: grid;
-  grid-column: span 2 / span 2;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0;
-  padding: 0;
-}
-.wispers.sheet.character .grid-3col {
-  grid-column: span 3 / span 3;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-4col {
-  grid-column: span 4 / span 4;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-5col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-6col {
-  grid-column: span 6 / span 6;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-7col {
-  grid-column: span 7 / span 7;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-8col {
-  grid-column: span 8 / span 8;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-9col {
-  grid-column: span 9 / span 9;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-10col {
-  grid-column: span 10 / span 10;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-11col {
-  grid-column: span 11 / span 11;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-12col {
-  grid-column: span 12 / span 12;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-.wispers.sheet.character .grid-start-2 {
-  grid-column-start: 2;
-}
-.wispers.sheet.character .grid-start-3 {
-  grid-column-start: 3;
-}
-.wispers.sheet.character .grid-start-4 {
-  grid-column-start: 4;
-}
-.wispers.sheet.character .grid-start-5 {
-  grid-column-start: 5;
-}
-.wispers.sheet.character .grid-start-6 {
-  grid-column-start: 6;
-}
-.wispers.sheet.character .grid-start-7 {
-  grid-column-start: 7;
-}
-.wispers.sheet.character .grid-start-8 {
-  grid-column-start: 8;
-}
-.wispers.sheet.character .grid-start-9 {
-  grid-column-start: 9;
-}
-.wispers.sheet.character .grid-start-10 {
-  grid-column-start: 10;
-}
-.wispers.sheet.character .grid-start-11 {
-  grid-column-start: 11;
-}
-.wispers.sheet.character .grid-start-12 {
-  grid-column-start: 12;
-}
-.wispers.sheet.character .grid-span-2 {
-  grid-column-end: span 2;
-}
-.wispers.sheet.character .grid-span-3 {
-  grid-column-end: span 3;
-}
-.wispers.sheet.character .grid-span-4 {
-  grid-column-end: span 4;
-}
-.wispers.sheet.character .grid-span-5 {
-  grid-column-end: span 5;
-}
-.wispers.sheet.character .grid-span-6 {
-  grid-column-end: span 6;
-}
-.wispers.sheet.character .grid-span-7 {
-  grid-column-end: span 7;
-}
-.wispers.sheet.character .grid-span-8 {
-  grid-column-end: span 8;
-}
-.wispers.sheet.character .grid-span-9 {
-  grid-column-end: span 9;
-}
-.wispers.sheet.character .grid-span-10 {
-  grid-column-end: span 10;
-}
-.wispers.sheet.character .grid-span-11 {
-  grid-column-end: span 11;
-}
-.wispers.sheet.character .grid-span-12 {
-  grid-column-end: span 12;
-}
-.wispers.sheet.character .flex-group-center,
-.wispers.sheet.character .flex-group-left,
-.wispers.sheet.character .flex-group-right {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-.wispers.sheet.character .flex-group-left {
-  justify-content: flex-start;
-  text-align: left;
-}
-.wispers.sheet.character .flex-group-right {
-  justify-content: flex-end;
-  text-align: right;
-}
-.wispers.sheet.character .flexshrink {
-  flex: 0;
-}
-.wispers.sheet.character .flex-between {
-  justify-content: space-between;
-}
-.wispers.sheet.character .flexlarge {
-  flex: 2;
-}
-.wispers.sheet.character .align-left {
-  justify-content: flex-start;
-  text-align: left;
-}
-.wispers.sheet.character .align-right {
-  justify-content: flex-end;
-  text-align: right;
-}
-.wispers.sheet.character .align-center {
-  justify-content: center;
-  text-align: center;
-}
-.wispers.sheet.character .charinputfullbox {
-  float: left;
+.character-input-full-width {
   width: 100%;
   margin-bottom: 5px;
 }
-.wispers.sheet.character .charinputhalfbox {
-  float: left;
+.character-input-half-width {
   width: 50%;
   margin-bottom: 5px;
 }
-.wispers.sheet.character .charinputlbl {
+.character-input-label {
   font-size: 14px;
   line-height: 18px;
   padding-left: 8px;
 }
-.wispers.sheet.character .charinputbox {
+.character-input-box {
   padding-left: 5px;
   padding-right: 8px;
 }
-.wispers.sheet.character .charinputhalf {
+.character-input-half {
   height: 24px;
 }
-.wispers.sheet.character .charinputfull {
+.character-input-full {
   min-height: 70px;
   width: 100%;
-}
-.wispers.sheet.character .wispers .item-form {
-  font-family: "Roboto", sans-serif;
-  resize: both;
-}
-.wispers.sheet.character .wispers .sheet-header {
-  flex: 0 auto;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-}
-.wispers.sheet.character .wispers .sheet-header .profile-img {
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 10px;
-}
-.wispers.sheet.character .wispers .sheet-header .header-fields {
-  flex: 1;
-}
-.wispers.sheet.character .wispers .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
-}
-.wispers.sheet.character .wispers .sheet-header h1.charname input {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-.wispers.sheet.character .wispers .sheet-tabs {
-  flex: 0;
-}
-.wispers.sheet.character .wispers .sheet-body,
-.wispers.sheet.character .wispers .sheet-body .tab,
-.wispers.sheet.character .wispers .sheet-body .tab .editor {
-  height: 100%;
-}
-.wispers.sheet.character .wispers .tox .tox-editor-container {
-  background: #fff;
-}
-.wispers.sheet.character .wispers .tox .tox-edit-area {
-  padding: 0 8px;
-}
-.wispers.sheet.character .wispers .resource-label {
-  font-weight: bold;
-}
-.wispers.sheet.character .wispers .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.wispers.sheet.character .wispers .items-header > * {
-  font-size: 14px;
-  text-align: center;
-}
-.wispers.sheet.character .wispers .items-header .item-name {
-  font-weight: bold;
-  padding-left: 5px;
-  text-align: left;
-  display: flex;
-}
-.wispers.sheet.character .wispers .items-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  color: #444;
-}
-.wispers.sheet.character .wispers .items-list .item-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.wispers.sheet.character .wispers .items-list .item-name {
-  flex: 2;
-  margin: 0;
-  overflow: hidden;
-  font-size: 13px;
-  text-align: left;
-  align-items: center;
-  display: flex;
-}
-.wispers.sheet.character .wispers .items-list .item-name h3,
-.wispers.sheet.character .wispers .items-list .item-name h4 {
-  margin: 0;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-.wispers.sheet.character .wispers .items-list .item-controls {
-  display: flex;
-  flex: 0 0 100px;
-  justify-content: flex-end;
-}
-.wispers.sheet.character .wispers .items-list .item-controls a {
-  font-size: 12px;
-  text-align: center;
-  margin: 0 6px;
-}
-.wispers.sheet.character .wispers .items-list .item {
-  align-items: center;
-  padding: 0 2px;
-  border-bottom: 1px solid #c9c7b8;
-}
-.wispers.sheet.character .wispers .items-list .item:last-child {
-  border-bottom: none;
-}
-.wispers.sheet.character .wispers .items-list .item .item-name {
-  color: #191813;
-}
-.wispers.sheet.character .wispers .items-list .item .item-name .item-image {
-  flex: 0 0 30px;
-  height: 30px;
-  background-size: 30px;
-  border: none;
-  margin-right: 5px;
-}
-.wispers.sheet.character .wispers .items-list .item-prop {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.wispers.sheet.character .wispers .items-list .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.wispers.sheet.character .wispers .items-list .items-header > * {
-  font-size: 12px;
-  text-align: center;
-}
-.wispers.sheet.character .wispers .items-list .items-header .item-name {
-  padding-left: 5px;
-  text-align: left;
-}
-.wispers.sheet.character .wispers .item-formula {
-  flex: 0 0 200px;
-  padding: 0 8px;
-}
-.wispers.sheet.character .wispers .effects .item .effect-source,
-.wispers.sheet.character .wispers .effects .item .effect-duration,
-.wispers.sheet.character .wispers .effects .item .effect-controls {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.wispers.sheet.character .wispers .effects .item .effect-controls {
-  border: none;
-}
-.wispers.sheet.character .window-resizable-handle {
-  cursor: var(--cursor-grab);
 }
