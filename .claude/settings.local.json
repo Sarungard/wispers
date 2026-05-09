@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//F:/_Gamer1_adatai/Desktop/Wispers5e/**)",
+      "Bash(Get-ChildItem -Path . -Force)",
+      "Bash(Select-Object Name, PSIsContainer)"
+    ]
+  }
+}
