@@ -101,7 +101,10 @@
     "Character": {
       "templates": ["base", "skills"],
       "race": 0,
-      "class": 0,
+      "class": {
+        "name": "dingus",
+        "description": ""
+      },
       "background": {
         "socialBackground": 0,
         "culturalBackground": 0

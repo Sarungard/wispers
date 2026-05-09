@@ -30,6 +30,14 @@
       "Temporary": "Temporary Effects",
       "Passive": "Passive Effects",
       "Inactive": "Inactive Effects"
+    },
+    "Tabs": {
+      "Character": "Character",
+      "Inventory": "Inventory",
+      "Features": "Features",
+      "Spellbook": "Spellbook",
+      "Effects": "Effects",
+      "Biography": "Biography"
     }
   },
 

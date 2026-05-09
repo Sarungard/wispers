@@ -1,36 +1,6 @@
-<div class="">
+<div class="main" style="overflow: auto;">
     <div class="sidebar">
-      <div class="">
-        <img
-          class="character-image"
-          src="{{actor.img}}"
-          data-edit="img"
-          data-action="editImage"
-          title="{{actor.name}}" />
-        <div class="">
-          <div class=""></div>
-          <div class="">
-            <span class="">Reflex</span>
-            <br/>
-            <span class="{{proficiencyDie
-                system.skills.savingthrows.reflex.proficiency.value
-              }}">+3</span>
-          </div>
-          <div class=""><span class="">Toughness</span>
-          <br/>
-          <span class="{{proficiencyDie
-                system.skills.savingthrows.toughness.proficiency.value
-              }}">+4</span></div>
-        </div>
-        <div class=""><span class="">Resolve</span>
-        <br/>
-        <span class="{{proficiencyDie
-              system.skills.savingthrows.resolve.proficiency.value
-            }}">+5</span>
-        </div>
-      </div>
-
-      <div class="">
+      <div class="sidebar-container">
         <h1 class="">Attributes</h1>
         <div>
           {{#each system.abilities as |ability|}}
@@ -50,67 +20,51 @@
       </div>
     </div>
     <div class="content">
-      <div class="menuBox">
-        <div class="menuBG"></div>
-        <div class="menuLbl"></div>
-        <nav class="tabs menuTabs" data-group="primary-tabs">
-            <div class="menuIcon" style="left: 135px;">
-                <a class="item" data-tab="tab1" data-group="primary-tabs">
+        <nav class="tabs" data-group="primary" data-tooltip-direction="UP" role="tablist">
+            <span class=""></span>
+                <a class="item" data-tab="character" data-tooltip="CONSTANTS.Tabs.Character" role="tab" aria-label="{{localize "CONSTANTS.Tabs.Character"}}" aria-selected="true">
                     <i class="fa-solid fa-book-open-cover"></i>
                 </a>
-            </div>
-            <div class="menuIcon" style="left: 180px;">
-                <a class="item" data-tab="tab2" data-group="primary-tabs">
+                <a class="item" data-tab="inventory" data-tooltip="CONSTANTS.Tabs.Inventory" role="tab" aria-label="{{localize "CONSTANTS.Tabs.Inventory"}}">
+                    <i class="fa-solid fa-box-open"></i>
+                </a>
+                <a class="item" data-tab="features" data-tooltip="CONSTANTS.Tabs.Features" role="tab" aria-label="{{localize "CONSTANTS.Tabs.Features"}}">
                     <i class="fa-solid fa-swords"></i>
                 </a>
-            </div>
-            <div class="menuIcon" style="left: 225px;">
-                <a class="item" data-tab="tab3" data-group="primary-tabs">
-                    <i class="fa-regular fa-ellipsis-vertical"></i>
+                <a class="item" data-tab="spellbook" data-tooltip="CONSTANTS.Tabs.Spellbook" role="tab" aria-label="{{localize "CONSTANTS.Tabs.Spellbook"}}">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </a>
-            </div>
-            <div class="menuIcon" style="left: 270px;">
-                <a class="item" data-tab="tab4" data-group="primary-tabs">
-                    <i class="fa-regular fa-stars"></i>
+                <a class="item" data-tab="effects" data-tooltip="CONSTANTS.Tabs.Effects" role="tab" aria-label="{{localize "CONSTANTS.Tabs.Effects"}}">
+                    <i class="fa-solid fa-person-rays"></i>
                 </a>
-            </div>
-            <div class="menuIcon" style="left: 315px;">
-                <a class="item" data-tab="tab5" data-group="primary-tabs">
-                    <i class="fa-solid fa-aperture"></i>
-                </a>
-            </div>
-            <div class="menuIcon" style="left: 360px;">
-                <a class="item" data-tab="tab6" data-group="primary-tabs">
+                <a class="item" data-tab="biography" data-tooltip="CONSTANTS.Tabs.Biography" role="tab" aria-label="{{localize "CONSTANTS.Tabs.Biography"}}">
                     <i class="fa-solid fa-book"></i>
                 </a>
-            </div>
         </nav>
-
-      </div>
 
       <div class="">
         <section class="">
-            <div class="tab" data-tab="tab1" data-group="primary-tabs">
+            <div class="tab" data-tab="character" data-group="primary">
                 {{> "systems/wispers/templates/partials/character/attributes.hbs"}}
             </div>
 
-            <div class="tab" data-tab="tab2" data-group="primary-tabs">
+            <div class="tab" data-tab="inventory" data-group="primary">
                 {{> "systems/wispers/templates/partials/character/inventory.hbs"}}
             </div>
 
-            <div class="tab" data-tab="tab3" data-group="primary-tabs">
+            <div class="tab" data-tab="features" data-group="primary">
                 {{> "systems/wispers/templates/partials/character/features.hbs"}}
             </div>
 
-            <div class="tab" data-tab="tab4" data-group="primary-tabs">
+            <div class="tab" data-tab="spellbook" data-group="primary">
                 {{> "systems/wispers/templates/partials/character/spellbook.hbs"}}
             </div>
 
-            <div class="tab" data-tab="tab5" data-group="primary-tabs">
+            <div class="tab" data-tab="effects" data-group="primary">
                 {{> "systems/wispers/templates/partials/character/effects.hbs"}}
             </div>
 
-            <div class="tab" data-tab="tab6" data-group="primary-tabs">
+            <div class="tab" data-tab="biography" data-group="primary">
                 {{> "systems/wispers/templates/partials/character/biography.hbs"}}
             </div>
         </section>
