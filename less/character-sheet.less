@@ -1,58 +1,193 @@
 // main: ./wispers.less
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Roboto:wght@400;700&display=swap");
+
+// Parchment palette
+@parchment-bg: #f4ebd0;
+@parchment-bg-soft: #faf2dc;
+@parchment-border: #b3946a;
+@parchment-border-strong: #8a6f4b;
+@ink: #3a2e1f;
+@ink-soft: #6a553a;
+@accent: #8b4513;
+@accent-soft: rgba(139, 69, 19, 0.15);
+
 .wispers.sheet.character {
-  margin: 1;
+  color: @ink;
+  font-family: "Roboto", sans-serif;
 
   .window-content {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
+    padding: 8px;
+    background: @parchment-bg;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.45), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.07), transparent 50%);
+    color: @ink;
   }
 
-  .sidebar {
-    width: 150px;
+  // Section headers used inside the sheet
+  h1, h2, h3, h4 {
+    font-family: "Cinzel", serif;
+    color: @ink;
+    border: none;
+  }
+  .section-title {
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+    color: @ink;
   }
 
-  .header {
-    height: 135px;
-  }
-
+  // Layout
   .main {
     display: flex;
     flex: 1;
+    gap: 8px;
+    overflow: hidden;
+    margin-top: 6px;
+    min-height: 0;
   }
-
+  .sidebar {
+    width: 160px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
   .content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .sheet-content {
+    flex: 1;
+    overflow: hidden;
+    padding: 6px 4px 8px;
+    min-height: 0;
   }
 
+  // Tab visibility — without this every tab renders at once.
+  // The active tab is the scroll container so each page scrolls independently.
+  .tab {
+    display: none;
+  }
+  .tab.active {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 6px;
+  }
+
+  // Section divider used by attributes.hbs (Character Details / Skills / Spell Schools)
+  .subMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 14px 0 8px;
+    gap: 10px;
+
+    .section-label {
+      font-family: "Cinzel", serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: @ink;
+      white-space: nowrap;
+    }
+    .menu-hr-container {
+      flex: 1;
+    }
+    .menu-hr {
+      border: none;
+      border-top: 1px solid @parchment-border;
+      margin: 0;
+    }
+  }
+
+  // Form controls — parchment-style inputs
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    background: @parchment-bg-soft;
+    border: 1px solid @parchment-border;
+    border-radius: 2px;
+    color: @ink;
+    font-family: inherit;
+    padding: 2px 6px;
+
+    &:focus {
+      outline: none;
+      border-color: @accent;
+      box-shadow: 0 0 0 1px @accent-soft;
+    }
+    &:disabled {
+      background: rgba(0, 0, 0, 0.04);
+      color: @ink-soft;
+      cursor: not-allowed;
+    }
+  }
+  textarea {
+    min-height: 60px;
+    resize: vertical;
+  }
+
+  .item-form {
+    font-family: "Roboto", sans-serif;
+  }
+  .sheet-body {
+    height: 100%;
+
+    .tab .editor {
+      height: 100%;
+    }
+  }
+  .tox .tox-editor-container { background: #fff; }
+  .tox .tox-edit-area { padding: 0 8px; }
+  .resource-label { font-weight: bold; }
+  .window-resizable-handle { cursor: var(--cursor-grab); }
   .logo {
     background-image: url(assets/img/wispersSymbol.png);
     background-repeat: no-repeat;
     background-size: contain;
   }
 
-  .item-form {
-    font-family: "Roboto", sans-serif;
-  }
-  .sheet-tabs {
-    flex: 0;
-  }
-  .sheet-body,
-  .sheet-body .tab,
-  .sheet-body .tab .editor {
+  // Biography tab
+  .biography-tab {
+    display: flex;
+    gap: 10px;
     height: 100%;
   }
-  .tox .tox-editor-container {
-    background: #fff;
+  .characteristics {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+
+    label {
+      font-family: "Cinzel", serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: @ink-soft;
+      margin-bottom: 2px;
+    }
+    textarea {
+      min-height: 44px;
+    }
   }
-  .tox .tox-edit-area {
-    padding: 0 8px;
-  }
-  .resource-label {
-    font-weight: bold;
-  }
-  .window-resizable-handle {
-    cursor: var(--cursor-grab);
+  .biography-editor {
+    flex: 1;
+    border: 1px solid @parchment-border;
+    border-radius: 2px;
+    background: @parchment-bg-soft;
+    overflow: hidden;
   }
 }

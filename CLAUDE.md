@@ -10,11 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **LESS compilation**: `less/wispers.less` is the entry point and `@import`s all partials. It compiles to `wispers.css` at the repo root. There is no npm/build tool — compile with an IDE LESS plugin or the LESS CLI.
 
-**Deploying to FoundryVTT** (the VSCode default build task in `.vscode/tasks.json`):
-```powershell
-cd F:\_Gamer1_adatai\Desktop\Wispers5e\wispers; cp -Force -r . C:\Users\zolta\AppData\Local\FoundryVTT\Data\systems
-```
-After deploying, reload FoundryVTT in the browser (or restart the world) to pick up changes.
+**Deploying to FoundryVTT**: see `.vscode/tasks.json` (default build task) for the exact command — a recursive copy into the local FoundryVTT systems folder. Reload FoundryVTT in the browser after deploying.
 
 There are no automated tests and no linter configured.
 
@@ -73,16 +69,6 @@ The returned strings are CSS class names (matching dice background images in `as
 
 User-facing strings flow through `game.i18n.localize()` (or `{{localize "KEY"}}` in templates). Keys live in `lang/en.json` (primary) and `lang/hu.json` (Hungarian). Templates use namespaces like `CONSTANTS.Tabs.*` and `CONSTANTS.Attributes.*.long`. Add new keys to **both** files.
 
-## Known WIP / scaffolding
+## Open scaffolding & inconsistencies
 
-These are intentional placeholders, not bugs to fix opportunistically — flag them when relevant but don't silently rewrite:
-
-- **Hotbar item macros silently fail.** `createItemMacro` writes the command `game.wisperssystem.rollItemMacro(uuid)`, but `game.wisperssystem` is never assigned (the `rollItemMacro` function in `wispers.js` is module-local). To fix: expose it on the `init` or `ready` hook (e.g., `game.wisperssystem = { rollItemMacro };`).
-- **No custom Item document class.** `CONFIG.Item.documentClass = WispersItem;` and the corresponding sheet registration are commented out in `wispers.js`. Items use the core Foundry classes for now.
-- **`wispersActor.prepareDerivedData()` is a stub.** It calls `_preparePlayerCharacterData` → `_setCharacterDetails`, which has only a comment. All derived stats (modifiers, computed saves, etc.) need to be implemented here.
-- **Saving throw bonuses are hardcoded** as `+3`/`+4`/`+5` strings in `templates/sheets/character/header.hbs`. They aren't computed from data yet.
-- **Empty stub modules**: `modules/dice.js`, `modules/dialog.js`, `modules/listeners.js`, `modules/utils.js`, `modules/apps/`, `modules/combat/`, `packs/`. Their names indicate intended responsibility.
-
-## Known inconsistency
-
-`system.json` references `systems/wispers-system/assets/...` for `media` and `background`, but the system `id` is `wispers` and all template files reference `systems/wispers/...`. The canonical install folder is `systems/wispers/` — the `wispers-system` paths in `system.json` are stale and should be updated to `wispers` when next touched.
+See `TODO.md` for the current list of intentional placeholders and known schema/path inconsistencies — don't silently rewrite anything listed there without checking.

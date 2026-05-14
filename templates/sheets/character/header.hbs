@@ -1,52 +1,38 @@
 <div class="header">
+    <div class="character-image-container">
+        <img
+            class="character-image"
+            src="{{actor.img}}"
+            data-edit="img"
+            data-action="editImage"
+            title="{{actor.name}}" />
+    </div>
+    <div class="character-information">
+        <div class="character-namebar">
+            <input
+                class="character-name"
+                type="text"
+                name="name"
+                value="{{actor.name}}" />
+            <div class="character-class">
+                {{system.class.name}}
+                <span class="character-level">{{localize "SYSTEM.LevelShort"}} {{system.level.value}}</span>
+            </div>
+        </div>
 
-  <div class="character-image-container">
-    <img
-      class="character-image"
-      src="{{actor.img}}"
-      data-edit="img"
-      data-action="editImage"
-      title="{{actor.name}}"
-    />
-  </div>
-  <div class="character-information">
-    <input
-      class=""
-      type="text"
-      name="name"
-      value="{{actor.name}}"
-      style="width: 79%;"
-    />
-    <div
-      class=""
-      style="float: right; width: 19%; margin-left: 2px"
-    >{{system.class.name}} level {{system.level.value}}</div>
-    <div class="">
-      <h4 class="">Attributes</h4>
-      <div class="">
-        <span class="">Reflex</span>
-        <br />
-        <span
-          class="die
-            {{proficiencyDie
-              system.skills.savingthrows.reflex.proficiency.value
-            }}">+3</span>
-      </div>
-      <div class=""><span class="">Toughness</span>
-        <br />
-        <span
-          class="die
-            {{proficiencyDie
-              system.skills.savingthrows.toughness.proficiency.value
-            }}">+4</span></div>
+        <div class="saves-row">
+            <div class="save">
+                <span class="save-label">Reflex</span>
+                <span class="save-die die {{proficiencyDie system.skills.savingthrows.reflex.proficiency.value}}">+3</span>
+            </div>
+            <div class="save">
+                <span class="save-label">Toughness</span>
+                <span class="save-die die {{proficiencyDie system.skills.savingthrows.toughness.proficiency.value}}">+4</span>
+            </div>
+            <div class="save">
+                <span class="save-label">Resolve</span>
+                <span class="save-die die {{proficiencyDie system.skills.savingthrows.resolve.proficiency.value}}">+5</span>
+            </div>
+        </div>
     </div>
-    <div class=""><span class="">Resolve</span>
-      <br />
-      <span
-        class="die
-          {{proficiencyDie
-            system.skills.savingthrows.resolve.proficiency.value
-          }}">+5</span>
-    </div>
-  </div>
 </div>

@@ -2,68 +2,106 @@
 
     <div class="form-group subMain">
         <div class="menu-hr-container"><hr class="menu-hr"></div>
-        Character Details
+        <span class="section-label">Character Details</span>
         <div class="menu-hr-container"><hr class="menu-hr"></div>
     </div>
 
-    <div class="character-input-half-width">
-        <div class="character-input-label">Race</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+    <div class="character-fields">
+        <div class="character-input-half-width">
+            <div class="character-input-label">Race</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Background</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Homeregion</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Alignment</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Title</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Nickname</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Age</div>
+            <div class="character-input-box"><input class="character-input-half" type="number" name="system.details.age" value="{{system.details.age}}"></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Family</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Height</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.height" value="{{system.details.height}}"></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Weight</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.weight" value="{{system.details.weight}}"></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Eye Color</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
+        <div class="character-input-half-width">
+            <div class="character-input-label">Hair Color</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+        </div>
     </div>
 
-    <div class="character-input-half-width">
-        <div class="character-input-label">Background</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Skills</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
     </div>
 
-    <div class="character-input-half-width">
-        <div class="character-input-label">Homeregion</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+    <div class="skills-section">
+        {{#each system.skills.skills as |skill key|}}
+            <div class="skill-row">
+                <span class="skill-die {{proficiencyDie skill.proficiency.value}}"></span>
+                <span class="skill-name">{{skill.label}}</span>
+                <span class="skill-attr">{{skill.linkedAttribute}}</span>
+                <input
+                    type="number"
+                    class="skill-input"
+                    name="system.skills.skills.{{@key}}.proficiency.value"
+                    value="{{skill.proficiency.value}}"
+                    min="0"
+                    max="5"
+                    data-dtype="Number" />
+            </div>
+        {{/each}}
     </div>
 
-    <div class="character-input-half-width">
-        <div class="character-input-label">Alignment</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Spell Schools</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
     </div>
 
-    <div class="character-input-half-width">
-        <div class="character-input-label">Title</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
-    </div>
-
-    <div class="character-input-half-width">
-        <div class="character-input-label">Nickname</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
-    </div>
-
-    <div class="character-input-half-width">
-        <div class="character-input-label">Age</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
-    </div>
-
-    <div class="character-input-half-width">
-        <div class="character-input-label">Family</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
-    </div>
-
-    <div class="character-input-half-width">
-        <div class="character-input-label">Height</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
-    </div>
-
-    <div class="character-input-half-width">
-        <div class="character-input-label">Weight</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
-    </div>
-
-    <div class="character-input-half-width">
-        <div class="character-input-label">Eye Color</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
-    </div>
-
-    <div class="character-input-half-width">
-        <div class="character-input-label">Hair Color</div>
-        <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+    <div class="skills-section">
+        {{#each system.skills.spellSchools as |school key|}}
+            <div class="skill-row">
+                <span class="skill-die {{proficiencyDie school.proficiency.value}}"></span>
+                <span class="skill-name">{{school.label}}</span>
+                <input
+                    type="number"
+                    class="skill-input"
+                    name="system.skills.spellSchools.{{@key}}.proficiency.value"
+                    value="{{school.proficiency.value}}"
+                    min="0"
+                    max="5"
+                    data-dtype="Number" />
+            </div>
+        {{/each}}
     </div>
 
 </div>

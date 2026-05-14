@@ -45,42 +45,64 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     /** @override */
     async _prepareContext(options) {
 
-        // #################################################################################################
-        // #################################################################################################
-        // ##                                                                                             ##
-        // ## Creates Basic Datamodel, which is used to fill the HTML together with Handelbars with Data. ##
-        // ##                                                                                             ##
-        // #################################################################################################
-        // #################################################################################################
-        
         const baseData = await super._prepareContext();
-        
-        let context = {
-    
-            // Set General Values
-            owner: baseData.document.isOwner,
+        const actor = baseData.document;
+        const items = Array.from(actor.items);
+
+        const inventory = {
+            weapons: items.filter(i => i.type === "weapon"),
+            armor: items.filter(i => i.type === "armor"),
+            shields: items.filter(i => i.type === "shield"),
+            consumables: items.filter(i => i.type === "consumable"),
+            loot: items.filter(i => i.type === "loot")
+        };
+
+        const spellList = items.filter(i => i.type === "spell");
+        const spells = {};
+        for (let lvl = 1; lvl <= 5; lvl++) {
+            spells[lvl] = spellList.filter(s => (s.system?.level?.value ?? 1) === lvl);
+        }
+
+        const features = [];
+
+        const allEffects = Array.from(actor.effects);
+        const effects = [
+            { label: "CONSTANTS.Effect.Temporary", type: "temporary", effects: allEffects.filter(e => !e.disabled && e.duration?.seconds) },
+            { label: "CONSTANTS.Effect.Passive", type: "passive", effects: allEffects.filter(e => !e.disabled && !e.duration?.seconds) },
+            { label: "CONSTANTS.Effect.Inactive", type: "inactive", effects: allEffects.filter(e => e.disabled) }
+        ];
+
+        const enrich = foundry.applications.ux.TextEditor?.implementation?.enrichHTML
+            ?? globalThis.TextEditor?.enrichHTML
+            ?? (s => s);
+        const biographyHTML = await enrich(actor.system?.details?.biography ?? "", {
+            secrets: actor.isOwner,
+            relativeTo: actor
+        });
+
+        const context = {
+            owner: actor.isOwner,
             editable: baseData.editable,
-            actor: baseData.document,
-            system: baseData.document.system,
-            items: baseData.document.items,
+            actor,
+            system: actor.system,
+            items: actor.items,
             config: CONFIG.WISPERS,
             isGM: baseData.user.isGM,
-            effects: baseData.document.effects
+            inventory,
+            spells,
+            features,
+            effects,
+            biographyHTML
         };
-        
-        this.sheetContext = context;
 
+        this.sheetContext = context;
         return context;
     }
-    
+
     /** @override */
     _onRender(context, options) {
-
-        const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".content", initial: "tab1"});
+        const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".sheet-content", initial: "character"});
         tabs.bind(this.element);
-
-        const tabs2 = new foundry.applications.ux.Tabs({navSelector: ".tabs2", contentSelector: ".content2", initial: "tab2-1"});
-        tabs2.bind(this.element);
     }
 
 

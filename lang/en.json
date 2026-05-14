@@ -38,6 +38,13 @@
       "Spellbook": "Spellbook",
       "Effects": "Effects",
       "Biography": "Biography"
+    },
+    "Character": {
+      "Appearance": "Appearance",
+      "Traits": "Personality Traits",
+      "Ideals": "Ideals",
+      "Bonds": "Bonds",
+      "Flaws": "Flaws"
     }
   },
 

@@ -1,15 +1,64 @@
+// main: ./wispers.less
 
-//Div Box holding the body
+.wispers.sheet.character {
+  .sidebar-container {
+    min-height: 500px;
+    max-height: 100%;
+    padding: 8px 6px 10px;
+    border-image: url(assets/img/Banner.png);
+    border-image-slice: 21 18 52 fill;
+    border-left-width: 18px;
+    border-right-width: 18px;
+    border-top-width: 21px;
+    border-bottom-width: 52px;
+    border-style: solid;
+    margin-top: 3px;
+  }
 
-.sidebar-container {
-  min-height: 500px;
-  max-height: 90%;
-  border-image: url(assets/img/banner.png);
-  border-image-slice: 21 18 52 fill;
-  border-left-width: 18px;
-  border-right-width: 18px;
-  border-top-width: 21px;
-  border-bottom-width: 52px;
-  border-style: solid;
-  margin-top: 3px;
+  .ability-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ability-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 0;
+  }
+
+  .ability-label {
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #3a2e1f;
+    text-align: center;
+  }
+
+  .ability-die {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 48px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    border: none;
+    color: #191813;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 8px rgba(139, 69, 19, 0.6);
+      border-radius: 50%;
+    }
+  }
 }
