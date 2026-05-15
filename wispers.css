@@ -525,6 +525,40 @@
   min-height: 70px;
   width: 100%;
 }
+.wispers.sheet.character .skills-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 4px 2px 2px;
+}
+.wispers.sheet.character .skill-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  height: 22px;
+  width: auto;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #3a2e1f;
+  background: rgba(179, 148, 106, 0.18);
+  border: 1px solid #b3946a;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 1;
+}
+.wispers.sheet.character .skill-tool-btn:hover:not(:disabled) {
+  background: rgba(179, 148, 106, 0.35);
+}
+.wispers.sheet.character .skill-tool-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.wispers.sheet.character .skill-tool-btn i {
+  font-size: 11px;
+}
 .wispers.sheet.character .skills-section {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -537,6 +571,18 @@
   gap: 8px;
   padding: 4px 6px;
   border-bottom: 1px dotted #b3946a;
+}
+.wispers.sheet.character .skill-row.untrained {
+  opacity: 0.5;
+}
+.wispers.sheet.character .skill-input-placeholder {
+  display: inline-block;
+  width: 36px;
+  height: 22px;
+  text-align: center;
+  line-height: 22px;
+  color: #6a553a;
+  font-size: 13px;
 }
 .wispers.sheet.character .skill-die {
   width: 26px;

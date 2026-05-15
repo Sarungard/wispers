@@ -78,25 +78,24 @@
 
     <div class="skills-section">
         {{#each skillRows as |row|}}
-            {{#if (or row.trained ../showAllSkills)}}
-                <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
-                    <span class="skill-die {{proficiencyDie row.value}}"></span>
-                    <span class="skill-name">{{row.label}}</span>
-                    <span class="skill-attr">{{row.linkedAttribute}}</span>
-                    {{#if row.trained}}
-                        <input
-                            type="number"
-                            class="skill-input"
-                            name="system.skills.skills.{{row.key}}.proficiency.value"
-                            value="{{row.value}}"
-                            min="0"
-                            max="5"
-                            data-dtype="Number" />
-                    {{else}}
-                        <span class="skill-input skill-input-placeholder">—</span>
-                    {{/if}}
-                </div>
-            {{/if}}
+            <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
+                <span class="skill-die {{proficiencyDie row.value}}"></span>
+                <span class="skill-name">{{row.label}}</span>
+                <span class="skill-attr">{{row.linkedAttribute}}</span>
+                {{#if row.trained}}
+                    <input
+                        type="number"
+                        class="skill-input"
+                        name="system.skills.skills.{{row.key}}.proficiency.value"
+                        value="{{row.value}}"
+                        min="0"
+                        max="5"
+                        step="1"
+                        data-dtype="Number" />
+                {{else}}
+                    <span class="skill-input skill-input-placeholder">—</span>
+                {{/if}}
+            </div>
         {{/each}}
     </div>
 
@@ -121,24 +120,23 @@
 
     <div class="skills-section">
         {{#each schoolRows as |row|}}
-            {{#if (or row.trained ../showAllSchools)}}
-                <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
-                    <span class="skill-die {{proficiencyDie row.value}}"></span>
-                    <span class="skill-name">{{row.label}}</span>
-                    {{#if row.trained}}
-                        <input
-                            type="number"
-                            class="skill-input"
-                            name="system.skills.spellSchools.{{row.key}}.proficiency.value"
-                            value="{{row.value}}"
-                            min="0"
-                            max="5"
-                            data-dtype="Number" />
-                    {{else}}
-                        <span class="skill-input skill-input-placeholder">—</span>
-                    {{/if}}
-                </div>
-            {{/if}}
+            <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
+                <span class="skill-die {{proficiencyDie row.value}}"></span>
+                <span class="skill-name">{{row.label}}</span>
+                {{#if row.trained}}
+                    <input
+                        type="number"
+                        class="skill-input"
+                        name="system.skills.spellSchools.{{row.key}}.proficiency.value"
+                        value="{{row.value}}"
+                        min="0"
+                        max="5"
+                        step="1"
+                        data-dtype="Number" />
+                {{else}}
+                    <span class="skill-input skill-input-placeholder">—</span>
+                {{/if}}
+            </div>
         {{/each}}
     </div>
 

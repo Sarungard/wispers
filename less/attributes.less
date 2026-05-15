@@ -43,6 +43,43 @@
     width: 100%;
   }
 
+  // Skills + spell schools toolbar (toggle + add buttons)
+  .skills-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin: 4px 2px 2px;
+  }
+  .skill-tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    height: 22px;
+    width: auto;
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #3a2e1f;
+    background: rgba(179, 148, 106, 0.18);
+    border: 1px solid #b3946a;
+    border-radius: 3px;
+    cursor: pointer;
+    line-height: 1;
+
+    &:hover:not(:disabled) {
+      background: rgba(179, 148, 106, 0.35);
+    }
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    i {
+      font-size: 11px;
+    }
+  }
+
   // Skills + spell schools grid (Character tab)
   .skills-section {
     display: grid;
@@ -56,6 +93,19 @@
     gap: 8px;
     padding: 4px 6px;
     border-bottom: 1px dotted #b3946a;
+
+    &.untrained {
+      opacity: 0.5;
+    }
+  }
+  .skill-input-placeholder {
+    display: inline-block;
+    width: 36px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px;
+    color: #6a553a;
+    font-size: 13px;
   }
   .skill-die {
     width: 26px;

@@ -86,23 +86,25 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         });
 
         const rawSkills = actor.system?.skills?.skills ?? {};
-        const skillRows = Object.entries(rawSkills).map(([key, s]) => ({
+        const allSkillRows = Object.entries(rawSkills).map(([key, s]) => ({
             key,
             label: s.label,
             linkedAttribute: s.linkedAttribute,
             value: s.proficiency?.value ?? 0,
             trained: (s.proficiency?.value ?? 0) >= 1
         }));
-        const untrainedSkillCount = skillRows.filter(r => !r.trained).length;
+        const untrainedSkillCount = allSkillRows.filter(r => !r.trained).length;
+        const skillRows = this._showAllSkills ? allSkillRows : allSkillRows.filter(r => r.trained);
 
         const rawSchools = actor.system?.skills?.spellSchools ?? {};
-        const schoolRows = Object.entries(rawSchools).map(([key, s]) => ({
+        const allSchoolRows = Object.entries(rawSchools).map(([key, s]) => ({
             key,
             label: s.label,
             value: s.proficiency?.value ?? 0,
             trained: (s.proficiency?.value ?? 0) >= 1
         }));
-        const untrainedSchoolCount = schoolRows.filter(r => !r.trained).length;
+        const untrainedSchoolCount = allSchoolRows.filter(r => !r.trained).length;
+        const schoolRows = this._showAllSchools ? allSchoolRows : allSchoolRows.filter(r => r.trained);
 
         const context = {
             owner: actor.isOwner,
@@ -133,6 +135,30 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     _onRender(context, options) {
         const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".sheet-content", initial: "character"});
         tabs.bind(this.element);
+    }
+
+    /** @override */
+    _prepareSubmitData(event, form, formData, updateData) {
+        const submitData = super._prepareSubmitData(event, form, formData, updateData);
+        const clamp = v => Math.max(0, Math.min(5, Math.trunc(Number(v) || 0)));
+        const flatKeyRe = /^system\.skills\.(skills|spellSchools)\.[^.]+\.proficiency\.value$/;
+
+        // Flat (dot-keyed) shape
+        for (const k of Object.keys(submitData)) {
+            if (flatKeyRe.test(k)) submitData[k] = clamp(submitData[k]);
+        }
+
+        // Expanded (nested) shape
+        for (const group of ["skills", "spellSchools"]) {
+            const set = submitData?.system?.skills?.[group];
+            if (!set || typeof set !== "object") continue;
+            for (const k of Object.keys(set)) {
+                const p = set[k]?.proficiency;
+                if (p && typeof p === "object" && "value" in p) p.value = clamp(p.value);
+            }
+        }
+
+        return submitData;
     }
 
     static _onToggleAllSkills(event, target) {
