@@ -4,13 +4,18 @@ const sheets = foundry.applications.sheets;
 export default class wispersCharacterSheet extends api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
 
     sheetContext = {};
+    _showAllSkills = false;
+    _showAllSchools = false;
 
     static DEFAULT_OPTIONS = {
 
         tag: "form",
         classes: ["wispers", "sheet", "character"],
         actions: {
-            
+            toggleAllSkills: wispersCharacterSheet._onToggleAllSkills,
+            toggleAllSchools: wispersCharacterSheet._onToggleAllSchools,
+            addSkill: wispersCharacterSheet._onAddSkill,
+            addSchool: wispersCharacterSheet._onAddSchool
         },
         form: {
             submitOnChange: true,
@@ -29,10 +34,10 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     }
 
     get title() {
-        
+
         return this.actor.name;
     }
-            
+
     /** @override */
     _configureRenderOptions(options) {
 
@@ -41,7 +46,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
 
         super._configureRenderOptions(options);
     }
-    
+
     /** @override */
     async _prepareContext(options) {
 
@@ -80,6 +85,25 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             relativeTo: actor
         });
 
+        const rawSkills = actor.system?.skills?.skills ?? {};
+        const skillRows = Object.entries(rawSkills).map(([key, s]) => ({
+            key,
+            label: s.label,
+            linkedAttribute: s.linkedAttribute,
+            value: s.proficiency?.value ?? 0,
+            trained: (s.proficiency?.value ?? 0) >= 1
+        }));
+        const untrainedSkillCount = skillRows.filter(r => !r.trained).length;
+
+        const rawSchools = actor.system?.skills?.spellSchools ?? {};
+        const schoolRows = Object.entries(rawSchools).map(([key, s]) => ({
+            key,
+            label: s.label,
+            value: s.proficiency?.value ?? 0,
+            trained: (s.proficiency?.value ?? 0) >= 1
+        }));
+        const untrainedSchoolCount = schoolRows.filter(r => !r.trained).length;
+
         const context = {
             owner: actor.isOwner,
             editable: baseData.editable,
@@ -92,7 +116,13 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             spells,
             features,
             effects,
-            biographyHTML
+            biographyHTML,
+            skillRows,
+            schoolRows,
+            showAllSkills: this._showAllSkills,
+            showAllSchools: this._showAllSchools,
+            untrainedSkillCount,
+            untrainedSchoolCount
         };
 
         this.sheetContext = context;
@@ -103,6 +133,53 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     _onRender(context, options) {
         const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".sheet-content", initial: "character"});
         tabs.bind(this.element);
+    }
+
+    static _onToggleAllSkills(event, target) {
+        this._showAllSkills = !this._showAllSkills;
+        this.render();
+    }
+
+    static _onToggleAllSchools(event, target) {
+        this._showAllSchools = !this._showAllSchools;
+        this.render();
+    }
+
+    static async _onAddSkill(event, target) {
+        await wispersCharacterSheet._promoteToNovice(this, "skills", "Learn a Skill", "All skills are already trained.");
+    }
+
+    static async _onAddSchool(event, target) {
+        await wispersCharacterSheet._promoteToNovice(this, "spellSchools", "Learn a Spell School", "All spell schools are already trained.");
+    }
+
+    static async _promoteToNovice(app, group, title, allTrainedMessage) {
+        const data = app.actor.system?.skills?.[group] ?? {};
+        const untrained = Object.entries(data).filter(([, v]) => (v?.proficiency?.value ?? 0) < 1);
+        if (!untrained.length) {
+            ui.notifications.info(allTrainedMessage);
+            return;
+        }
+        const options = untrained
+            .map(([key, s]) => `<option value="${key}">${foundry.utils.escapeHTML?.(s.label) ?? s.label}</option>`)
+            .join("");
+        const content = `
+            <div class="form-group">
+                <label>Choose one to learn at Novice (1):</label>
+                <select name="key" autofocus>${options}</select>
+            </div>`;
+        const DialogV2 = foundry.applications.api.DialogV2;
+        const result = await DialogV2.prompt({
+            window: { title },
+            content,
+            ok: {
+                label: "Learn (Novice)",
+                callback: (event, button) => button.form.elements.key.value
+            },
+            rejectClose: false
+        });
+        if (!result) return;
+        await app.actor.update({ [`system.skills.${group}.${result}.proficiency.value`]: 1 });
     }
 
 

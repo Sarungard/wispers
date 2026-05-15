@@ -2,4 +2,4 @@
 style/pf2e.css
 CLAUDE.md
 TODO.md
-.claude/*.*
+.claude/settings.local.json
