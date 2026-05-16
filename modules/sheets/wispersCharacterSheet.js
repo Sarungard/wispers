@@ -106,6 +106,15 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const untrainedSchoolCount = allSchoolRows.filter(r => !r.trained).length;
         const schoolRows = this._showAllSchools ? allSchoolRows : allSchoolRows.filter(r => r.trained);
 
+        const rawSaves = actor.system?.skills?.savingthrows ?? {};
+        const saveRows = Object.entries(rawSaves).map(([key, s]) => ({
+            key,
+            label: s.label,
+            governingAttribute: s.governingAttribute,
+            proficiency: s.proficiency?.value ?? 0,
+            bonus: actor.system?.abilities?.[s.governingAttribute]?.value ?? 0
+        }));
+
         const context = {
             owner: actor.isOwner,
             editable: baseData.editable,
@@ -121,6 +130,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             biographyHTML,
             skillRows,
             schoolRows,
+            saveRows,
             showAllSkills: this._showAllSkills,
             showAllSchools: this._showAllSchools,
             untrainedSkillCount,
@@ -135,13 +145,25 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     _onRender(context, options) {
         const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".sheet-content", initial: "character"});
         tabs.bind(this.element);
+
+        this.element.querySelectorAll(".skill-pips").forEach(container => {
+            container.querySelectorAll(".pip").forEach(pip => {
+                pip.addEventListener("click", ev => {
+                    const field = container.dataset.field;
+                    const current = parseInt(container.dataset.value, 10) || 0;
+                    const level = parseInt(pip.dataset.level, 10);
+                    const newValue = (current === level) ? level - 1 : level;
+                    this.actor.update({ [field]: newValue });
+                });
+            });
+        });
     }
 
     /** @override */
     _prepareSubmitData(event, form, formData, updateData) {
         const submitData = super._prepareSubmitData(event, form, formData, updateData);
         const clamp = v => Math.max(0, Math.min(5, Math.trunc(Number(v) || 0)));
-        const flatKeyRe = /^system\.skills\.(skills|spellSchools)\.[^.]+\.proficiency\.value$/;
+        const flatKeyRe = /^system\.skills\.(skills|spellSchools|savingthrows)\.[^.]+\.proficiency\.value$/;
 
         // Flat (dot-keyed) shape
         for (const k of Object.keys(submitData)) {
@@ -149,7 +171,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         }
 
         // Expanded (nested) shape
-        for (const group of ["skills", "spellSchools"]) {
+        for (const group of ["skills", "spellSchools", "savingthrows"]) {
             const set = submitData?.system?.skills?.[group];
             if (!set || typeof set !== "object") continue;
             for (const k of Object.keys(set)) {

@@ -7,7 +7,11 @@
       "PowerShell(git *)",
       "Edit(F:/_Gamer1_adatai/Desktop/Wispers5e/wispers/CLAUDE.md)",
       "Bash(npx --yes lessc less/wispers.less wispers.css --relative-urls)",
-      "PowerShell(npm install *)"
+      "PowerShell(npm install *)",
+      "Bash(command -v lessc)",
+      "Bash(command -v npx)",
+      "Bash(npx --no-install lessc --version)",
+      "Bash(lessc *)"
     ]
   },
   "hooks": {

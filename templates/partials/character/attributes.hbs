@@ -9,27 +9,27 @@
     <div class="character-fields">
         <div class="character-input-half-width">
             <div class="character-input-label">Race</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Background</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Homeregion</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Alignment</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Title</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Nickname</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Age</div>
@@ -37,7 +37,7 @@
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Family</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Height</div>
@@ -49,11 +49,11 @@
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Eye Color</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
         <div class="character-input-half-width">
             <div class="character-input-label">Hair Color</div>
-            <div class="character-input-box"><input class="character-input-half" type="text" disabled></div>
+            <div class="character-input-box"><input class="character-input-half" type="text"></div>
         </div>
     </div>
 
@@ -82,19 +82,11 @@
                 <span class="skill-die {{proficiencyDie row.value}}"></span>
                 <span class="skill-name">{{row.label}}</span>
                 <span class="skill-attr">{{row.linkedAttribute}}</span>
-                {{#if row.trained}}
-                    <input
-                        type="number"
-                        class="skill-input"
-                        name="system.skills.skills.{{row.key}}.proficiency.value"
-                        value="{{row.value}}"
-                        min="0"
-                        max="5"
-                        step="1"
-                        data-dtype="Number" />
-                {{else}}
-                    <span class="skill-input skill-input-placeholder">—</span>
-                {{/if}}
+                <div class="skill-pips" data-field="system.skills.skills.{{row.key}}.proficiency.value" data-value="{{row.value}}">
+                    {{#each (proficiencyPips row.value) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
             </div>
         {{/each}}
     </div>
@@ -123,21 +115,34 @@
             <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
                 <span class="skill-die {{proficiencyDie row.value}}"></span>
                 <span class="skill-name">{{row.label}}</span>
-                {{#if row.trained}}
-                    <input
-                        type="number"
-                        class="skill-input"
-                        name="system.skills.spellSchools.{{row.key}}.proficiency.value"
-                        value="{{row.value}}"
-                        min="0"
-                        max="5"
-                        step="1"
-                        data-dtype="Number" />
-                {{else}}
-                    <span class="skill-input skill-input-placeholder">—</span>
-                {{/if}}
+                <div class="skill-pips" data-field="system.skills.spellSchools.{{row.key}}.proficiency.value" data-value="{{row.value}}">
+                    {{#each (proficiencyPips row.value) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
             </div>
         {{/each}}
     </div>
 
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Saving Throws</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="saves-section">
+        {{#each saveRows as |row|}}
+            <div class="skill-row">
+                <span class="skill-die {{proficiencyDie row.proficiency}}"></span>
+                <span class="skill-name">{{row.label}}</span>
+                <span class="skill-attr">{{row.governingAttribute}}</span>
+                <span class="save-bonus">+{{row.bonus}}</span>
+                <div class="skill-pips" data-field="system.skills.savingthrows.{{row.key}}.proficiency.value" data-value="{{row.proficiency}}">
+                    {{#each (proficiencyPips row.proficiency) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
 </div>

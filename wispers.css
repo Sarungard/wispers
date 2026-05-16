@@ -575,15 +575,6 @@
 .wispers.sheet.character .skill-row.untrained {
   opacity: 0.5;
 }
-.wispers.sheet.character .skill-input-placeholder {
-  display: inline-block;
-  width: 36px;
-  height: 22px;
-  text-align: center;
-  line-height: 22px;
-  color: #6a553a;
-  font-size: 13px;
-}
 .wispers.sheet.character .skill-die {
   width: 26px;
   height: 26px;
@@ -607,11 +598,43 @@
   min-width: 28px;
   text-align: right;
 }
-.wispers.sheet.character .skill-input {
-  width: 36px;
-  height: 22px;
-  text-align: center;
-  padding: 0;
+.wispers.sheet.character .skill-pips {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.wispers.sheet.character .pip {
+  width: 14px;
+  height: 14px;
+  background-image: url(assets/img/symbol-outline.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.18;
+  cursor: pointer;
+  transition: opacity 0.1s;
+  display: inline-block;
+}
+.wispers.sheet.character .pip.active {
+  opacity: 1;
+  background-image: url(assets/img/symbol-filled.png);
+}
+.wispers.sheet.character .pip:hover {
+  opacity: 0.6;
+}
+.wispers.sheet.character .saves-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  margin-top: 2px;
+}
+.wispers.sheet.character .save-bonus {
+  font-size: 12px;
+  font-weight: 700;
+  color: #3a2e1f;
+  min-width: 28px;
+  text-align: right;
 }
 .wispers.sheet.character .header {
   display: flex;
