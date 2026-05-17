@@ -23,6 +23,9 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         },
         position: {
             width: 650
+        },
+        window: {
+            resizable: true
         }
     }
 

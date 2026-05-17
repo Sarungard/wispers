@@ -736,3 +736,15 @@
   font-size: 14px;
   color: #191813;
 }
+.wispers.sheet.character .wound-threshold.light {
+  background-image: url(assets/img/rough-wound.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.wispers.sheet.character .wound-threshold.heavy {
+  background-image: url(assets/img/bleeding-wound.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
