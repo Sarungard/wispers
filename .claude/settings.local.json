@@ -6,6 +6,7 @@
       "Bash(git *)",
       "PowerShell(git *)",
       "Edit(F:/_Gamer1_adatai/Desktop/Wispers5e/wispers/CLAUDE.md)",
+      "Edit(F:/_Gamer1_adatai/Desktop/Wispers5e/wispers/TODO.md)",
       "Bash(npx --yes lessc less/wispers.less wispers.css --relative-urls)",
       "PowerShell(npm install *)",
       "Bash(command -v lessc)",
@@ -20,9 +21,9 @@
         "hooks": [
           {
             "type": "agent",
-            "prompt": "You are maintaining CLAUDE.md for the Wispers FoundryVTT system repository at F:\\_Gamer1_adatai\\Desktop\\Wispers5e\\wispers.\n\n1. Run `git diff HEAD` and `git status` to see what changed this session.\n2. Read CLAUDE.md.\n3. If the session introduced or resolved anything that belongs in CLAUDE.md — new architectural patterns, new WIP items, resolved WIP items, renamed files, new modules that are no longer stubs, important gotchas — edit CLAUDE.md to reflect it.\n\nRules:\n- Only update CLAUDE.md if there is something a future Claude instance would genuinely need to know that is not already there.\n- Do not document individual file edits or routine work.\n- Do not add generic advice or obvious things.\n- If nothing meaningful changed for CLAUDE.md purposes, make no edits.",
-            "timeout": 90,
-            "statusMessage": "Updating CLAUDE.md..."
+            "prompt": "You are maintaining the Markdown documentation for the Wispers FoundryVTT system repository at F:\\_Gamer1_adatai\\Desktop\\Wispers5e\\wispers.\n\nIn-scope files (update only these, only when warranted):\n- `CLAUDE.md` — architectural/contextual guide for future Claude instances. Stable patterns, gotchas, conventions.\n- `TODO.md` — known WIP, intentional placeholders, schema/path inconsistencies. Mutable project state.\n- `README.md` — user-facing project description. Only touch if the session changed something a human reader of the repo would care about (e.g. install/deploy steps, top-line feature summary).\n\nProcess:\n1. Run `git diff HEAD` and `git status` to see what changed this session.\n2. Read each in-scope file before deciding whether it needs an edit.\n3. For each file, ask: did this session introduce, resolve, rename, or invalidate something that belongs there?\n   - CLAUDE.md: new architectural patterns, new gotchas, resolved/changed patterns, renamed files, modules that stopped being stubs.\n   - TODO.md: new WIP/scaffolding introduced, items that were resolved (remove them), schema/path inconsistencies that were fixed or newly discovered.\n   - README.md: changes that affect what a first-time reader of the repo should know.\n4. Edit only the files that genuinely need it.\n\nRules:\n- Only update a file if a future reader (Claude or human) would genuinely need the change. If a file's content is still accurate, leave it.\n- Do not document individual file edits or routine work.\n- Do not add generic advice or obvious things.\n- When something is resolved (e.g. a TODO item was fixed this session), REMOVE it from TODO.md rather than annotating it as done.\n- Keep cross-references consistent: if you rename or remove a section in one file, check whether the others point at it.\n- If nothing meaningful changed for any of these files, make no edits.",
+            "timeout": 120,
+            "statusMessage": "Updating project Markdown docs..."
           }
         ]
       }
