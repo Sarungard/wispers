@@ -22,15 +22,24 @@
 
         <div class="saves-row">
             <div class="save">
-                <span class="save-label">Reflex</span>
+                <span class="save-label rollable"
+                      data-roll-save="Reflex"
+                      data-proficiency="{{system.skills.savingthrows.reflex.proficiency.value}}"
+                      data-bonus="{{system.abilities.agi.value}}">Reflex</span>
                 <span class="save-die die {{proficiencyDie system.skills.savingthrows.reflex.proficiency.value}}">+{{system.abilities.agi.value}}</span>
             </div>
             <div class="save">
-                <span class="save-label">Toughness</span>
+                <span class="save-label rollable"
+                      data-roll-save="Toughness"
+                      data-proficiency="{{system.skills.savingthrows.toughness.proficiency.value}}"
+                      data-bonus="{{system.abilities.con.value}}">Toughness</span>
                 <span class="save-die die {{proficiencyDie system.skills.savingthrows.toughness.proficiency.value}}">+{{system.abilities.con.value}}</span>
             </div>
             <div class="save">
-                <span class="save-label">Resolve</span>
+                <span class="save-label rollable"
+                      data-roll-save="Resolve"
+                      data-proficiency="{{system.skills.savingthrows.resolve.proficiency.value}}"
+                      data-bonus="{{system.abilities.spi.value}}">Resolve</span>
                 <span class="save-die die {{proficiencyDie system.skills.savingthrows.resolve.proficiency.value}}">+{{system.abilities.spi.value}}</span>
             </div>
             <div class="save">

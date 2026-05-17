@@ -147,6 +147,27 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     }
 
     /** @override */
+    _onFirstRender(context, options) {
+        this.element.addEventListener("click", ev => {
+            const abilityLabel = ev.target.closest(".ability-label[data-roll-ability]");
+            if (abilityLabel) {
+                ev.preventDefault();
+                const key = abilityLabel.dataset.rollAbility;
+                const value = this.actor.system?.abilities?.[key]?.value ?? 0;
+                this._rollAbility(key, value);
+                return;
+            }
+            const saveLabel = ev.target.closest(".save-label[data-roll-save]");
+            if (saveLabel) {
+                const label = saveLabel.dataset.rollSave;
+                const proficiency = parseInt(saveLabel.dataset.proficiency, 10) || 0;
+                const bonus = parseInt(saveLabel.dataset.bonus, 10) || 0;
+                this._rollSave(label, proficiency, bonus);
+            }
+        });
+    }
+
+    /** @override */
     _onRender(context, options) {
         const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".sheet-content", initial: "character"});
         tabs.bind(this.element);
@@ -162,6 +183,45 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
                 });
             });
         });
+    }
+
+    async _rollAbility(key, value) {
+        const formula = wispersCharacterSheet._attributeDieFormula(value);
+        if (!formula) return;
+        const ability = this.actor.system?.abilities?.[key];
+        const label = ability?.id ? (game.i18n.localize(`CONSTANTS.Attributes.${ability.id}.long`) || ability.id) : key;
+        const roll = new Roll(formula);
+        await roll.evaluate();
+        await roll.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: label
+        });
+    }
+
+    async _rollSave(label, proficiency, bonus) {
+        const die = wispersCharacterSheet._proficiencyDieFormula(proficiency);
+        if (!die) return;
+        const formula = bonus !== 0 ? `${die} + ${bonus}` : die;
+        const roll = new Roll(formula);
+        await roll.evaluate();
+        await roll.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: label
+        });
+    }
+
+    static _attributeDieFormula(value) {
+        if (value <= 0) return null;
+        if (value <= 4) return "1d4";
+        if (value <= 6) return "1d6";
+        if (value <= 8) return "1d8";
+        if (value <= 10) return "1d10";
+        return "1d12";
+    }
+
+    static _proficiencyDieFormula(value) {
+        const map = { 1: "1d4", 2: "1d6", 3: "1d8", 4: "1d10", 5: "1d12" };
+        return map[value] ?? null;
     }
 
     /** @override */

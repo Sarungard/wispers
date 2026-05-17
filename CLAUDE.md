@@ -65,6 +65,10 @@ Attributes and proficiency levels are stored as integers but displayed as dice i
 
 The returned strings are CSS class names (matching dice background images in `assets/img/`). Don't change one tier without updating the corresponding LESS rule in `less/dice.less`.
 
+### Rollable UI elements
+
+Any UI element that triggers a die roll when clicked **must** have the `.rollable` CSS class. This applies to labels, spans, buttons, or any other element wired up with a roll handler — whether via direct event listeners or event delegation. The class is used for consistent cursor and hover styling across the sheet.
+
 ### Localization
 
 User-facing strings flow through `game.i18n.localize()` (or `{{localize "KEY"}}` in templates). Keys live in `lang/en.json` (primary) and `lang/hu.json` (Hungarian). Templates use namespaces like `CONSTANTS.Tabs.*` and `CONSTANTS.Attributes.*.long`. Add new keys to **both** files.

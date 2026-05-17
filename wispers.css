@@ -467,6 +467,9 @@
   color: #3a2e1f;
   text-align: center;
 }
+.wispers.sheet.character .ability-label[data-roll-ability] {
+  cursor: pointer;
+}
 .wispers.sheet.character .ability-die {
   width: 48px;
   height: 48px;
@@ -735,6 +738,9 @@
   font-weight: 700;
   font-size: 14px;
   color: #191813;
+}
+.wispers.sheet.character .save-label[data-roll-save] {
+  cursor: pointer;
 }
 .wispers.sheet.character .wound-threshold.light {
   background-image: url(assets/img/rough-wound.png);

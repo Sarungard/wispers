@@ -5,7 +5,8 @@
             <ul class="ability-list">
                 {{#each system.abilities as |ability key|}}
                     <li class="ability-row">
-                        <label class="ability-label" for="system.abilities.{{@key}}.value">
+                        <label class="ability-label rollable" for="system.abilities.{{@key}}.value"
+                               data-roll-ability="{{@key}}">
                             {{localize (concat "CONSTANTS.Attributes." ability.id ".long")}}
                         </label>
                         <input
