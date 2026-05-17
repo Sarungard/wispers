@@ -1,28 +1,122 @@
 // main: ./wispers.less
-.character-image-container {
-  float: left;
-  width: 115px;
-  height: 115px;
-  margin-left: 8px;
-  margin-top: 10px;
-  margin-bottom: 3px;
-  border: 3px solid;
-}
-.character-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.character-image-overlay {
-  width: 135px;
-  height: 210px;
-  top: -3px;
-  left: -3px;
-  background-image: url(assets/img/imageBorder.png);
-  pointer-events: none;
-}
-.character-information {
-    float: left;
-    width: 480px;
-    margin-left: 5px;
+
+.wispers.sheet.character {
+  .header {
+    display: flex;
+    flex-direction: row;
+    height: 135px;
+    padding: 4px 4px 8px;
+    border-bottom: 2px solid #b3946a;
+    background: linear-gradient(180deg, rgba(255, 250, 235, 0.6) 0%, transparent 100%);
+  }
+
+  .character-image-container {
+    flex: 0 0 115px;
+    width: 115px;
+    height: 115px;
+    margin: 6px 10px 0 4px;
+    border: 3px solid #8a6f4b;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+  }
+  .character-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .character-image-overlay {
+    width: 135px;
+    height: 210px;
+    top: -3px;
+    left: -3px;
+    background-image: url(assets/img/imageBorder.png);
+    pointer-events: none;
+  }
+
+  .character-information {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 4px 6px 4px 0;
+  }
+
+  .character-namebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .character-name {
+      flex: 1;
+      font-family: "Cinzel", serif;
+      font-size: 20px;
+      font-weight: 700;
+      height: 32px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #b3946a;
+      padding: 0 4px;
+      color: #3a2e1f;
+
+      &:focus {
+        outline: none;
+        border-bottom-color: #8b4513;
+      }
+    }
+    .character-class {
+      font-family: "Cinzel", serif;
+      font-size: 13px;
+      color: #6a553a;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .character-level {
+      color: #8b4513;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+  }
+
+  .saves-row {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    padding-bottom: 4px;
+  }
+  .save {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 64px;
+  }
+  .save-label {
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6a553a;
+  }
+  .save-die {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: #191813;
+  }
+  .wound-threshold.light {
+    background-image: url(assets/img/rough-wound.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+  .wound-threshold.heavy {
+    background-image: url(assets/img/bleeding-wound.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
 }

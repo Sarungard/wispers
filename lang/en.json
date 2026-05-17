@@ -38,6 +38,18 @@
       "Spellbook": "Spellbook",
       "Effects": "Effects",
       "Biography": "Biography"
+    },
+    "Wounds": {
+      "Active": "Wounds",
+      "Light": "Light",
+      "Heavy": "Heavy"
+    },
+    "Character": {
+      "Appearance": "Appearance",
+      "Traits": "Personality Traits",
+      "Ideals": "Ideals",
+      "Bonds": "Bonds",
+      "Flaws": "Flaws"
     }
   },
 

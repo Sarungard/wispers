@@ -1,4 +1,18 @@
 @font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cinzel/v26/8vIU7ww63mVu7gtR-kwKxNvkNOjw-uTnTYo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cinzel/v26/8vIU7ww63mVu7gtR-kwKxNvkNOjw-jHgTYo.ttf) format('truetype');
+}
+@font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
@@ -15,39 +29,131 @@
   src: url(https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjammT.ttf) format('truetype');
 }
 .wispers.sheet.character {
-  margin: 1;
+  color: #3a2e1f;
+  font-family: "Roboto", sans-serif;
 }
 .wispers.sheet.character .window-content {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  padding: 8px;
+  background: #f4ebd0;
+  background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.07), transparent 50%);
+  color: #3a2e1f;
 }
-.wispers.sheet.character .sidebar {
-  width: 150px;
+.wispers.sheet.character h1,
+.wispers.sheet.character h2,
+.wispers.sheet.character h3,
+.wispers.sheet.character h4 {
+  font-family: "Cinzel", serif;
+  color: #3a2e1f;
+  border: none;
 }
-.wispers.sheet.character .header {
-  height: 135px;
+.wispers.sheet.character .section-title {
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  margin: 0 0 8px;
+  color: #3a2e1f;
 }
 .wispers.sheet.character .main {
   display: flex;
   flex: 1;
+  gap: 8px;
+  overflow: hidden;
+  margin-top: 6px;
+  min-height: 0;
+}
+.wispers.sheet.character .sidebar {
+  width: 160px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 .wispers.sheet.character .content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
-.wispers.sheet.character .logo {
-  background-image: url(assets/img/wispersSymbol.png);
-  background-repeat: no-repeat;
-  background-size: contain;
+.wispers.sheet.character .sheet-content {
+  flex: 1;
+  overflow: hidden;
+  padding: 6px 4px 8px;
+  min-height: 0;
+}
+.wispers.sheet.character .tab {
+  display: none;
+}
+.wispers.sheet.character .tab.active {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-right: 6px;
+}
+.wispers.sheet.character .subMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 14px 0 8px;
+  gap: 10px;
+}
+.wispers.sheet.character .subMain .section-label {
+  font-family: "Cinzel", serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3a2e1f;
+  white-space: nowrap;
+}
+.wispers.sheet.character .subMain .menu-hr-container {
+  flex: 1;
+}
+.wispers.sheet.character .subMain .menu-hr {
+  border: none;
+  border-top: 1px solid #b3946a;
+  margin: 0;
+}
+.wispers.sheet.character input[type="text"],
+.wispers.sheet.character input[type="number"],
+.wispers.sheet.character textarea,
+.wispers.sheet.character select {
+  background: #faf2dc;
+  border: 1px solid #b3946a;
+  border-radius: 2px;
+  color: #3a2e1f;
+  font-family: inherit;
+  padding: 2px 6px;
+}
+.wispers.sheet.character input[type="text"]:focus,
+.wispers.sheet.character input[type="number"]:focus,
+.wispers.sheet.character textarea:focus,
+.wispers.sheet.character select:focus {
+  outline: none;
+  border-color: #8b4513;
+  box-shadow: 0 0 0 1px rgba(139, 69, 19, 0.15);
+}
+.wispers.sheet.character input[type="text"]:disabled,
+.wispers.sheet.character input[type="number"]:disabled,
+.wispers.sheet.character textarea:disabled,
+.wispers.sheet.character select:disabled {
+  background: rgba(0, 0, 0, 0.04);
+  color: #6a553a;
+  cursor: not-allowed;
+}
+.wispers.sheet.character textarea {
+  min-height: 60px;
+  resize: vertical;
 }
 .wispers.sheet.character .item-form {
   font-family: "Roboto", sans-serif;
 }
-.wispers.sheet.character .sheet-tabs {
-  flex: 0;
+.wispers.sheet.character .sheet-body {
+  height: 100%;
 }
-.wispers.sheet.character .sheet-body,
-.wispers.sheet.character .sheet-body .tab,
 .wispers.sheet.character .sheet-body .tab .editor {
   height: 100%;
 }
@@ -62,6 +168,41 @@
 }
 .wispers.sheet.character .window-resizable-handle {
   cursor: var(--cursor-grab);
+}
+.wispers.sheet.character .logo {
+  background-image: url(assets/img/wispersSymbol.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.wispers.sheet.character .biography-tab {
+  display: flex;
+  gap: 10px;
+  height: 100%;
+}
+.wispers.sheet.character .characteristics {
+  flex: 0 0 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+.wispers.sheet.character .characteristics label {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6a553a;
+  margin-bottom: 2px;
+}
+.wispers.sheet.character .characteristics textarea {
+  min-height: 44px;
+}
+.wispers.sheet.character .biography-editor {
+  flex: 1;
+  border: 1px solid #b3946a;
+  border-radius: 2px;
+  background: #faf2dc;
+  overflow: hidden;
 }
 .die {
   color: #191813;
@@ -107,6 +248,43 @@
   background-size: contain;
   background-position: center;
 }
+.wispers.sheet.character .tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 4px;
+  border: none;
+  border-bottom: 2px solid #b3946a;
+  padding: 4px 0;
+  margin-bottom: 6px;
+}
+.wispers.sheet.character .tabs .item {
+  flex: 0 0 40px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6a553a;
+  cursor: pointer;
+  border-radius: 4px 4px 0 0;
+  background: transparent;
+  transition: background-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+.wispers.sheet.character .tabs .item i {
+  font-size: 18px;
+  margin: 0;
+}
+.wispers.sheet.character .tabs .item:hover {
+  color: #8b4513;
+  background: rgba(139, 69, 19, 0.08);
+  text-shadow: 0 0 6px rgba(139, 69, 19, 0.4);
+}
+.wispers.sheet.character .tabs .item.active {
+  color: #8b4513;
+  background: rgba(139, 69, 19, 0.14);
+  box-shadow: inset 0 -2px 0 #8b4513;
+}
 .menu-box .menu-icon {
   width: 35px;
   height: 35px;
@@ -131,102 +309,114 @@
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
-.items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
-}
-.items-header > * {
-  font-size: 14px;
-  text-align: center;
-}
-.items-header .item-name {
-  font-weight: bold;
-  padding-left: 5px;
-  text-align: left;
-}
-.items-list {
+.wispers.sheet.character .items-list {
   list-style: none;
   margin: 0;
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #444;
+  color: #3a2e1f;
 }
-.items-list .item-list {
+.wispers.sheet.character .items-list .item-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.items-list .item-name {
+.wispers.sheet.character .items-list .item-name {
   flex: 2;
   margin: 0;
   overflow: hidden;
   font-size: 13px;
   text-align: left;
   align-items: center;
+  color: #3a2e1f;
 }
-.items-list .item-name h3,
-.items-list .item-name h4 {
+.wispers.sheet.character .items-list .item-name h3,
+.wispers.sheet.character .items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
+  font-family: "Cinzel", serif;
+  font-weight: 500;
+  font-size: 13px;
 }
-.items-list .item-controls {
+.wispers.sheet.character .items-list .item-controls {
   flex: 0 0 100px;
   justify-content: flex-end;
 }
-.items-list .item-controls a {
+.wispers.sheet.character .items-list .item-controls a {
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
+  color: #6a553a;
+  cursor: pointer;
 }
-.items-list .item {
+.wispers.sheet.character .items-list .item-controls a:hover {
+  color: #8b4513;
+  text-shadow: 0 0 6px rgba(139, 69, 19, 0.35);
+}
+.wispers.sheet.character .items-list .item {
   align-items: center;
-  padding: 0 2px;
-  border-bottom: 1px solid #c9c7b8;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(179, 148, 106, 0.5);
 }
-.items-list .item:last-child {
+.wispers.sheet.character .items-list .item:last-child {
   border-bottom: none;
 }
-.items-list .item .item-name {
-  color: #191813;
-}
-.items-list .item .item-name .item-image {
-  flex: 0 0 30px;
-  height: 30px;
-  background-size: 30px;
-  border: none;
-  margin-right: 5px;
-}
-.items-list .item-prop {
-  text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
-  font-size: 12px;
-}
-.items-list .items-header {
+.wispers.sheet.character .items-list .item .item-name .item-image {
+  flex: 0 0 28px;
   height: 28px;
-  margin: 2px 0;
-  padding: 0;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
-  font-weight: bold;
+  background-size: 28px;
+  border: 1px solid #b3946a;
+  margin-right: 6px;
 }
-.items-list .items-header > * {
+.wispers.sheet.character .items-list .item-prop {
+  text-align: center;
+  border-left: 1px solid rgba(179, 148, 106, 0.5);
+  border-right: 1px solid rgba(179, 148, 106, 0.5);
+  font-size: 12px;
+}
+.wispers.sheet.character .items-list .items-header,
+.wispers.sheet.character .items-header {
+  height: 28px;
+  margin: 8px 0 2px;
+  padding: 0 6px;
+  align-items: center;
+  background: rgba(139, 69, 19, 0.12);
+  border: 1px solid #b3946a;
+  border-radius: 2px;
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #3a2e1f;
+}
+.wispers.sheet.character .items-list .items-header > *,
+.wispers.sheet.character .items-header > * {
   font-size: 12px;
   text-align: center;
 }
-.items-list .items-header .item-name {
-  padding-left: 5px;
+.wispers.sheet.character .items-list .items-header .item-name,
+.wispers.sheet.character .items-header .item-name {
+  padding-left: 4px;
   text-align: left;
+  font-weight: 700;
+  color: #3a2e1f;
 }
-.item-formula {
+.wispers.sheet.character .items-list .items-header .item-name h3,
+.wispers.sheet.character .items-header .item-name h3,
+.wispers.sheet.character .items-list .items-header .item-name h4,
+.wispers.sheet.character .items-header .item-name h4 {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: 12px;
+}
+.wispers.sheet.character .items-list .items-header .item-controls a,
+.wispers.sheet.character .items-header .item-controls a {
+  color: #8b4513;
+}
+.wispers.sheet.character .item-formula {
   flex: 0 0 200px;
   padding: 0 8px;
 }
@@ -241,10 +431,11 @@
 .effects .item .effect-controls {
   border: none;
 }
-.sidebar-container {
+.wispers.sheet.character .sidebar-container {
   min-height: 500px;
-  max-height: 90%;
-  border-image: url(assets/img/banner.png);
+  max-height: 100%;
+  padding: 8px 6px 10px;
+  border-image: url(assets/img/Banner.png);
   border-image-slice: 21 18 52 fill;
   border-left-width: 18px;
   border-right-width: 18px;
@@ -253,45 +444,224 @@
   border-style: solid;
   margin-top: 3px;
 }
-.character-input-full-width {
+.wispers.sheet.character .ability-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wispers.sheet.character .ability-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 0;
+}
+.wispers.sheet.character .ability-label {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3a2e1f;
+  text-align: center;
+}
+.wispers.sheet.character .ability-label[data-roll-ability] {
+  cursor: pointer;
+}
+.wispers.sheet.character .ability-die {
+  width: 48px;
+  height: 48px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 48px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
+  color: #191813;
+}
+.wispers.sheet.character .ability-die:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(139, 69, 19, 0.6);
+  border-radius: 50%;
+}
+.wispers.sheet.character .character-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 14px;
+  margin-bottom: 4px;
+}
+.wispers.sheet.character .character-input-full-width {
   width: 100%;
   margin-bottom: 5px;
 }
-.character-input-half-width {
-  width: 50%;
-  margin-bottom: 5px;
+.wispers.sheet.character .character-input-half-width {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
-.character-input-label {
-  font-size: 14px;
-  line-height: 18px;
-  padding-left: 8px;
+.wispers.sheet.character .character-input-label {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6a553a;
+  padding-left: 2px;
 }
-.character-input-box {
-  padding-left: 5px;
-  padding-right: 8px;
+.wispers.sheet.character .character-input-box {
+  padding: 0;
 }
-.character-input-half {
+.wispers.sheet.character .character-input-box input {
+  width: 100%;
   height: 24px;
 }
-.character-input-full {
+.wispers.sheet.character .character-input-half {
+  height: 24px;
+}
+.wispers.sheet.character .character-input-full {
   min-height: 70px;
   width: 100%;
 }
-.character-image-container {
-  float: left;
+.wispers.sheet.character .skills-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 4px 2px 2px;
+}
+.wispers.sheet.character .skill-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  height: 22px;
+  width: auto;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #3a2e1f;
+  background: rgba(179, 148, 106, 0.18);
+  border: 1px solid #b3946a;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 1;
+}
+.wispers.sheet.character .skill-tool-btn:hover:not(:disabled) {
+  background: rgba(179, 148, 106, 0.35);
+}
+.wispers.sheet.character .skill-tool-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.wispers.sheet.character .skill-tool-btn i {
+  font-size: 11px;
+}
+.wispers.sheet.character .skills-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 14px;
+  margin-top: 2px;
+}
+.wispers.sheet.character .skill-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-bottom: 1px dotted #b3946a;
+}
+.wispers.sheet.character .skill-row.untrained {
+  opacity: 0.5;
+}
+.wispers.sheet.character .skill-die {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  display: inline-block;
+}
+.wispers.sheet.character .skill-name {
+  flex: 1;
+  font-size: 13px;
+  color: #3a2e1f;
+}
+.wispers.sheet.character .skill-attr {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6a553a;
+  min-width: 28px;
+  text-align: right;
+}
+.wispers.sheet.character .skill-pips {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.wispers.sheet.character .pip {
+  width: 14px;
+  height: 14px;
+  background-image: url(assets/img/symbol-outline.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.18;
+  cursor: pointer;
+  transition: opacity 0.1s;
+  display: inline-block;
+}
+.wispers.sheet.character .pip.active {
+  opacity: 1;
+  background-image: url(assets/img/symbol-filled.png);
+}
+.wispers.sheet.character .pip:hover {
+  opacity: 0.6;
+}
+.wispers.sheet.character .saves-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  margin-top: 2px;
+}
+.wispers.sheet.character .save-bonus {
+  font-size: 12px;
+  font-weight: 700;
+  color: #3a2e1f;
+  min-width: 28px;
+  text-align: right;
+}
+.wispers.sheet.character .header {
+  display: flex;
+  flex-direction: row;
+  height: 135px;
+  padding: 4px 4px 8px;
+  border-bottom: 2px solid #b3946a;
+  background: linear-gradient(180deg, rgba(255, 250, 235, 0.6) 0%, transparent 100%);
+}
+.wispers.sheet.character .character-image-container {
+  flex: 0 0 115px;
   width: 115px;
   height: 115px;
-  margin-left: 8px;
-  margin-top: 10px;
-  margin-bottom: 3px;
-  border: 3px solid;
+  margin: 6px 10px 0 4px;
+  border: 3px solid #8a6f4b;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
-.character-image {
+.wispers.sheet.character .character-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  cursor: pointer;
 }
-.character-image-overlay {
+.wispers.sheet.character .character-image-overlay {
   width: 135px;
   height: 210px;
   top: -3px;
@@ -299,8 +669,88 @@
   background-image: url(assets/img/imageBorder.png);
   pointer-events: none;
 }
-.character-information {
-  float: left;
-  width: 480px;
-  margin-left: 5px;
+.wispers.sheet.character .character-information {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 6px 4px 0;
+}
+.wispers.sheet.character .character-namebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wispers.sheet.character .character-namebar .character-name {
+  flex: 1;
+  font-family: "Cinzel", serif;
+  font-size: 20px;
+  font-weight: 700;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #b3946a;
+  padding: 0 4px;
+  color: #3a2e1f;
+}
+.wispers.sheet.character .character-namebar .character-name:focus {
+  outline: none;
+  border-bottom-color: #8b4513;
+}
+.wispers.sheet.character .character-namebar .character-class {
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  color: #6a553a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.wispers.sheet.character .character-namebar .character-level {
+  color: #8b4513;
+  font-weight: 700;
+  margin-left: 4px;
+}
+.wispers.sheet.character .saves-row {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  padding-bottom: 4px;
+}
+.wispers.sheet.character .save {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 64px;
+}
+.wispers.sheet.character .save-label {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6a553a;
+}
+.wispers.sheet.character .save-die {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #191813;
+}
+.wispers.sheet.character .save-label[data-roll-save] {
+  cursor: pointer;
+}
+.wispers.sheet.character .wound-threshold.light {
+  background-image: url(assets/img/rough-wound.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.wispers.sheet.character .wound-threshold.heavy {
+  background-image: url(assets/img/bleeding-wound.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }

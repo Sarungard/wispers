@@ -25,11 +25,31 @@
       }
     },
     "Effect": {
-      "Source": "Source",
-      "Toggle": "Toggle Effect",
-      "Temporary": "Temporary Effects",
-      "Passive": "Passive Effects",
-      "Inactive": "Inactive Effects"
+      "Source": "Forrás",
+      "Toggle": "Hatás ki/be",
+      "Temporary": "Ideiglenes hatások",
+      "Passive": "Passzív hatások",
+      "Inactive": "Inaktív hatások"
+    },
+    "Tabs": {
+      "Character": "Karakter",
+      "Inventory": "Felszerelés",
+      "Features": "Képességek",
+      "Spellbook": "Varázskönyv",
+      "Effects": "Hatások",
+      "Biography": "Életrajz"
+    },
+    "Wounds": {
+      "Active": "Sebek",
+      "Light": "Könnyű",
+      "Heavy": "Súlyos"
+    },
+    "Character": {
+      "Appearance": "Megjelenés",
+      "Traits": "Személyiségvonások",
+      "Ideals": "Eszmék",
+      "Bonds": "Kötelékek",
+      "Flaws": "Hibák"
     }
   },
 

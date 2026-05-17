@@ -1,52 +1,55 @@
 <div class="header">
+    <div class="character-image-container">
+        <img
+            class="character-image"
+            src="{{actor.img}}"
+            data-edit="img"
+            data-action="editImage"
+            title="{{actor.name}}" />
+    </div>
+    <div class="character-information">
+        <div class="character-namebar">
+            <input
+                class="character-name"
+                type="text"
+                name="name"
+                value="{{actor.name}}" />
+            <div class="character-class">
+                {{system.class.name}}
+                <span class="character-level">{{localize "SYSTEM.LevelShort"}} {{system.level.value}}</span>
+            </div>
+        </div>
 
-  <div class="character-image-container">
-    <img
-      class="character-image"
-      src="{{actor.img}}"
-      data-edit="img"
-      data-action="editImage"
-      title="{{actor.name}}"
-    />
-  </div>
-  <div class="character-information">
-    <input
-      class=""
-      type="text"
-      name="name"
-      value="{{actor.name}}"
-      style="width: 79%;"
-    />
-    <div
-      class=""
-      style="float: right; width: 19%; margin-left: 2px"
-    >{{system.class.name}} level {{system.level.value}}</div>
-    <div class="">
-      <h4 class="">Attributes</h4>
-      <div class="">
-        <span class="">Reflex</span>
-        <br />
-        <span
-          class="die
-            {{proficiencyDie
-              system.skills.savingthrows.reflex.proficiency.value
-            }}">+3</span>
-      </div>
-      <div class=""><span class="">Toughness</span>
-        <br />
-        <span
-          class="die
-            {{proficiencyDie
-              system.skills.savingthrows.toughness.proficiency.value
-            }}">+4</span></div>
+        <div class="saves-row">
+            <div class="save">
+                <span class="save-label rollable"
+                      data-roll-save="Reflex"
+                      data-proficiency="{{system.skills.savingthrows.reflex.proficiency.value}}"
+                      data-bonus="{{system.abilities.agi.value}}">Reflex</span>
+                <span class="save-die die {{proficiencyDie system.skills.savingthrows.reflex.proficiency.value}}">+{{system.abilities.agi.value}}</span>
+            </div>
+            <div class="save">
+                <span class="save-label rollable"
+                      data-roll-save="Toughness"
+                      data-proficiency="{{system.skills.savingthrows.toughness.proficiency.value}}"
+                      data-bonus="{{system.abilities.con.value}}">Toughness</span>
+                <span class="save-die die {{proficiencyDie system.skills.savingthrows.toughness.proficiency.value}}">+{{system.abilities.con.value}}</span>
+            </div>
+            <div class="save">
+                <span class="save-label rollable"
+                      data-roll-save="Resolve"
+                      data-proficiency="{{system.skills.savingthrows.resolve.proficiency.value}}"
+                      data-bonus="{{system.abilities.spi.value}}">Resolve</span>
+                <span class="save-die die {{proficiencyDie system.skills.savingthrows.resolve.proficiency.value}}">+{{system.abilities.spi.value}}</span>
+            </div>
+            <div class="save">
+                <span class="save-label">Light Wound</span>
+                <span class="save-die die wound-threshold light">{{system.wounds.lightThreshold.value}}</span>
+            </div>
+            <div class="save">
+                <span class="save-label">Heavy Wound</span>
+                <span class="save-die die wound-threshold heavy">{{system.wounds.heavyThreshold.value}}</span>
+            </div>
+        </div>
     </div>
-    <div class=""><span class="">Resolve</span>
-      <br />
-      <span
-        class="die
-          {{proficiencyDie
-            system.skills.savingthrows.resolve.proficiency.value
-          }}">+5</span>
-    </div>
-  </div>
 </div>

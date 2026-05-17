@@ -117,6 +117,9 @@ Handlebars.registerHelper("attributeDie", function (value) {
 Handlebars.registerHelper("proficiencyDie", function (value) {
   return _proficiencyDieClass(value);
 });
+Handlebars.registerHelper("proficiencyPips", function (value) {
+  return [1, 2, 3, 4, 5].map(i => ({ level: i, active: i <= value }));
+});
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */

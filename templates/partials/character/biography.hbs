@@ -1,18 +1,14 @@
-<div class="tab flexrow" data-group="primary" data-tab="biography">
-            <div class="characteristics flexcol">
-                <label>{{ localize "wispers.Appearance" }}</label>
-                <textarea name="system.details.appearance">{{system.details.appearance}}</textarea>
-                <label>{{ localize "wispers.PersonalityTraits" }}</label>
-                <textarea name="system.details.trait">{{system.details.trait}}</textarea>
-                <label>{{ localize "wispers.Ideals" }}</label>
-                <textarea name="system.details.ideal">{{system.details.ideal}}</textarea>
-                <label>{{ localize "wispers.Bonds" }}</label>
-                <textarea name="system.details.bond">{{system.details.bond}}</textarea>
-                <label>{{ localize "wispers.Flaws" }}</label>
-                <textarea name="system.details.flaw">{{system.details.flaw}}</textarea>
-            </div>
-            <div class="biography">
-                {{editor biographyHTML target="system.details.biography.value" button=true editable=editable
-                         engine="prosemirror" collaborate=false}}
-            </div>
-        </div>
+<div class="biography-tab flexrow">
+    <div class="characteristics flexcol">
+        <label>{{localize "CONSTANTS.Character.Appearance"}}</label>
+        <textarea name="system.details.appearance">{{system.details.appearance}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Traits"}}</label>
+        <textarea name="system.details.trait">{{system.details.trait}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Ideals"}}</label>
+        <textarea name="system.details.ideal">{{system.details.ideal}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Bonds"}}</label>
+        <textarea name="system.details.bond">{{system.details.bond}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Flaws"}}</label>
+        <textarea name="system.details.flaw">{{system.details.flaw}}</textarea>
+    </div>
+</div>

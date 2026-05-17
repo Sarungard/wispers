@@ -1,4 +1,48 @@
 // main: ./wispers.less
+
+.wispers.sheet.character {
+  .tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 4px;
+    border: none;
+    border-bottom: 2px solid #b3946a;
+    padding: 4px 0;
+    margin-bottom: 6px;
+
+    .item {
+      flex: 0 0 40px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6a553a;
+      cursor: pointer;
+      border-radius: 4px 4px 0 0;
+      background: transparent;
+      transition: background-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+
+      i {
+        font-size: 18px;
+        margin: 0;
+      }
+      &:hover {
+        color: #8b4513;
+        background: rgba(139, 69, 19, 0.08);
+        text-shadow: 0 0 6px rgba(139, 69, 19, 0.4);
+      }
+      &.active {
+        color: #8b4513;
+        background: rgba(139, 69, 19, 0.14);
+        box-shadow: inset 0 -2px 0 #8b4513;
+      }
+    }
+  }
+}
+
+// Legacy menu-icon (used by header chrome). Preserved to avoid regressions.
 .menu-box {
   .menu-icon {
     width: 35px;

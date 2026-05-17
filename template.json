@@ -5,16 +5,18 @@
       "base": {
         "level": { "value": 1, "max": 20 },
         "abilities": {
-          "str": { "id": "Str", "value": 3, "start": 2, "bonus": 0 },
-          "agi": { "id": "Agi", "value": 5, "start": 2, "bonus": 0 },
-          "con": { "id": "Con", "value": 7, "start": 2, "bonus": 0 },
-          "kno": { "id": "Kno", "value": 9, "start": 2, "bonus": 0 },
-          "pre": { "id": "Pre", "value": 11, "start": 2, "bonus": 0 },
-          "spi": { "id": "Spi", "value": 13, "start": 2, "bonus": 0 }
+          "str": { "id": "Str", "value": 2, "start": 2, "modifiers": [] },
+          "agi": { "id": "Agi", "value": 2, "start": 2, "modifiers": [] },
+          "con": { "id": "Con", "value": 2, "start": 2, "modifiers": [] },
+          "kno": { "id": "Kno", "value": 2, "start": 2, "modifiers": [] },
+          "pre": { "id": "Pre", "value": 2, "start": 2, "modifiers": [] },
+          "spi": { "id": "Spi", "value": 2, "start": 2, "modifiers": [] }
         },
         "wounds": {
-          "total": { "value": 0 },
-          "active": []
+          "modifier": { "value": 0 },
+          "lightThreshold": { "value": 5 },
+          "heavyThreshold": { "value": 10 },
+          "consequences": []
         },
         "initiative": { "total": 0, "remaining": 0 },
         "biography": "",
@@ -54,44 +56,62 @@
           "spellSchools": {
             "arcana": {
               "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "pre",
               "label": "Arcana"
             },
             "elementalism": {
               "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "pre",
               "label": "Elementalism"
             },
             "entropy": {
               "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "pre",
               "label": "Entropy"
             },
             "sacratropy": {
               "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "pre",
               "label": "Sacratrope"
             },
             "sinistrope": {
               "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "pre",
               "label": "Sinistrope"
             },
             "primalism": {
               "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "pre",
               "label": "Primalism"
+            },
+            "scriptomancy": {
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "kno",
+              "label": "Scriptomancy"
             },
             "rune-scribe": {
               "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "kno",
               "label": "Rune-Scribe"
             }
           },
           "savingthrows": {
             "reflex": {
-              "proficiency": { "value": 2, "max": 5 },
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "agi",
+              "modifiers": [],
               "label": "Reflex"
             },
             "toughness": {
-              "proficiency": { "value": 1, "max": 5 },
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "con",
+              "modifiers": [],
               "label": "Toughness"
             },
             "resolve": {
-              "proficiency": { "value": 3, "max": 5 },
+              "proficiency": { "value": 0, "max": 5 },
+              "linkedAttribute": "spi",
+              "modifiers": [],
               "label": "Resolve"
             }
           }
