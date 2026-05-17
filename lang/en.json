@@ -39,6 +39,11 @@
       "Effects": "Effects",
       "Biography": "Biography"
     },
+    "Wounds": {
+      "Active": "Wounds",
+      "Light": "Light",
+      "Heavy": "Heavy"
+    },
     "Character": {
       "Appearance": "Appearance",
       "Traits": "Personality Traits",

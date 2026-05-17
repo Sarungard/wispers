@@ -100,7 +100,9 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const allSchoolRows = Object.entries(rawSchools).map(([key, s]) => ({
             key,
             label: s.label,
+            linkedAttribute: s.linkedAttribute,
             value: s.proficiency?.value ?? 0,
+            bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
             trained: (s.proficiency?.value ?? 0) >= 1
         }));
         const untrainedSchoolCount = allSchoolRows.filter(r => !r.trained).length;
@@ -110,9 +112,9 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const saveRows = Object.entries(rawSaves).map(([key, s]) => ({
             key,
             label: s.label,
-            governingAttribute: s.governingAttribute,
+            linkedAttribute: s.linkedAttribute,
             proficiency: s.proficiency?.value ?? 0,
-            bonus: actor.system?.abilities?.[s.governingAttribute]?.value ?? 0
+            bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0
         }));
 
         const context = {

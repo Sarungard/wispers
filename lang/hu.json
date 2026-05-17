@@ -39,6 +39,11 @@
       "Effects": "Hatások",
       "Biography": "Életrajz"
     },
+    "Wounds": {
+      "Active": "Sebek",
+      "Light": "Könnyű",
+      "Heavy": "Súlyos"
+    },
     "Character": {
       "Appearance": "Megjelenés",
       "Traits": "Személyiségvonások",
