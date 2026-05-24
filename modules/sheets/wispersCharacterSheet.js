@@ -44,10 +44,10 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     /** @override */
     _configureRenderOptions(options) {
 
-        if (this.document.limited) options.parts = ["header"]
-        else options.parts = ["header", "body"];
-
         super._configureRenderOptions(options);
+
+        if (this.document.limited) options.parts = ["header"];
+        else options.parts = ["header", "body"];
     }
 
     /** @override */
@@ -94,6 +94,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             label: s.label,
             linkedAttribute: s.linkedAttribute,
             value: s.proficiency?.value ?? 0,
+            bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
             trained: (s.proficiency?.value ?? 0) >= 1
         }));
         const untrainedSkillCount = allSkillRows.filter(r => !r.trained).length;
@@ -159,12 +160,37 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             }
             const saveLabel = ev.target.closest(".save-label[data-roll-save]");
             if (saveLabel) {
-                const label = saveLabel.dataset.rollSave;
-                const proficiency = parseInt(saveLabel.dataset.proficiency, 10) || 0;
-                const bonus = parseInt(saveLabel.dataset.bonus, 10) || 0;
-                this._rollSave(label, proficiency, bonus);
+                this._rollProficiencyFromGroup("savingthrows", saveLabel.dataset.rollSave);
+                return;
+            }
+            const skillLabel = ev.target.closest(".skill-name[data-roll-skill]");
+            if (skillLabel) {
+                this._rollProficiencyFromGroup("skills", skillLabel.dataset.rollSkill);
+                return;
+            }
+            const schoolLabel = ev.target.closest(".skill-name[data-roll-school]");
+            if (schoolLabel) {
+                this._rollProficiencyFromGroup("spellSchools", schoolLabel.dataset.rollSchool);
             }
         });
+
+        // ApplicationV2's automatic re-render after form submission is unreliable
+        // for displays computed from other fields (e.g. save bonuses derived from
+        // linked ability scores). Subscribe to the document's update event so we
+        // always re-render with fresh context after any actor change.
+        this._onActorUpdate = (actor) => {
+            if (actor.id === this.actor.id) this.render();
+        };
+        Hooks.on("updateActor", this._onActorUpdate);
+    }
+
+    /** @override */
+    async close(options) {
+        if (this._onActorUpdate) {
+            Hooks.off("updateActor", this._onActorUpdate);
+            this._onActorUpdate = null;
+        }
+        return super.close(options);
     }
 
     /** @override */
@@ -174,22 +200,29 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
 
         this.element.querySelectorAll(".skill-pips").forEach(container => {
             container.querySelectorAll(".pip").forEach(pip => {
-                pip.addEventListener("click", ev => {
+                pip.addEventListener("click", async ev => {
                     const field = container.dataset.field;
-                    const current = parseInt(container.dataset.value, 10) || 0;
-                    const level = parseInt(pip.dataset.level, 10);
+                    const current = Number.parseInt(container.dataset.value, 10) || 0;
+                    const level = Number.parseInt(pip.dataset.level, 10);
                     const newValue = (current === level) ? level - 1 : level;
-                    this.actor.update({ [field]: newValue });
+                    await this.actor.update({ [field]: newValue });
+                    this.render();
                 });
             });
         });
     }
 
     async _rollAbility(key, value) {
-        const formula = wispersCharacterSheet._attributeDieFormula(value);
-        if (!formula) return;
+        const baseDie = wispersCharacterSheet._attributeDieFormula(value) ?? "0";
+        if (!baseDie) return;
         const ability = this.actor.system?.abilities?.[key];
         const label = ability?.id ? (game.i18n.localize(`CONSTANTS.Attributes.${ability.id}.long`) || ability.id) : key;
+
+        const config = await wispersCharacterSheet._showRollDialog(label, baseDie);
+        if (config === null) return;
+
+        const die = wispersCharacterSheet._shiftDie(baseDie, config.dieMod);
+        const formula = config.flatBonus === 0 ? die : `${die} + ${config.flatBonus}`;
         const roll = new Roll(formula);
         await roll.evaluate();
         await roll.toMessage({
@@ -198,16 +231,105 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         });
     }
 
-    async _rollSave(label, proficiency, bonus) {
-        const die = wispersCharacterSheet._proficiencyDieFormula(proficiency);
-        if (!die) return;
-        const formula = bonus !== 0 ? `${die} + ${bonus}` : die;
+    _rollProficiencyFromGroup(group, key) {
+        const entry = this.actor.system?.skills?.[group]?.[key];
+        if (!entry) return;
+        const proficiency = entry.proficiency?.value ?? 0;
+        const bonus = this.actor.system?.abilities?.[entry.linkedAttribute]?.value ?? 0;
+        const label = entry.label ?? key;
+        // Only skills let the user swap the linked attribute at roll time; saves
+        // and spell schools roll their fixed linked attribute.
+        const abilityOptions = group === "skills"
+            ? { selected: entry.linkedAttribute, list: this._abilityChoices() }
+            : null;
+        return this._rollProficiency(label, proficiency, bonus, { abilityOptions });
+    }
+
+    _abilityChoices() {
+        const abilities = this.actor.system?.abilities ?? {};
+        return Object.entries(abilities).map(([key, a]) => ({
+            key,
+            label: a?.id ? (game.i18n.localize(`CONSTANTS.Attributes.${a.id}.long`) || a.id) : key
+        }));
+    }
+
+    async _rollProficiency(label, proficiency, bonus, { abilityOptions = null } = {}) {
+        // Untrained rolls (proficiency 0) roll bonus only — "0" passes through
+        // _shiftDie unchanged, so tier modifiers are a no-op.
+        const baseDie = wispersCharacterSheet._proficiencyDieFormula(proficiency) ?? "0";
+
+        const config = await wispersCharacterSheet._showRollDialog(label, baseDie, abilityOptions);
+        if (config === null) return;
+
+        // If the dialog swapped the linked attribute (skills only), recompute
+        // bonus from the chosen ability's live value.
+        const effectiveBonus = config.attribute
+            ? (this.actor.system?.abilities?.[config.attribute]?.value ?? 0)
+            : bonus;
+
+        const die = wispersCharacterSheet._shiftDie(baseDie, config.dieMod);
+        const totalBonus = effectiveBonus + config.flatBonus;
+        const formula = totalBonus === 0 ? die : `${die} + ${totalBonus}`;
         const roll = new Roll(formula);
         await roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
             flavor: label
         });
+    }
+
+    static async _showRollDialog(label, baseDie, abilityOptions = null) {
+        const DialogV2 = foundry.applications.api.DialogV2;
+        const t = key => game.i18n.localize(`CONSTANTS.Roll.${key}`);
+        const noChange = game.i18n.format("CONSTANTS.Roll.NoChange", { die: baseDie });
+        const title = game.i18n.format("CONSTANTS.Roll.Title", { label });
+
+        const abilityBlock = abilityOptions ? `
+            <div class="form-group">
+                <label>${t("LinkedAttribute")}</label>
+                <select name="attribute">
+                    ${abilityOptions.list.map(a =>
+                        `<option value="${a.key}"${a.key === abilityOptions.selected ? " selected" : ""}>${a.label}</option>`
+                    ).join("")}
+                </select>
+            </div>` : "";
+
+        const content = `
+            ${abilityBlock}
+            <div class="form-group">
+                <label>${t("DieTier")}</label>
+                <select name="dieMod">
+                    <option value="-2">${t("Downgrade2")}</option>
+                    <option value="-1">${t("Downgrade1")}</option>
+                    <option value="0" selected>${noChange}</option>
+                    <option value="1">${t("Upgrade1")}</option>
+                    <option value="2">${t("Upgrade2")}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>${t("FlatBonus")}</label>
+                <input type="number" name="flatBonus" value="0" />
+            </div>`;
+        return await DialogV2.prompt({
+            window: { title },
+            content,
+            ok: {
+                label: t("Roll"),
+                callback: (event, button) => ({
+                    dieMod: Number.parseInt(button.form.elements.dieMod.value, 10),
+                    flatBonus: Number.parseInt(button.form.elements.flatBonus.value, 10) || 0,
+                    attribute: button.form.elements.attribute?.value ?? null
+                })
+            },
+            rejectClose: false
+        });
+    }
+
+    static _shiftDie(dieFormula, mod) {
+        const tiers = ["1d4", "1d6", "1d8", "1d10", "1d12"];
+        const idx = tiers.indexOf(dieFormula);
+        if (idx === -1) return dieFormula;
+        return tiers[Math.max(0, Math.min(tiers.length - 1, idx + mod))];
     }
 
     static _attributeDieFormula(value) {

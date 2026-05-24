@@ -31,6 +31,18 @@
       "Passive": "Passzív hatások",
       "Inactive": "Inaktív hatások"
     },
+    "Roll": {
+      "Title": "Dobás: {label}",
+      "DieTier": "Kockaszint",
+      "NoChange": "Nincs változás ({die})",
+      "Upgrade1": "1 szinttel feljebb",
+      "Upgrade2": "2 szinttel feljebb",
+      "Downgrade1": "1 szinttel lejjebb",
+      "Downgrade2": "2 szinttel lejjebb",
+      "FlatBonus": "Fix bónusz",
+      "Roll": "Dobás",
+      "LinkedAttribute": "Kapcsolt tulajdonság"
+    },
     "Tabs": {
       "Character": "Karakter",
       "Inventory": "Felszerelés",

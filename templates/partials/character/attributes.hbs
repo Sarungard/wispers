@@ -80,8 +80,9 @@
         {{#each skillRows as |row|}}
             <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
                 <span class="skill-die {{proficiencyDie row.value}}"></span>
-                <span class="skill-name">{{row.label}}</span>
+                <span class="skill-name rollable" data-roll-skill="{{row.key}}">{{row.label}}</span>
                 <span class="skill-attr">{{row.linkedAttribute}}</span>
+                <span class="save-bonus">+{{row.bonus}}</span>
                 <div class="skill-pips" data-field="system.skills.skills.{{row.key}}.proficiency.value" data-value="{{row.value}}">
                     {{#each (proficiencyPips row.value) as |pip|}}
                         <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
@@ -114,7 +115,7 @@
         {{#each schoolRows as |row|}}
             <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
                 <span class="skill-die {{proficiencyDie row.value}}"></span>
-                <span class="skill-name">{{row.label}}</span>
+                <span class="skill-name rollable" data-roll-school="{{row.key}}">{{row.label}}</span>
                 <span class="skill-attr">{{row.linkedAttribute}}</span>
                 <span class="save-bonus">+{{row.bonus}}</span>
                 <div class="skill-pips" data-field="system.skills.spellSchools.{{row.key}}.proficiency.value" data-value="{{row.value}}">
