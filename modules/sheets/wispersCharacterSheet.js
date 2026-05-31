@@ -89,26 +89,34 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         });
 
         const rawSkills = actor.system?.skills?.skills ?? {};
-        const allSkillRows = Object.entries(rawSkills).map(([key, s]) => ({
-            key,
-            label: s.label,
-            linkedAttribute: s.linkedAttribute,
-            value: s.proficiency?.value ?? 0,
-            bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
-            trained: (s.proficiency?.value ?? 0) >= 1
-        }));
+        const allSkillRows = Object.entries(rawSkills).map(([key, s]) => {
+            const prof = s.proficiency?.value ?? 0;
+            return {
+                key,
+                label: s.label,
+                linkedAttribute: s.linkedAttribute,
+                value: prof,
+                bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
+                showBonus: prof >= 4,
+                trained: prof >= 1
+            };
+        });
         const untrainedSkillCount = allSkillRows.filter(r => !r.trained).length;
         const skillRows = this._showAllSkills ? allSkillRows : allSkillRows.filter(r => r.trained);
 
         const rawSchools = actor.system?.skills?.spellSchools ?? {};
-        const allSchoolRows = Object.entries(rawSchools).map(([key, s]) => ({
-            key,
-            label: s.label,
-            linkedAttribute: s.linkedAttribute,
-            value: s.proficiency?.value ?? 0,
-            bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
-            trained: (s.proficiency?.value ?? 0) >= 1
-        }));
+        const allSchoolRows = Object.entries(rawSchools).map(([key, s]) => {
+            const prof = s.proficiency?.value ?? 0;
+            return {
+                key,
+                label: s.label,
+                linkedAttribute: s.linkedAttribute,
+                value: prof,
+                bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
+                showBonus: prof >= 4,
+                trained: prof >= 1
+            };
+        });
         const untrainedSchoolCount = allSchoolRows.filter(r => !r.trained).length;
         const schoolRows = this._showAllSchools ? allSchoolRows : allSchoolRows.filter(r => r.trained);
 
@@ -222,7 +230,9 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         if (config === null) return;
 
         const die = wispersCharacterSheet._shiftDie(baseDie, config.dieMod);
-        const formula = config.flatBonus === 0 ? die : `${die} + ${config.flatBonus}`;
+        const parts = [die];
+        if (config.difficultyDie) parts.push(config.difficultyDie);
+        const formula = parts.join(" + ");
         const roll = new Roll(formula);
         await roll.evaluate();
         await roll.toMessage({
@@ -235,14 +245,24 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const entry = this.actor.system?.skills?.[group]?.[key];
         if (!entry) return;
         const proficiency = entry.proficiency?.value ?? 0;
-        const bonus = this.actor.system?.abilities?.[entry.linkedAttribute]?.value ?? 0;
         const label = entry.label ?? key;
         // Only skills let the user swap the linked attribute at roll time; saves
         // and spell schools roll their fixed linked attribute.
         const abilityOptions = group === "skills"
             ? { selected: entry.linkedAttribute, list: this._abilityChoices() }
             : null;
-        return this._rollProficiency(label, proficiency, bonus, { abilityOptions });
+        let attributeDie = null;
+        if (group === "spellSchools") {
+            const attrValue = this.actor.system?.abilities?.[entry.linkedAttribute]?.value ?? 0;
+            attributeDie = wispersCharacterSheet._attributeDieFormula(attrValue);
+        }
+        const applyAttrBonus = proficiency >= 4 && (group === "skills" || group === "spellSchools");
+        return this._rollProficiency(label, proficiency, {
+            abilityOptions,
+            attributeDie,
+            applyAttrBonus,
+            linkedAttr: entry.linkedAttribute
+        });
     }
 
     _abilityChoices() {
@@ -253,7 +273,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         }));
     }
 
-    async _rollProficiency(label, proficiency, bonus, { abilityOptions = null } = {}) {
+    async _rollProficiency(label, proficiency, { abilityOptions = null, attributeDie = null, applyAttrBonus = false, linkedAttr = null } = {}) {
         // Untrained rolls (proficiency 0) roll bonus only — "0" passes through
         // _shiftDie unchanged, so tier modifiers are a no-op.
         const baseDie = wispersCharacterSheet._proficiencyDieFormula(proficiency) ?? "0";
@@ -261,15 +281,19 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const config = await wispersCharacterSheet._showRollDialog(label, baseDie, abilityOptions);
         if (config === null) return;
 
-        // If the dialog swapped the linked attribute (skills only), recompute
-        // bonus from the chosen ability's live value.
-        const effectiveBonus = config.attribute
-            ? (this.actor.system?.abilities?.[config.attribute]?.value ?? 0)
-            : bonus;
+        // For skills the dialog may swap the linked attribute; use that choice when
+        // computing the flat bonus that unlocks at proficiency 4.
+        const effectiveAttr = config.attribute ?? linkedAttr;
+        const flatBonus = applyAttrBonus && effectiveAttr
+            ? (this.actor.system?.abilities?.[effectiveAttr]?.value ?? 0)
+            : 0;
 
         const die = wispersCharacterSheet._shiftDie(baseDie, config.dieMod);
-        const totalBonus = effectiveBonus + config.flatBonus;
-        const formula = totalBonus === 0 ? die : `${die} + ${totalBonus}`;
+        const parts = [die];
+        if (attributeDie) parts.push(attributeDie);
+        if (flatBonus !== 0) parts.push(String(flatBonus));
+        if (config.difficultyDie) parts.push(config.difficultyDie);
+        const formula = parts.join(" + ");
         const roll = new Roll(formula);
         await roll.evaluate();
         await roll.toMessage({
@@ -294,6 +318,11 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
                 </select>
             </div>` : "";
 
+        const difficultyOptions = [0, 1, 2, 3, 4, 5].map(lvl => {
+            const key = lvl === 0 ? "DifficultyNone" : `Difficulty${lvl}`;
+            return `<option value="${lvl}">${t(key)}</option>`;
+        }).join("");
+
         const content = `
             ${abilityBlock}
             <div class="form-group">
@@ -307,19 +336,27 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
                 </select>
             </div>
             <div class="form-group">
-                <label>${t("FlatBonus")}</label>
-                <input type="number" name="flatBonus" value="0" />
+                <label>${t("DifficultyDie")}</label>
+                <select name="difficultyLevel">
+                    ${difficultyOptions}
+                </select>
             </div>`;
+
+        const difficultyDieMap = { 1: "1d4", 2: "1d6", 3: "1d8", 4: "1d10", 5: "1d12" };
+
         return await DialogV2.prompt({
             window: { title },
             content,
             ok: {
                 label: t("Roll"),
-                callback: (event, button) => ({
-                    dieMod: Number.parseInt(button.form.elements.dieMod.value, 10),
-                    flatBonus: Number.parseInt(button.form.elements.flatBonus.value, 10) || 0,
-                    attribute: button.form.elements.attribute?.value ?? null
-                })
+                callback: (event, button) => {
+                    const difficultyLevel = Number.parseInt(button.form.elements.difficultyLevel.value, 10) || 0;
+                    return {
+                        dieMod: Number.parseInt(button.form.elements.dieMod.value, 10),
+                        difficultyDie: difficultyDieMap[difficultyLevel] ?? null,
+                        attribute: button.form.elements.attribute?.value ?? null
+                    };
+                }
             },
             rejectClose: false
         });
