@@ -223,13 +223,12 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const ability = this.actor.system?.abilities?.[key];
         const label = ability?.id ? (game.i18n.localize(`CONSTANTS.Attributes.${ability.id}.long`) || ability.id) : key;
 
-        const config = await wispersCharacterSheet._showRollDialog(label, baseDie);
+        const config = await wispersCharacterSheet._showRollDialog(label);
         if (config === null) return;
 
-        const die = wispersCharacterSheet._shiftDie(baseDie, config.dieMod);
-        const parts = [die];
+        const parts = [baseDie];
         if (config.difficultyDie) parts.push(config.difficultyDie);
-        const formula = parts.join(" + ");
+        const formula = wispersCharacterSheet._applyBoonBane(parts, config.boonBane).join(" + ");
         const roll = new Roll(formula);
         await roll.evaluate();
         await roll.toMessage({
@@ -261,19 +260,19 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         // _shiftDie unchanged, so tier modifiers are a no-op.
         const baseDie = wispersCharacterSheet._proficiencyDieFormula(proficiency) ?? "0";
 
-        const config = await wispersCharacterSheet._showRollDialog(label, baseDie);
+        const config = await wispersCharacterSheet._showRollDialog(label);
         if (config === null) return;
 
         const flatBonus = applyAttrBonus && linkedAttr
             ? (this.actor.system?.abilities?.[linkedAttr]?.value ?? 0)
             : 0;
 
-        const die = wispersCharacterSheet._shiftDie(baseDie, config.dieMod);
-        const parts = [die];
-        if (attributeDie) parts.push(attributeDie);
-        if (flatBonus !== 0) parts.push(String(flatBonus));
-        if (config.difficultyDie) parts.push(config.difficultyDie);
-        const formula = parts.join(" + ");
+        const dieParts = [baseDie];
+        if (attributeDie) dieParts.push(attributeDie);
+        if (config.difficultyDie) dieParts.push(config.difficultyDie);
+        const shifted = wispersCharacterSheet._applyBoonBane(dieParts, config.boonBane);
+        if (flatBonus !== 0) shifted.push(String(flatBonus));
+        const formula = shifted.join(" + ");
         const roll = new Roll(formula);
         await roll.evaluate();
         await roll.toMessage({
@@ -282,10 +281,9 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         });
     }
 
-    static async _showRollDialog(label, baseDie) {
+    static async _showRollDialog(label) {
         const DialogV2 = foundry.applications.api.DialogV2;
         const t = key => game.i18n.localize(`CONSTANTS.Roll.${key}`);
-        const noChange = game.i18n.format("CONSTANTS.Roll.NoChange", { die: baseDie });
         const title = game.i18n.format("CONSTANTS.Roll.Title", { label });
 
         const difficultyOptions = [0, 1, 2, 3, 4, 5].map(lvl => {
@@ -295,13 +293,11 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
 
         const content = `
             <div class="form-group">
-                <label>${t("DieTier")}</label>
-                <select name="dieMod">
-                    <option value="-2">${t("Downgrade2")}</option>
-                    <option value="-1">${t("Downgrade1")}</option>
-                    <option value="0" selected>${noChange}</option>
-                    <option value="1">${t("Upgrade1")}</option>
-                    <option value="2">${t("Upgrade2")}</option>
+                <label>${t("BoonBane")}</label>
+                <select name="boonBane">
+                    <option value="bane">${t("Bane")}</option>
+                    <option value="none" selected>${t("BoonBaneNone")}</option>
+                    <option value="boon">${t("Boon")}</option>
                 </select>
             </div>
             <div class="form-group">
@@ -321,7 +317,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
                 callback: (event, button) => {
                     const difficultyLevel = Number.parseInt(button.form.elements.difficultyLevel.value, 10) || 0;
                     return {
-                        dieMod: Number.parseInt(button.form.elements.dieMod.value, 10),
+                        boonBane: button.form.elements.boonBane.value,
                         difficultyDie: difficultyDieMap[difficultyLevel] ?? null
                     };
                 }
@@ -330,11 +326,20 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         });
     }
 
-    static _shiftDie(dieFormula, mod) {
+    static _applyBoonBane(parts, mode) {
+        if (mode === "none") return parts;
         const tiers = ["1d4", "1d6", "1d8", "1d10", "1d12"];
-        const idx = tiers.indexOf(dieFormula);
-        if (idx === -1) return dieFormula;
-        return tiers[Math.max(0, Math.min(tiers.length - 1, idx + mod))];
+        const diceParts = parts.filter(p => tiers.includes(p));
+        if (!diceParts.length) return parts;
+        const sorted = [...diceParts].sort((a, b) => tiers.indexOf(a) - tiers.indexOf(b));
+        const target = mode === "boon" ? sorted[0] : sorted[sorted.length - 1];
+        const shift = mode === "boon" ? 1 : -1;
+        const newDie = tiers[Math.max(0, Math.min(tiers.length - 1, tiers.indexOf(target) + shift))];
+        let replaced = false;
+        return parts.map(p => {
+            if (!replaced && p === target) { replaced = true; return newDie; }
+            return p;
+        });
     }
 
     static _attributeDieFormula(value) {
