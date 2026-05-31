@@ -94,10 +94,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             return {
                 key,
                 label: s.label,
-                linkedAttribute: s.linkedAttribute,
                 value: prof,
-                bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
-                showBonus: prof >= 4,
                 trained: prof >= 1
             };
         });
@@ -246,46 +243,29 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         if (!entry) return;
         const proficiency = entry.proficiency?.value ?? 0;
         const label = entry.label ?? key;
-        // Only skills let the user swap the linked attribute at roll time; saves
-        // and spell schools roll their fixed linked attribute.
-        const abilityOptions = group === "skills"
-            ? { selected: entry.linkedAttribute, list: this._abilityChoices() }
-            : null;
         let attributeDie = null;
         if (group === "spellSchools") {
             const attrValue = this.actor.system?.abilities?.[entry.linkedAttribute]?.value ?? 0;
             attributeDie = wispersCharacterSheet._attributeDieFormula(attrValue);
         }
-        const applyAttrBonus = proficiency >= 4 && (group === "skills" || group === "spellSchools");
+        const applyAttrBonus = proficiency >= 4 && group === "spellSchools";
         return this._rollProficiency(label, proficiency, {
-            abilityOptions,
             attributeDie,
             applyAttrBonus,
             linkedAttr: entry.linkedAttribute
         });
     }
 
-    _abilityChoices() {
-        const abilities = this.actor.system?.abilities ?? {};
-        return Object.entries(abilities).map(([key, a]) => ({
-            key,
-            label: a?.id ? (game.i18n.localize(`CONSTANTS.Attributes.${a.id}.long`) || a.id) : key
-        }));
-    }
-
-    async _rollProficiency(label, proficiency, { abilityOptions = null, attributeDie = null, applyAttrBonus = false, linkedAttr = null } = {}) {
+    async _rollProficiency(label, proficiency, { attributeDie = null, applyAttrBonus = false, linkedAttr = null } = {}) {
         // Untrained rolls (proficiency 0) roll bonus only — "0" passes through
         // _shiftDie unchanged, so tier modifiers are a no-op.
         const baseDie = wispersCharacterSheet._proficiencyDieFormula(proficiency) ?? "0";
 
-        const config = await wispersCharacterSheet._showRollDialog(label, baseDie, abilityOptions);
+        const config = await wispersCharacterSheet._showRollDialog(label, baseDie);
         if (config === null) return;
 
-        // For skills the dialog may swap the linked attribute; use that choice when
-        // computing the flat bonus that unlocks at proficiency 4.
-        const effectiveAttr = config.attribute ?? linkedAttr;
-        const flatBonus = applyAttrBonus && effectiveAttr
-            ? (this.actor.system?.abilities?.[effectiveAttr]?.value ?? 0)
+        const flatBonus = applyAttrBonus && linkedAttr
+            ? (this.actor.system?.abilities?.[linkedAttr]?.value ?? 0)
             : 0;
 
         const die = wispersCharacterSheet._shiftDie(baseDie, config.dieMod);
@@ -302,21 +282,11 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         });
     }
 
-    static async _showRollDialog(label, baseDie, abilityOptions = null) {
+    static async _showRollDialog(label, baseDie) {
         const DialogV2 = foundry.applications.api.DialogV2;
         const t = key => game.i18n.localize(`CONSTANTS.Roll.${key}`);
         const noChange = game.i18n.format("CONSTANTS.Roll.NoChange", { die: baseDie });
         const title = game.i18n.format("CONSTANTS.Roll.Title", { label });
-
-        const abilityBlock = abilityOptions ? `
-            <div class="form-group">
-                <label>${t("LinkedAttribute")}</label>
-                <select name="attribute">
-                    ${abilityOptions.list.map(a =>
-                        `<option value="${a.key}"${a.key === abilityOptions.selected ? " selected" : ""}>${a.label}</option>`
-                    ).join("")}
-                </select>
-            </div>` : "";
 
         const difficultyOptions = [0, 1, 2, 3, 4, 5].map(lvl => {
             const key = lvl === 0 ? "DifficultyNone" : `Difficulty${lvl}`;
@@ -324,7 +294,6 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         }).join("");
 
         const content = `
-            ${abilityBlock}
             <div class="form-group">
                 <label>${t("DieTier")}</label>
                 <select name="dieMod">
@@ -353,8 +322,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
                     const difficultyLevel = Number.parseInt(button.form.elements.difficultyLevel.value, 10) || 0;
                     return {
                         dieMod: Number.parseInt(button.form.elements.dieMod.value, 10),
-                        difficultyDie: difficultyDieMap[difficultyLevel] ?? null,
-                        attribute: button.form.elements.attribute?.value ?? null
+                        difficultyDie: difficultyDieMap[difficultyLevel] ?? null
                     };
                 }
             },

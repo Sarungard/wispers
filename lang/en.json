@@ -46,8 +46,7 @@
       "Difficulty3": "3 — Moderate (d8)",
       "Difficulty4": "4 — Hard (d10)",
       "Difficulty5": "5 — Extreme (d12)",
-      "Roll": "Roll",
-      "LinkedAttribute": "Linked Attribute"
+      "Roll": "Roll"
     },
     "Tabs": {
       "Character": "Character",

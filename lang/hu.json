@@ -46,8 +46,7 @@
       "Difficulty3": "3 — Közepes (d8)",
       "Difficulty4": "4 — Nehéz (d10)",
       "Difficulty5": "5 — Extrém (d12)",
-      "Roll": "Dobás",
-      "LinkedAttribute": "Kapcsolt tulajdonság"
+      "Roll": "Dobás"
     },
     "Tabs": {
       "Character": "Karakter",
