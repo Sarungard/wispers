@@ -441,7 +441,7 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
-.wispers.sheet.character .coinage-row .coin .coin-value {
+.wispers.sheet.character .coinage-row .coin .coin-label {
   font-family: "Cinzel", serif;
   font-size: 11px;
   text-transform: uppercase;

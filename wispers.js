@@ -1,6 +1,8 @@
 import { WISPERS } from "./modules/config.js";
 import wispersActor from "./modules/objects/wispersActor.js";
 import WispersItem from "./modules/objects/wispersItem.js";
+import CharacterData from "./modules/data/actor/character.js";
+import NPCData from "./modules/data/actor/npc.js";
 import wispersCharacterSheet from "./modules/sheets/wispersCharacterSheet.js";
 import WispersItemSheet from "./modules/sheets/wispersItemSheet.js";
 import WeaponData from "./modules/data/item/weapon.js";
@@ -19,6 +21,14 @@ Hooks.once("init", async () => {
   CONFIG.INIT = true;
   CONFIG.Actor.documentClass = wispersActor;
   CONFIG.Item.documentClass = WispersItem;
+
+  // Actor data schemas (DataModels). Keys must match the actor type names in
+  // template.json `Actor.types`.
+  CONFIG.Actor.dataModels = {
+    ...(CONFIG.Actor.dataModels ?? {}),
+    Character: CharacterData,
+    NPC: NPCData,
+  };
 
   // Item data schemas (DataModels). Each registered type uses its DataModel
   // instead of its template.json field block. Types without an entry here still
