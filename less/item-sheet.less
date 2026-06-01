@@ -1,0 +1,249 @@
+// main: ./wispers.less
+//
+// Item / feature edit-sheet styling.
+//
+// The actor sheet has a full parchment treatment, but the per-type item
+// sheets (weapon, armor, shield, spell, consumable, loot, feature) rendered
+// with FoundryVTT's default form CSS. This file gives them the same look:
+// parchment background, Cinzel section legends, aligned form rows, and the
+// warm ink/accent palette used everywhere else.
+
+// Parchment palette — kept local so this file compiles independent of import
+// order (mirrors the values in character-sheet.less).
+@parchment-bg: #f4ebd0;
+@parchment-bg-soft: #faf2dc;
+@parchment-border: #b3946a;
+@parchment-border-strong: #8a6f4b;
+@ink: #3a2e1f;
+@ink-soft: #6a553a;
+@accent: #8b4513;
+@accent-soft: rgba(139, 69, 19, 0.15);
+
+.wispers.sheet.item {
+  min-width: 480px;
+
+  .window-content {
+    padding: 0;
+    background: @parchment-bg;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.45), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(139, 69, 19, 0.07), transparent 55%);
+    color: @ink;
+    font-family: "Roboto", sans-serif;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Cinzel", serif;
+    color: @ink;
+    border: none;
+  }
+
+  // ---- Header -------------------------------------------------------------
+  .item-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 2px solid @parchment-border;
+    background: linear-gradient(180deg, rgba(255, 250, 235, 0.65) 0%, transparent 100%);
+
+    .item-image {
+      flex: 0 0 64px;
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border: 2px solid @parchment-border-strong;
+      border-radius: 3px;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: box-shadow 0.15s ease;
+
+      &:hover {
+        box-shadow: 0 0 0 1px @accent, 0 0 8px @accent-soft;
+      }
+    }
+
+    .header-fields {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .item-name {
+      font-family: "Cinzel", serif;
+      font-size: 22px;
+      font-weight: 700;
+      height: 34px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid @parchment-border;
+      padding: 0 2px;
+      color: @ink;
+
+      &:focus {
+        outline: none;
+        border-bottom-color: @accent;
+        box-shadow: none;
+      }
+    }
+
+    .item-type {
+      align-self: flex-start;
+      font-family: "Cinzel", serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: @accent;
+      background: @accent-soft;
+      border: 1px solid @parchment-border;
+      border-radius: 10px;
+      padding: 1px 10px;
+    }
+  }
+
+  // ---- Body ---------------------------------------------------------------
+  .item-body {
+    padding: 12px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  fieldset {
+    border: 1px solid @parchment-border;
+    border-radius: 4px;
+    padding: 10px 12px 12px;
+    margin: 0;
+    background: rgba(255, 250, 235, 0.4);
+
+    legend {
+      font-family: "Cinzel", serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: @accent;
+      padding: 0 6px;
+    }
+
+    // Type-specific fieldsets get an accent spine to set them apart from the
+    // shared "Details" block.
+    &.item-type-fields {
+      border-left: 3px solid @accent;
+    }
+  }
+
+  // ---- Form rows ----------------------------------------------------------
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 7px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    > label {
+      flex: 0 0 132px;
+      font-family: "Cinzel", serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: @ink-soft;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      flex: 1;
+      min-width: 0;
+    }
+
+    input[type="checkbox"] {
+      flex: 0 0 auto;
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: @accent;
+      cursor: pointer;
+    }
+
+    .sep {
+      flex: 0 0 auto;
+      color: @ink-soft;
+      font-weight: 700;
+      padding: 0 2px;
+    }
+  }
+
+  // Stacked groups — description and the spell-component block.
+  .form-group.stacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+
+    > label {
+      flex: none;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 92px;
+    }
+  }
+
+  // ---- Inputs / selects / textareas — parchment styling -------------------
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    background: @parchment-bg-soft;
+    border: 1px solid @parchment-border;
+    border-radius: 2px;
+    color: @ink;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 3px 6px;
+
+    &:focus {
+      outline: none;
+      border-color: @accent;
+      box-shadow: 0 0 0 1px @accent-soft;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.45;
+  }
+
+  // ---- Spell component checkboxes ----------------------------------------
+  .checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 2px 0;
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "Roboto", sans-serif;
+      font-size: 12px;
+      color: @ink;
+      cursor: pointer;
+
+      input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        margin: 0;
+        accent-color: @accent;
+        cursor: pointer;
+      }
+    }
+  }
+}

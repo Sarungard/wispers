@@ -422,6 +422,202 @@
   flex: 0 0 200px;
   padding: 0 8px;
 }
+.wispers.sheet.item {
+  min-width: 480px;
+}
+.wispers.sheet.item .window-content {
+  padding: 0;
+  background: #f4ebd0;
+  background-image: radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.45), transparent 45%), radial-gradient(circle at 85% 90%, rgba(139, 69, 19, 0.07), transparent 55%);
+  color: #3a2e1f;
+  font-family: "Roboto", sans-serif;
+}
+.wispers.sheet.item h1,
+.wispers.sheet.item h2,
+.wispers.sheet.item h3,
+.wispers.sheet.item h4 {
+  font-family: "Cinzel", serif;
+  color: #3a2e1f;
+  border: none;
+}
+.wispers.sheet.item .item-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 2px solid #b3946a;
+  background: linear-gradient(180deg, rgba(255, 250, 235, 0.65) 0%, transparent 100%);
+}
+.wispers.sheet.item .item-header .item-image {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 2px solid #8a6f4b;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+.wispers.sheet.item .item-header .item-image:hover {
+  box-shadow: 0 0 0 1px #8b4513, 0 0 8px rgba(139, 69, 19, 0.15);
+}
+.wispers.sheet.item .item-header .header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.wispers.sheet.item .item-header .item-name {
+  font-family: "Cinzel", serif;
+  font-size: 22px;
+  font-weight: 700;
+  height: 34px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #b3946a;
+  padding: 0 2px;
+  color: #3a2e1f;
+}
+.wispers.sheet.item .item-header .item-name:focus {
+  outline: none;
+  border-bottom-color: #8b4513;
+  box-shadow: none;
+}
+.wispers.sheet.item .item-header .item-type {
+  align-self: flex-start;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8b4513;
+  background: rgba(139, 69, 19, 0.15);
+  border: 1px solid #b3946a;
+  border-radius: 10px;
+  padding: 1px 10px;
+}
+.wispers.sheet.item .item-body {
+  padding: 12px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.wispers.sheet.item fieldset {
+  border: 1px solid #b3946a;
+  border-radius: 4px;
+  padding: 10px 12px 12px;
+  margin: 0;
+  background: rgba(255, 250, 235, 0.4);
+}
+.wispers.sheet.item fieldset legend {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b4513;
+  padding: 0 6px;
+}
+.wispers.sheet.item fieldset.item-type-fields {
+  border-left: 3px solid #8b4513;
+}
+.wispers.sheet.item .form-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 7px;
+}
+.wispers.sheet.item .form-group:last-child {
+  margin-bottom: 0;
+}
+.wispers.sheet.item .form-group > label {
+  flex: 0 0 132px;
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #6a553a;
+}
+.wispers.sheet.item .form-group input[type="text"],
+.wispers.sheet.item .form-group input[type="number"],
+.wispers.sheet.item .form-group select {
+  flex: 1;
+  min-width: 0;
+}
+.wispers.sheet.item .form-group input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #8b4513;
+  cursor: pointer;
+}
+.wispers.sheet.item .form-group .sep {
+  flex: 0 0 auto;
+  color: #6a553a;
+  font-weight: 700;
+  padding: 0 2px;
+}
+.wispers.sheet.item .form-group.stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+}
+.wispers.sheet.item .form-group.stacked > label {
+  flex: none;
+}
+.wispers.sheet.item .form-group.stacked textarea {
+  width: 100%;
+  min-height: 92px;
+}
+.wispers.sheet.item input[type="text"],
+.wispers.sheet.item input[type="number"],
+.wispers.sheet.item textarea,
+.wispers.sheet.item select {
+  background: #faf2dc;
+  border: 1px solid #b3946a;
+  border-radius: 2px;
+  color: #3a2e1f;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 3px 6px;
+}
+.wispers.sheet.item input[type="text"]:focus,
+.wispers.sheet.item input[type="number"]:focus,
+.wispers.sheet.item textarea:focus,
+.wispers.sheet.item select:focus {
+  outline: none;
+  border-color: #8b4513;
+  box-shadow: 0 0 0 1px rgba(139, 69, 19, 0.15);
+}
+.wispers.sheet.item textarea {
+  resize: vertical;
+  line-height: 1.45;
+}
+.wispers.sheet.item .checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 2px 0;
+}
+.wispers.sheet.item .checkbox-row .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  color: #3a2e1f;
+  cursor: pointer;
+}
+.wispers.sheet.item .checkbox-row .checkbox input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #8b4513;
+  cursor: pointer;
+}
 .wispers.sheet.character .coinage-row {
   display: flex;
   align-items: center;
