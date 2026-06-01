@@ -152,68 +152,6 @@
     }
   },
   "Item": {
-    "types": ["weapon", "armor", "shield", "spell", "consumable", "loot", "feature"],
-    "templates": {
-      "base": {
-        "description": "",
-        "source": "",
-        "quantity": { "value": 1 },
-        "weight": { "value": 0 },
-        "price": { "value": 0, "currency": "gold" }
-      },
-      "equipment": {
-        "proficiency": {
-          "value": 0,
-          "max": 5
-        },
-        "equipped": { "value": false },
-        "type": ""
-      },
-      "damage": {
-        "dice": { "value": "1d6" },
-        "circumstanceDice": { "value": "1d6" },
-        "damageType": { "value": "physical" }
-      }
-    },
-    "weapon": {
-      "templates": ["base", "equipment", "damage"],
-      "weaponType": { "value": "melee" },
-      "range": { "value": 5, "units": "feet" },
-      "properties": []
-    },
-    "armor": {
-      "templates": ["base", "equipment"],
-      "armorType": { "value": "light" },
-      "armorValue": { "value": 10 },
-      "properties": []
-    },
-    "shield": {
-      "templates": ["base", "equipment"],
-      "armorValue": { "value": 2 },
-      "properties": []
-    },
-    "spell": {
-      "templates": ["base"],
-      "school": { "value": "" },
-      "level": { "value": 1, "max": 5 },
-      "castingTime": { "value": 1, "min": 1, "max": 6 },
-      "range": { "value": "touch" },
-      "duration": { "value": "instantaneous" },
-      "components": {
-        "verbal": false,
-        "somatic": false,
-        "material": false,
-        "materialComponents": ""
-      },
-      "damage": {
-        "dice": { "value": "1d6" },
-        "damageType": { "value": "fire" }
-      }
-    },
-    "feature": {
-      "description": "",
-      "featureType": { "value": "active" },
-      "uses": { "value": 0, "max": 0 }
-    }
+    "types": ["weapon", "armor", "shield", "spell", "consumable", "loot", "feature"]
   }
 }

@@ -33,28 +33,52 @@ Sheets define `static DEFAULT_OPTIONS` and `static PARTS` (a map of part name �
 ### Entry point: `wispers.js`
 
 The sole ES module entry (declared in `system.json` `esmodules`). On the `init` hook it:
-- Stores `CONFIG.WISPERS` (currently empty config object from `modules/config.js`) and toggles `CONFIG.INIT` as a load-phase lock.
-- Registers `wispersActor` as `CONFIG.Actor.documentClass`.
-- Unregisters the core ActorSheet and registers `wispersCharacterSheet` as the default Wispers sheet via `DocumentSheetConfig`.
-- Preloads Handlebars partials from `templates/partials/character/`.
+- Stores `CONFIG.WISPERS` (config object from `modules/config.js` — holds select-choice maps like `weaponTypes`, `armorTypes`, `featureTypes`, `currencies`) and toggles `CONFIG.INIT` as a load-phase lock.
+- Registers `wispersActor` as `CONFIG.Actor.documentClass` and `WispersItem` as `CONFIG.Item.documentClass`.
+- Registers an item DataModel for **every** item type via `CONFIG.Item.dataModels` (see the item data-layer section below).
+- Unregisters the core Actor **and** Item sheets and registers `wispersCharacterSheet` and `WispersItemSheet` as the defaults via `DocumentSheetConfig`.
+- Preloads Handlebars partials from `templates/partials/character/`, `templates/actors/partials/`, and `templates/sheets/item/` (including every `types/<type>.hbs`). **Any new partial must be added to this preload list** or dynamic `{{> (lookup …)}}` includes will fail.
 - Registers Handlebars helpers: `attributeDie`, `proficiencyDie`, `proficiencyPips`, `toLowerCase`, `log`. `proficiencyPips(value)` returns an array of `{level: 1–5, active: boolean}` used to render the 5-pip proficiency widgets.
 
 There are **two `Hooks.once("ready", ...)` registrations** in `wispers.js` — one for GM-only init logic, one to attach the `hotbarDrop` listener. Both run; this is intentional, not a duplicate.
 
-### Data schema: `template.json`
+### Data schemas — a deliberate split
 
-The single source of truth for what fields exist on each Actor and Item type. Foundry uses this at the database level — adding a new field anywhere requires editing this file. Key shape:
+The system uses **two different schema mechanisms**, on purpose:
 
-- **Actors**: `Character`, `NPC`. Both reference shared templates `["base", "skills"]`. The `base` template defines the 6 abilities (Str/Agi/Con/Kno/Pre/Spi), `wounds` (with `lightThreshold.value`, `heavyThreshold.value`, `modifier.value`, and a `consequences` array), `initiative`, and the full `skills` block (combat/social skills, spell schools, saving throws — each with a `proficiency.value` 0–5 and a `linkedAttribute` key into `abilities`).
-- **Items**: `weapon`, `armor`, `shield`, `spell`, `consumable`, `loot`. Shared templates: `base` (description/quantity/weight/price), `equipment` (proficiency/equipped/type), `damage` (dice/circumstanceDice/damageType).
+- **Actors → `template.json`.** The `Actor` block is the source of truth for `Character` / `NPC` fields. Both reference shared templates `["base", "skills"]`. The `base` template defines the 6 abilities (Str/Agi/Con/Kno/Pre/Spi), `wounds` (with `lightThreshold.value`, `heavyThreshold.value`, `modifier.value`, and a `consequences` array), `initiative`, and the full `skills` block (combat/social skills, spell schools, saving throws — each with a `proficiency.value` 0–5 and a `linkedAttribute` key into `abilities`). Adding an actor field means editing `template.json`.
+- **Items → DataModels** (see next section). The `Item` block in `template.json` is now **only** `"types": [...]` — the list of valid item types. It carries **no field definitions**; every type's schema lives in a `foundry.abstract.TypeDataModel` class registered in `CONFIG.Item.dataModels`. A registered DataModel fully overrides any template.json entry for that type, so don't re-add item field blocks to `template.json` — they'd be dead and misleading.
 
-Note: `system.json` declares `primaryTokenAttribute: "health"` and `secondaryTokenAttribute: "mental"`, but neither `health` nor `mental` exist in `template.json` — health-equivalent data lives under `wounds`. Reconcile before relying on token bars.
+Note: `system.json` declares `primaryTokenAttribute: "health"` and `secondaryTokenAttribute: "mental"`, but neither `health` nor `mental` exist in the actor schema — health-equivalent data lives under `wounds`. Reconcile before relying on token bars.
+
+### Item data layer: `modules/data/item/`
+
+Each item type has a `TypeDataModel` subclass (`weapon`, `armor`, `shield`, `spell`, `consumable`, `loot`, `feature`), registered in `wispers.js` under `CONFIG.Item.dataModels`. DataModels have **no equivalent of template.json's `"templates"` inheritance**, so shared field groups live in `modules/data/item/_helpers.js` as functions returning fresh `foundry.data.fields.*` objects:
+
+- `baseFields()` — description/source/quantity/weight/price (the old `base` template). On every type **except `feature`** (features aren't physical inventory).
+- `equipmentFields()` — proficiency/equipped/type (weapons, armor, shields).
+- `damageFields()` — dice/circumstanceDice/damageType (weapons; spells define their own damage inline because they have no circumstance die).
+- `usesFields()` — `uses.{value,max}` (consumables, features).
+
+A DataModel's `defineSchema()` **spreads** the groups it needs and adds its own fields — e.g. `WeaponData` is `{ ...baseFields(), ...equipmentFields(), ...damageFields(), weaponType, range, properties }`. The resulting `system` shapes match the pre-migration template.json exactly, so existing documents and the actor-sheet inventory/spellbook displays keep working unchanged.
+
+**To add a new item type**, do all five: (1) add the type to `template.json` `Item.types`; (2) create `modules/data/item/<type>.js`; (3) register it in the `CONFIG.Item.dataModels` map in `wispers.js`; (4) create `templates/sheets/item/types/<type>.hbs` and add it to both the preload list in `wispers.js` **and** the `WispersItemSheet.TYPE_PARTS` map; (5) add localization keys to **both** `lang/en.json` and `lang/hu.json`. A type with no type-specific fields (like `loot`) can skip the partial — omit it from `TYPE_PARTS` and the sheet renders shared fields only.
+
+### Item document & sheet: `WispersItem` / `WispersItemSheet`
+
+`WispersItem` (`modules/objects/wispersItem.js`) is the `CONFIG.Item.documentClass`. Its `roll()` posts the item to chat — rolling `system.damage.dice.value` when present, otherwise a description card — and is what the `hotbarDrop` macro in `wispers.js` invokes.
+
+`WispersItemSheet` (`modules/sheets/wispersItemSheet.js`) is an ApplicationV2 sheet mirroring the character sheet's shape (`DEFAULT_OPTIONS` / `PARTS`, `submitOnChange`). `PARTS` is `header` + `body`; `body.hbs` injects a per-type partial via `{{> (lookup . "typePartial")}}`, where `typePartial` comes from the static `TYPE_PARTS` map keyed by `item.type`. `_prepareContext` also exposes `hasInventoryFields` (`"quantity" in item.system`) which gates the shared quantity/weight/price/source fieldset so **features** (no base fields) don't render inputs for fields they lack. The sheet calls `installRelativeNumberInputs(this.element, this.item)` in `_onFirstRender` so item number fields support the same `+2`/`-5` relative-expression convention as the actor sheet (see below).
+
+### Relative numeric inputs: `modules/utils.js`
+
+`installRelativeNumberInputs(root, doc)` installs a **capture-phase** `change` listener: typing `+2` / `-5` into any `<input data-dtype="Number">` resolves to the current stored value ± the delta before Foundry's bubble-phase `submitOnChange` reads the form; a plain number sets absolutely. Both `wispersCharacterSheet` and `wispersItemSheet` call it — don't duplicate the logic inline. Any new numeric field that should accept expressions just needs `type="text"` + `data-dtype="Number"` and a `name` that is a data path on the bound document.
 
 ### Sheet rendering: `wispersCharacterSheet`
 
 `PARTS` declares `header` and `body`. `_configureRenderOptions` calls `super` **first** and then sets `options.parts` to `["header"]` for limited-permission users or `["header", "body"]` otherwise. The order matters: the parent class can populate `options.parts` with a partial-render subset, and our explicit assignment needs to win so both parts always re-render together (otherwise displays in the header that depend on body fields — e.g. save bonuses derived from sidebar ability scores — go stale).
 
-`DEFAULT_OPTIONS` registers four `actions` mapped to static handlers: `toggleAllSkills`, `toggleAllSchools`, `addSkill`, `addSchool`. Wire new sheet buttons by adding a `data-action="…"` attribute and a matching entry in this map — the ApplicationV2 framework does the dispatch.
+`DEFAULT_OPTIONS` registers `actions` mapped to static handlers: `toggleAllSkills`, `toggleAllSchools`, `addSkill`, `addSchool`, `addCoins`, `removeCoins`, `createItem`, `editItem`, `deleteItem`. Wire new sheet buttons by adding a `data-action="…"` attribute and a matching entry in this map — the ApplicationV2 framework does the dispatch. `createItem` reads `data-type` (item type) and an optional `data-feature-type`; the latter is applied via `foundry.utils.setProperty` into a nested `system.featureType.value` because document **creation** data is not run through `expandObject` (unlike `update()`), so a flat dotted key would be silently dropped.
 
 `_prepareContext` builds the template context (`actor`, `system`, `items`, `config`, ownership flags) plus several pre-shaped collections used by the partials:
 

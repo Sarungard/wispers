@@ -1,0 +1,17 @@
+<fieldset class="item-type-fields feature-fields">
+    <legend>{{localize "CONSTANTS.Features.Section"}}</legend>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Features.Activation"}}</label>
+        <select name="system.featureType.value">
+            {{selectOptions config.featureTypes selected=system.featureType.value localize=true}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Item.Uses"}}</label>
+        <input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number" />
+        <span class="sep">/</span>
+        <input type="text" name="system.uses.max" value="{{system.uses.max}}" data-dtype="Number" />
+    </div>
+</fieldset>

@@ -1,3 +1,5 @@
+import { installRelativeNumberInputs } from "../utils.js";
+
 const api = foundry.applications.api;
 const sheets = foundry.applications.sheets;
 
@@ -178,20 +180,8 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
 
     /** @override */
     _onFirstRender(context, options) {
-        // Capture phase runs before Foundry's bubble-phase submitOnChange handler,
-        // so input.value is already resolved when the form is read.
-        this.element.addEventListener("change", ev => {
-            const input = ev.target;
-            if (input.tagName !== "INPUT" || input.dataset.dtype !== "Number") return;
-            const raw = input.value.trim();
-            if (/^[+-]\d/.test(raw)) {
-                const delta = Number(raw);
-                if (!Number.isNaN(delta)) {
-                    const current = Number(foundry.utils.getProperty(this.actor, input.name)) || 0;
-                    input.value = current + delta;
-                }
-            }
-        }, { capture: true });
+        // Relative numeric expressions ("+2", "-5") on Number inputs.
+        installRelativeNumberInputs(this.element, this.actor);
 
         this.element.addEventListener("click", ev => {
             const abilityLabel = ev.target.closest(".ability-label[data-roll-ability]");

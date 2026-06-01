@@ -1,6 +1,15 @@
 import { WISPERS } from "./modules/config.js";
 import wispersActor from "./modules/objects/wispersActor.js";
+import WispersItem from "./modules/objects/wispersItem.js";
 import wispersCharacterSheet from "./modules/sheets/wispersCharacterSheet.js";
+import WispersItemSheet from "./modules/sheets/wispersItemSheet.js";
+import WeaponData from "./modules/data/item/weapon.js";
+import ArmorData from "./modules/data/item/armor.js";
+import ShieldData from "./modules/data/item/shield.js";
+import SpellData from "./modules/data/item/spell.js";
+import ConsumableData from "./modules/data/item/consumable.js";
+import LootData from "./modules/data/item/loot.js";
+import FeatureData from "./modules/data/item/feature.js";
 
 Hooks.once("init", async () => {
   console.log("WISPERS | Initalizing Wispers Core System");
@@ -9,12 +18,23 @@ Hooks.once("init", async () => {
   CONFIG.WISPERS = WISPERS;
   CONFIG.INIT = true;
   CONFIG.Actor.documentClass = wispersActor;
-  // CONFIG.Item.documentClass = WispersItem;
+  CONFIG.Item.documentClass = WispersItem;
 
-  // Register custom Sheets and unregister the start Sheets
-  // Items.unregisterSheet("core", ItemSheet);
-  // Actors.unregisterSheet("core", ActorSheet);
+  // Item data schemas (DataModels). Each registered type uses its DataModel
+  // instead of its template.json field block. Types without an entry here still
+  // fall back to template.json.
+  CONFIG.Item.dataModels = {
+    ...(CONFIG.Item.dataModels ?? {}),
+    weapon: WeaponData,
+    armor: ArmorData,
+    shield: ShieldData,
+    spell: SpellData,
+    consumable: ConsumableData,
+    loot: LootData,
+    feature: FeatureData,
+  };
 
+  // Register custom Sheets and unregister the core defaults.
   const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
   DocumentSheetConfig.unregisterSheet(
     Actor,
@@ -24,6 +44,15 @@ Hooks.once("init", async () => {
   DocumentSheetConfig.registerSheet(Actor, "wispers", wispersCharacterSheet, {
     makeDefault: true,
     label: "Default Wispers Character Sheet",
+  });
+  DocumentSheetConfig.unregisterSheet(
+    Item,
+    "core",
+    foundry.appv1.sheets.ItemSheet,
+  );
+  DocumentSheetConfig.registerSheet(Item, "wispers", WispersItemSheet, {
+    makeDefault: true,
+    label: "Default Wispers Item Sheet",
   });
 
   // Load all Partial-Handlebar Files
@@ -54,6 +83,14 @@ function preloadHandlebarsTemplates() {
     "systems/wispers/templates/actors/partials/coinage.hbs",
     "systems/wispers/templates/actors/partials/inventory-header.hbs",
     "systems/wispers/templates/actors/partials/inventory.hbs",
+    "systems/wispers/templates/sheets/item/header.hbs",
+    "systems/wispers/templates/sheets/item/body.hbs",
+    "systems/wispers/templates/sheets/item/types/weapon.hbs",
+    "systems/wispers/templates/sheets/item/types/armor.hbs",
+    "systems/wispers/templates/sheets/item/types/shield.hbs",
+    "systems/wispers/templates/sheets/item/types/spell.hbs",
+    "systems/wispers/templates/sheets/item/types/consumable.hbs",
+    "systems/wispers/templates/sheets/item/types/feature.hbs",
   ];
 
   return foundry.applications.handlebars.loadTemplates(templatePaths);

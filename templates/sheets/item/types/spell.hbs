@@ -1,0 +1,61 @@
+<fieldset class="item-type-fields spell-fields">
+    <legend>{{localize "CONSTANTS.Spell.Section"}}</legend>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.School"}}</label>
+        <input type="text" name="system.school.value" value="{{system.school.value}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.Level"}}</label>
+        <input type="text" name="system.level.value" value="{{system.level.value}}" data-dtype="Number" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.CastingTime"}}</label>
+        <input type="text" name="system.castingTime.value" value="{{system.castingTime.value}}" data-dtype="Number" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.Range"}}</label>
+        <input type="text" name="system.range.value" value="{{system.range.value}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.Duration"}}</label>
+        <input type="text" name="system.duration.value" value="{{system.duration.value}}" />
+    </div>
+
+    <div class="form-group stacked">
+        <label>{{localize "CONSTANTS.Spell.Components"}}</label>
+        <div class="checkbox-row">
+            <label class="checkbox">
+                <input type="checkbox" name="system.components.verbal" {{#if system.components.verbal}}checked{{/if}} />
+                {{localize "CONSTANTS.Spell.Verbal"}}
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="system.components.somatic" {{#if system.components.somatic}}checked{{/if}} />
+                {{localize "CONSTANTS.Spell.Somatic"}}
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="system.components.material" {{#if system.components.material}}checked{{/if}} />
+                {{localize "CONSTANTS.Spell.Material"}}
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.MaterialComponents"}}</label>
+        <input type="text" name="system.components.materialComponents" value="{{system.components.materialComponents}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.DamageDice"}}</label>
+        <input type="text" name="system.damage.dice.value" value="{{system.damage.dice.value}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Spell.DamageType"}}</label>
+        <input type="text" name="system.damage.damageType.value" value="{{system.damage.damageType.value}}" />
+    </div>
+</fieldset>

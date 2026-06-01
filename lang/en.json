@@ -19,10 +19,65 @@
       "Item": "Wispers Item Sheet"
     },
     "Item": {
+      "Details": "Details",
+      "Description": "Description",
+      "Quantity": "Quantity",
+      "Weight": "Weight",
+      "Price": "Price",
+      "Currency": "Currency",
+      "Source": "Source",
+      "Uses": "Uses",
+      "UsesMax": "Max",
       "Spell": {
         "SpellLVL": "Level {level} Spells",
         "AddLVL": "Add LVL {level}"
       }
+    },
+    "Weapon": {
+      "Section": "Weapon",
+      "Type": "Type",
+      "Melee": "Melee",
+      "Ranged": "Ranged",
+      "Range": "Range",
+      "Proficiency": "Proficiency",
+      "Equipped": "Equipped",
+      "DamageDice": "Damage Dice",
+      "CircumstanceDice": "Circumstance Dice",
+      "DamageType": "Damage Type"
+    },
+    "Armor": {
+      "Section": "Armor",
+      "Type": "Armor Type",
+      "Light": "Light",
+      "Medium": "Medium",
+      "Heavy": "Heavy",
+      "Value": "Armor Value",
+      "Proficiency": "Proficiency",
+      "Equipped": "Equipped"
+    },
+    "Shield": {
+      "Section": "Shield",
+      "Value": "Shield Value",
+      "Proficiency": "Proficiency",
+      "Equipped": "Equipped"
+    },
+    "Spell": {
+      "Section": "Spell",
+      "School": "School",
+      "Level": "Level",
+      "CastingTime": "Casting Time",
+      "Range": "Range",
+      "Duration": "Duration",
+      "Components": "Components",
+      "Verbal": "Verbal",
+      "Somatic": "Somatic",
+      "Material": "Material",
+      "MaterialComponents": "Material Components",
+      "DamageDice": "Damage Dice",
+      "DamageType": "Damage Type"
+    },
+    "Consumable": {
+      "Section": "Consumable"
     },
     "Effect": {
       "Source": "Source",
@@ -95,7 +150,9 @@
       "ColUses": "Uses",
       "AddFeature": "Add Feature",
       "EditFeature": "Edit",
-      "DeleteFeature": "Delete"
+      "DeleteFeature": "Delete",
+      "Section": "Feature",
+      "Activation": "Activation"
     },
     "Search": "Search..."
   },

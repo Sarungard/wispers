@@ -19,10 +19,65 @@
       "Item": "WisperSys Item Sheet"
     },
     "Item": {
+      "Details": "Részletek",
+      "Description": "Leírás",
+      "Quantity": "Mennyiség",
+      "Weight": "Súly",
+      "Price": "Ár",
+      "Currency": "Pénznem",
+      "Source": "Forrás",
+      "Uses": "Felhasználás",
+      "UsesMax": "Max",
       "Spell": {
         "SpellLVL": "Level {level} Spells",
         "AddLVL": "Add LVL {level}"
       }
+    },
+    "Weapon": {
+      "Section": "Fegyver",
+      "Type": "Típus",
+      "Melee": "Közelharci",
+      "Ranged": "Távolsági",
+      "Range": "Hatótáv",
+      "Proficiency": "Jártasság",
+      "Equipped": "Felszerelve",
+      "DamageDice": "Sebzéskocka",
+      "CircumstanceDice": "Körülménykocka",
+      "DamageType": "Sebzéstípus"
+    },
+    "Armor": {
+      "Section": "Páncél",
+      "Type": "Páncéltípus",
+      "Light": "Könnyű",
+      "Medium": "Közepes",
+      "Heavy": "Nehéz",
+      "Value": "Páncélérték",
+      "Proficiency": "Jártasság",
+      "Equipped": "Felszerelve"
+    },
+    "Shield": {
+      "Section": "Pajzs",
+      "Value": "Pajzsérték",
+      "Proficiency": "Jártasság",
+      "Equipped": "Felszerelve"
+    },
+    "Spell": {
+      "Section": "Varázslat",
+      "School": "Iskola",
+      "Level": "Szint",
+      "CastingTime": "Varázslási idő",
+      "Range": "Hatótáv",
+      "Duration": "Időtartam",
+      "Components": "Összetevők",
+      "Verbal": "Verbális",
+      "Somatic": "Szomatikus",
+      "Material": "Anyagi",
+      "MaterialComponents": "Anyagi összetevők",
+      "DamageDice": "Sebzéskocka",
+      "DamageType": "Sebzéstípus"
+    },
+    "Consumable": {
+      "Section": "Fogyóeszköz"
     },
     "Effect": {
       "Source": "Forrás",
@@ -95,7 +150,9 @@
       "ColUses": "Használat",
       "AddFeature": "Képesség hozzáadása",
       "EditFeature": "Szerkesztés",
-      "DeleteFeature": "Törlés"
+      "DeleteFeature": "Törlés",
+      "Section": "Képesség",
+      "Activation": "Aktiválás"
     },
     "Search": "Keresés..."
   },

@@ -1,0 +1,41 @@
+<fieldset class="item-type-fields weapon-fields">
+    <legend>{{localize "CONSTANTS.Weapon.Section"}}</legend>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.Type"}}</label>
+        <select name="system.weaponType.value">
+            {{selectOptions config.weaponTypes selected=system.weaponType.value localize=true}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.Range"}}</label>
+        <input type="text" name="system.range.value" value="{{system.range.value}}" data-dtype="Number" />
+        <input type="text" name="system.range.units" value="{{system.range.units}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.Proficiency"}}</label>
+        <input type="text" name="system.proficiency.value" value="{{system.proficiency.value}}" data-dtype="Number" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.Equipped"}}</label>
+        <input type="checkbox" name="system.equipped.value" {{#if system.equipped.value}}checked{{/if}} />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.DamageDice"}}</label>
+        <input type="text" name="system.damage.dice.value" value="{{system.damage.dice.value}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.CircumstanceDice"}}</label>
+        <input type="text" name="system.damage.circumstanceDice.value" value="{{system.damage.circumstanceDice.value}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.DamageType"}}</label>
+        <input type="text" name="system.damage.damageType.value" value="{{system.damage.damageType.value}}" />
+    </div>
+</fieldset>
