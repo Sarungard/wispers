@@ -2,4 +2,17 @@
     {{> "systems/wispers/templates/actors/partials/coinage.hbs"}}
     {{> "systems/wispers/templates/actors/partials/inventory-header.hbs"}}
     {{> "systems/wispers/templates/actors/partials/inventory.hbs"}}
+
+    <footer class="encumbrance{{#if encumbrance.over}} over{{/if}}">
+        <div class="encumbrance-meta">
+            <span class="encumbrance-title">
+                <i class="fas fa-weight-hanging fa-fw"></i>
+                {{localize "CONSTANTS.Inventory.Encumbrance"}}
+            </span>
+            <span class="encumbrance-count">{{encumbrance.value}} / {{encumbrance.max}}</span>
+        </div>
+        <div class="encumbrance-track">
+            <div class="encumbrance-fill" style="width: {{encumbrance.pct}}%"></div>
+        </div>
+    </footer>
 </div>

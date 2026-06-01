@@ -30,6 +30,17 @@
                 <div class="item-prop">{{item.system.weight.value}}</div>
                 <div class="item-prop">{{item.system.price.value}}</div>
                 <div class="item-controls flexrow">
+                    {{#if item.system.equipped}}
+                        {{#if ../../editable}}
+                        <a class="item-control equip-toggle{{#if item.system.equipped.value}} is-equipped{{/if}}"
+                           data-action="toggleEquipped" data-item-id="{{item.id}}"
+                           data-tooltip="{{#if item.system.equipped.value}}{{localize 'CONSTANTS.Inventory.Unequip'}}{{else}}{{localize 'CONSTANTS.Inventory.Equip'}}{{/if}}">
+                            <i class="fas fa-shield-halved fa-fw"></i>
+                        </a>
+                        {{else}}
+                        <i class="fas fa-shield-halved fa-fw item-control equip-toggle{{#if item.system.equipped.value}} is-equipped{{/if}}"></i>
+                        {{/if}}
+                    {{/if}}
                     {{#if ../../editable}}
                     <a class="item-control" data-action="editItem" data-item-id="{{item.id}}"
                        data-tooltip="{{localize 'CONSTANTS.Inventory.EditItem'}}">

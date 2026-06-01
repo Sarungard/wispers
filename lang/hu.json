@@ -121,7 +121,10 @@
       "AddItem": "Hozzáadás",
       "NewItem": "Új tárgy",
       "EditItem": "Szerkesztés",
-      "DeleteItem": "Törlés"
+      "DeleteItem": "Törlés",
+      "Equip": "Felszerel",
+      "Unequip": "Levesz",
+      "Encumbrance": "Teherbírás"
     },
     "Coinage": {
       "Iron": "Vas",

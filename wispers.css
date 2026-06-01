@@ -688,6 +688,63 @@
   font-size: 11px;
   color: #8a7a66;
 }
+.wispers.sheet.character .tab.inventory.active {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-right: 0;
+}
+.wispers.sheet.character .tab.inventory .inventory-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-right: 6px;
+}
+.wispers.sheet.character .encumbrance {
+  flex: 0 0 auto;
+  margin-top: 6px;
+  padding: 6px 8px 4px;
+  border-top: 1px solid rgba(179, 148, 106, 0.6);
+  background: rgba(255, 250, 235, 0.55);
+}
+.wispers.sheet.character .encumbrance .encumbrance-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6a553a;
+}
+.wispers.sheet.character .encumbrance .encumbrance-title i {
+  margin-right: 5px;
+  color: #8b4513;
+}
+.wispers.sheet.character .encumbrance .encumbrance-count {
+  font-weight: 700;
+  color: #3a2e1f;
+}
+.wispers.sheet.character .encumbrance .encumbrance-track {
+  height: 10px;
+  border: 1px solid #b3946a;
+  border-radius: 5px;
+  background: rgba(58, 46, 31, 0.12);
+  overflow: hidden;
+}
+.wispers.sheet.character .encumbrance .encumbrance-fill {
+  height: 100%;
+  background: linear-gradient(180deg, #a85d20 0%, #8b4513 100%);
+  transition: width 0.2s ease;
+}
+.wispers.sheet.character .encumbrance.over .encumbrance-count {
+  color: #a31515;
+}
+.wispers.sheet.character .encumbrance.over .encumbrance-fill {
+  background: linear-gradient(180deg, #c0392b 0%, #a31515 100%);
+}
 .wispers.sheet.character .inventory-header {
   display: flex;
   align-items: center;
@@ -730,8 +787,28 @@
   flex: 0 0 52px;
   font-size: 12px;
 }
+.wispers.sheet.character .inventory-body .equip-toggle {
+  color: #a99a82;
+  transition: color 0.12s ease, text-shadow 0.12s ease;
+}
+.wispers.sheet.character .inventory-body .equip-toggle.is-equipped {
+  color: #8b4513;
+}
+.wispers.sheet.character .inventory-body a.equip-toggle:hover {
+  color: #6a3a10;
+  text-shadow: 0 0 6px rgba(139, 69, 19, 0.4);
+}
 .wispers.sheet.character .inventory-body .item-controls {
-  flex: 0 0 56px;
+  flex: 0 0 80px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+.wispers.sheet.character .inventory-body .item-controls a,
+.wispers.sheet.character .inventory-body .item-controls .equip-toggle {
+  flex: 0 0 auto;
+  margin: 0 4px;
 }
 .wispers.sheet.character .inventory-body .inv-col-header {
   font-size: 10px;

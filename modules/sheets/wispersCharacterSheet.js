@@ -24,7 +24,8 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             removeCoins: WispersCharacterSheet._onRemoveCoins,
             createItem: WispersCharacterSheet._onCreateItem,
             editItem: WispersCharacterSheet._onEditItem,
-            deleteItem: WispersCharacterSheet._onDeleteItem
+            deleteItem: WispersCharacterSheet._onDeleteItem,
+            toggleEquipped: WispersCharacterSheet._onToggleEquipped
         },
         form: {
             submitOnChange: true,
@@ -84,6 +85,21 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             { type: "consumable", labelKey: "CONSTANTS.Inventory.Consumables", items: inventory.consumables },
             { type: "loot",       labelKey: "CONSTANTS.Inventory.Loot",        items: inventory.loot        },
         ];
+
+        // Slot-based encumbrance. Every carried item occupies slots equal to its
+        // weight (base 1) times its quantity. The cap is a static 10 for now;
+        // a later pass will derive it from Strength.
+        const ENCUMBRANCE_MAX = 10;
+        const carried = [...inventory.weapons, ...inventory.armor, ...inventory.shields,
+                         ...inventory.consumables, ...inventory.loot];
+        const usedSlots = carried.reduce(
+            (sum, i) => sum + (i.system?.weight?.value ?? 0) * (i.system?.quantity?.value ?? 1), 0);
+        const encumbrance = {
+            value: usedSlots,
+            max: ENCUMBRANCE_MAX,
+            pct: Math.min(100, Math.round((usedSlots / ENCUMBRANCE_MAX) * 100)),
+            over: usedSlots > ENCUMBRANCE_MAX
+        };
 
         const spellList = items.filter(i => i.type === "spell");
         const spells = {};
@@ -173,6 +189,7 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             isGM: baseData.user.isGM,
             inventory,
             inventorySections,
+            encumbrance,
             spells,
             featureSections,
             effects,
@@ -561,6 +578,15 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
     static _onEditItem(event, target) {
         const item = this.actor.items.get(target.dataset.itemId);
         item?.sheet?.render(true);
+    }
+
+    // Flip system.equipped.value on equippable items (weapons/armor/shields).
+    // The updateItem hook registered in _onFirstRender re-renders the sheet, so
+    // the toggle icon reflects the new state without an explicit render() here.
+    static async _onToggleEquipped(event, target) {
+        const item = this.actor.items.get(target.dataset.itemId);
+        if (!item || !("equipped" in (item.system ?? {}))) return;
+        await item.update({ "system.equipped.value": !item.system.equipped.value });
     }
 
     static async _onDeleteItem(event, target) {

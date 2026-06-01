@@ -1,6 +1,72 @@
 // main: ./wispers.less
 
 .wispers.sheet.character {
+    // Inventory tab becomes a flex column so the encumbrance bar pins to the
+    // bottom while the item list scrolls between the header and the bar.
+    .tab.inventory.active {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding-right: 0;
+    }
+    .tab.inventory .inventory-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        padding-right: 6px;
+    }
+
+    // Slot-based encumbrance bar, pinned to the bottom of the inventory page.
+    .encumbrance {
+        flex: 0 0 auto;
+        margin-top: 6px;
+        padding: 6px 8px 4px;
+        border-top: 1px solid rgba(179, 148, 106, 0.6);
+        background: rgba(255, 250, 235, 0.55);
+
+        .encumbrance-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-family: "Cinzel", serif;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #6a553a;
+        }
+        .encumbrance-title i {
+            margin-right: 5px;
+            color: #8b4513;
+        }
+        .encumbrance-count {
+            font-weight: 700;
+            color: #3a2e1f;
+        }
+
+        .encumbrance-track {
+            height: 10px;
+            border: 1px solid #b3946a;
+            border-radius: 5px;
+            background: rgba(58, 46, 31, 0.12);
+            overflow: hidden;
+        }
+        .encumbrance-fill {
+            height: 100%;
+            background: linear-gradient(180deg, #a85d20 0%, #8b4513 100%);
+            transition: width 0.2s ease;
+        }
+
+        // Over capacity — warn in red.
+        &.over {
+            .encumbrance-count { color: #a31515; }
+            .encumbrance-fill {
+                background: linear-gradient(180deg, #c0392b 0%, #a31515 100%);
+            }
+        }
+    }
+
     .inventory-header {
         display: flex;
         align-items: center;
@@ -52,8 +118,32 @@
             font-size: 12px;
         }
 
+        // Equipped toggle — sits in item-controls, before the edit button
+        .equip-toggle {
+            color: #a99a82; // muted = not equipped
+            transition: color 0.12s ease, text-shadow 0.12s ease;
+
+            &.is-equipped {
+                color: #8b4513; // accent = equipped
+            }
+        }
+
+        a.equip-toggle:hover {
+            color: #6a3a10;
+            text-shadow: 0 0 6px rgba(139, 69, 19, 0.4);
+        }
+
         .item-controls {
-            flex: 0 0 56px;
+            flex: 0 0 80px;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: flex-end;
+
+            a, .equip-toggle {
+                flex: 0 0 auto;
+                margin: 0 4px;
+            }
         }
 
         // Mute column header labels — they're already obvious from context

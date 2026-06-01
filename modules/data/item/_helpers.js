@@ -19,7 +19,9 @@ export function baseFields() {
             value: new fields.NumberField({ required: true, nullable: false, initial: 1, integer: true, min: 0 })
         }),
         weight: new fields.SchemaField({
-            value: new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 })
+            // Base weight of 1 = one encumbrance slot. Slot-based carry capacity
+            // sums weight × quantity across carried items (see the character sheet).
+            value: new fields.NumberField({ required: true, nullable: false, initial: 1, min: 0 })
         }),
         price: new fields.SchemaField({
             value: new fields.NumberField({ required: true, nullable: false, initial: 0, min: 0 }),

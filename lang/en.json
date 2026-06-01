@@ -121,7 +121,10 @@
       "AddItem": "Add Item",
       "NewItem": "New Item",
       "EditItem": "Edit",
-      "DeleteItem": "Delete"
+      "DeleteItem": "Delete",
+      "Equip": "Equip",
+      "Unequip": "Unequip",
+      "Encumbrance": "Encumbrance"
     },
     "Coinage": {
       "Iron": "Iron",
