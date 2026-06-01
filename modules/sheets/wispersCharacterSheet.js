@@ -262,16 +262,19 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             el.addEventListener("click", () => { this._activeTab = el.dataset.tab; });
         });
 
-        const searchInput = this.element.querySelector(".inventory-header input[type='search']");
-        if (searchInput) {
+        // Each tab can carry its own search box (inventory, features, …). Wire them
+        // all, and scope each filter to its own tab so typing in one doesn't hide
+        // rows in another — every tab reuses the .inventory-section / .item markup.
+        this.element.querySelectorAll("input[type='search']").forEach(searchInput => {
+            const scope = searchInput.closest(".tab") ?? this.element;
             searchInput.addEventListener("input", ev => {
                 const query = ev.target.value.toLowerCase().trim();
-                this.element.querySelectorAll(".inventory-section .item").forEach(row => {
+                scope.querySelectorAll(".item[data-item-id]").forEach(row => {
                     const name = row.querySelector(".item-name h4")?.textContent?.toLowerCase() ?? "";
                     row.style.display = !query || name.includes(query) ? "" : "none";
                 });
             });
-        }
+        });
 
         const inventoryBody = this.element.querySelector(".inventory-body");
         if (inventoryBody) {
@@ -539,7 +542,10 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
         const featureType = target.dataset.featureType;
         const name = game.i18n.localize("CONSTANTS.Inventory.NewItem");
         const itemData = { name, type };
-        if (featureType) itemData["system.featureType.value"] = featureType;
+        // Creation data is NOT run through expandObject (unlike Document#update),
+        // so a flat "system.featureType.value" key would be dropped during schema
+        // cleaning and the feature would default to "active". Build it nested.
+        if (featureType) foundry.utils.setProperty(itemData, "system.featureType.value", featureType);
         await this.actor.createEmbeddedDocuments("Item", [itemData]);
     }
 
