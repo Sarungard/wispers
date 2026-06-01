@@ -120,6 +120,12 @@
     },
     "Character": {
       "templates": ["base", "skills"],
+      "currency": {
+        "iron":   { "value": 0 },
+        "copper": { "value": 0 },
+        "silver": { "value": 0 },
+        "gold":   { "value": 0 }
+      },
       "race": 0,
       "class": {
         "name": "dingus",
@@ -146,7 +152,7 @@
     }
   },
   "Item": {
-    "types": ["weapon", "armor", "shield", "spell", "consumable", "loot"],
+    "types": ["weapon", "armor", "shield", "spell", "consumable", "loot", "feature"],
     "templates": {
       "base": {
         "description": "",
@@ -203,6 +209,11 @@
         "dice": { "value": "1d6" },
         "damageType": { "value": "fire" }
       }
+    },
+    "feature": {
+      "description": "",
+      "featureType": { "value": "active" },
+      "uses": { "value": 0, "max": 0 }
     }
   }
 }

@@ -54,6 +54,28 @@
       "Effects": "Effects",
       "Biography": "Biography"
     },
+    "Inventory": {
+      "Weapons": "Weapons",
+      "Armor": "Armor",
+      "Shields": "Shields",
+      "Consumables": "Consumables",
+      "Loot": "Loot",
+      "ColQty": "Qty",
+      "ColWgt": "Wgt",
+      "ColPrice": "Price",
+      "AddItem": "Add Item",
+      "NewItem": "New Item",
+      "EditItem": "Edit",
+      "DeleteItem": "Delete"
+    },
+    "Coinage": {
+      "Iron": "Iron",
+      "Copper": "Copper",
+      "Silver": "Silver",
+      "Gold": "Gold",
+      "AddTitle": "Add Coins",
+      "RemoveTitle": "Remove Coins"
+    },
     "Wounds": {
       "Active": "Wounds",
       "Light": "Light",
@@ -65,7 +87,17 @@
       "Ideals": "Ideals",
       "Bonds": "Bonds",
       "Flaws": "Flaws"
-    }
+    },
+    "Features": {
+      "Active": "Active Abilities",
+      "Passive": "Passive Abilities",
+      "Reaction": "Reactions",
+      "ColUses": "Uses",
+      "AddFeature": "Add Feature",
+      "EditFeature": "Edit",
+      "DeleteFeature": "Delete"
+    },
+    "Search": "Search..."
   },
 
   "TYPES": {

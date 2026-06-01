@@ -51,6 +51,9 @@ function preloadHandlebarsTemplates() {
     "systems/wispers/templates/partials/character/features.hbs",
     "systems/wispers/templates/partials/character/inventory.hbs",
     "systems/wispers/templates/partials/character/spellbook.hbs",
+    "systems/wispers/templates/actors/partials/coinage.hbs",
+    "systems/wispers/templates/actors/partials/inventory-header.hbs",
+    "systems/wispers/templates/actors/partials/inventory.hbs",
   ];
 
   return foundry.applications.handlebars.loadTemplates(templatePaths);

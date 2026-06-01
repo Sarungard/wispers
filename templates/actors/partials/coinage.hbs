@@ -1,0 +1,32 @@
+<div class="coinage-row">
+    <span class="coin iron">
+        <i class="fas coin-icon"></i>
+        <span class="coin-label">{{localize "CONSTANTS.Coinage.Iron"}}</span>
+        <span class="coin-value">{{system.currency.iron.value}}</span> 
+    </span>
+    <span class="coin copper">
+        <i class="fas coin-icon"></i>
+        <span class="coin-label">{{localize "CONSTANTS.Coinage.Copper"}}</span>
+        <span class="coin-value">{{system.currency.copper.value}}</span> 
+    </span>
+    <span class="coin silver">
+        <i class="fas coin-icon"></i>
+        <span class="coin-label">{{localize "CONSTANTS.Coinage.Silver"}}</span>
+        <span class="coin-value">{{system.currency.silver.value}}</span>
+    </span>
+    <span class="coin gold">
+        <i class="fas coin-icon"></i>
+        <span class="coin-label">{{localize "CONSTANTS.Coinage.Gold"}}</span>
+        <span class="coin-value">{{system.currency.gold.value}}</span>
+    </span>
+    {{#if editable}}
+    <span class="coin-buttons">
+        <button type="button" data-action="addCoins" data-tooltip="{{localize 'CONSTANTS.Coinage.AddTitle'}}">
+            <i class="fas fa-plus"></i>
+        </button>
+        <button type="button" data-action="removeCoins" data-tooltip="{{localize 'CONSTANTS.Coinage.RemoveTitle'}}">
+            <i class="fas fa-minus"></i>
+        </button>
+    </span>
+    {{/if}}
+</div>

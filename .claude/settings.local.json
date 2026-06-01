@@ -12,7 +12,8 @@
       "Bash(command -v lessc)",
       "Bash(command -v npx)",
       "Bash(npx --no-install lessc --version)",
-      "Bash(lessc *)"
+      "Bash(lessc *)",
+      "WebFetch(domain:foundryvtt.com)"
     ]
   },
   "hooks": {

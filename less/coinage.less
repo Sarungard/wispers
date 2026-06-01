@@ -1,0 +1,76 @@
+// main: ./wispers.less
+
+.wispers.sheet.character {
+    .coinage-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 5px 8px;
+        border-bottom: 1px solid rgba(179, 148, 106, 0.5);
+        background: rgba(139, 69, 19, 0.05);
+
+        .coin {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .coin-icon {
+                width: 24px;
+                height: 24px;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+
+            .coin-value {
+                font-family: "Cinzel", serif;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: #6a553a;
+            }
+
+            .coin-value {
+                font-size: 13px;
+                font-weight: 600;
+                min-width: 16px;
+                text-align: right;
+                color: #3a2e1f;
+            }
+
+            &.iron   .coin-icon { background-image: url(assets/img/coin-iron.png); }
+            &.copper .coin-icon { background-image: url(assets/img/coin-copper.png); }
+            &.silver .coin-icon { background-image: url(assets/img/coin-silver.png); }
+            &.gold   .coin-icon { background-image: url(assets/img/coin-gold.png); }
+        }
+
+        .coin-buttons {
+            margin-left: auto;
+            display: flex;
+            gap: 4px;
+
+            button {
+                width: 22px;
+                height: 22px;
+                padding: 0;
+                line-height: 1;
+                font-size: 11px;
+                border: 1px solid #b3946a;
+                border-radius: 2px;
+                background: rgba(139, 69, 19, 0.08);
+                color: #6a553a;
+                cursor: pointer;
+
+                &:hover {
+                    background: rgba(139, 69, 19, 0.2);
+                    color: #8b4513;
+                }
+            }
+        }
+    }
+
+    // dialog helper — dims current-amount annotation
+    .coin-current {
+        font-size: 11px;
+        color: #8a7a66;
+    }
+}

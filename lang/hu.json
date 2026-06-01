@@ -33,10 +33,10 @@
     },
     "Roll": {
       "Title": "Dobás: {label}",
-      "BoonBane": "Áldás vagy Átok",
-      "Boon": "Áldás",
+      "BoonBane": "Előny vagy Hátrány",
+      "Boon": "Előny",
       "BoonBaneNone": "Semmi",
-      "Bane": "Átok",
+      "Bane": "Hátrány",
       "DifficultyDie": "Nehézség",
       "DifficultyNone": "Nincs",
       "Difficulty1": "1 — Triviális (d4)",
@@ -54,6 +54,28 @@
       "Effects": "Hatások",
       "Biography": "Életrajz"
     },
+    "Inventory": {
+      "Weapons": "Fegyverek",
+      "Armor": "Páncél",
+      "Shields": "Pajzsok",
+      "Consumables": "Fogyóeszközök",
+      "Loot": "Zsákmány",
+      "ColQty": "Db",
+      "ColWgt": "Súly",
+      "ColPrice": "Ár",
+      "AddItem": "Hozzáadás",
+      "NewItem": "Új tárgy",
+      "EditItem": "Szerkesztés",
+      "DeleteItem": "Törlés"
+    },
+    "Coinage": {
+      "Iron": "Vas",
+      "Copper": "Réz",
+      "Silver": "Ezüst",
+      "Gold": "Arany",
+      "AddTitle": "Érmék hozzáadása",
+      "RemoveTitle": "Érmék elvétele"
+    },
     "Wounds": {
       "Active": "Sebek",
       "Light": "Könnyű",
@@ -65,7 +87,17 @@
       "Ideals": "Eszmék",
       "Bonds": "Kötelékek",
       "Flaws": "Hibák"
-    }
+    },
+    "Features": {
+      "Active": "Aktív képességek",
+      "Passive": "Passzív képességek",
+      "Reaction": "Reakciók",
+      "ColUses": "Használat",
+      "AddFeature": "Képesség hozzáadása",
+      "EditFeature": "Szerkesztés",
+      "DeleteFeature": "Törlés"
+    },
+    "Search": "Keresés..."
   },
 
   "TYPES": {

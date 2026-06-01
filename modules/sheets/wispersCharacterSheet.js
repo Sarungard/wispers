@@ -1,21 +1,28 @@
 const api = foundry.applications.api;
 const sheets = foundry.applications.sheets;
 
-export default class wispersCharacterSheet extends api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
+export default class WispersCharacterSheet extends api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
 
     sheetContext = {};
     _showAllSkills = false;
     _showAllSchools = false;
+    _activeTab = null;
+    _onItemChange = null;
 
     static DEFAULT_OPTIONS = {
 
         tag: "form",
         classes: ["wispers", "sheet", "character"],
         actions: {
-            toggleAllSkills: wispersCharacterSheet._onToggleAllSkills,
-            toggleAllSchools: wispersCharacterSheet._onToggleAllSchools,
-            addSkill: wispersCharacterSheet._onAddSkill,
-            addSchool: wispersCharacterSheet._onAddSchool
+            toggleAllSkills: WispersCharacterSheet._onToggleAllSkills,
+            toggleAllSchools: WispersCharacterSheet._onToggleAllSchools,
+            addSkill: WispersCharacterSheet._onAddSkill,
+            addSchool: WispersCharacterSheet._onAddSchool,
+            addCoins: WispersCharacterSheet._onAddCoins,
+            removeCoins: WispersCharacterSheet._onRemoveCoins,
+            createItem: WispersCharacterSheet._onCreateItem,
+            editItem: WispersCharacterSheet._onEditItem,
+            deleteItem: WispersCharacterSheet._onDeleteItem
         },
         form: {
             submitOnChange: true,
@@ -55,7 +62,10 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
 
         const baseData = await super._prepareContext();
         const actor = baseData.document;
-        const items = Array.from(actor.items);
+        // Sort by the `sort` field so drag-and-drop reordering is reflected in
+        // the rendered list — the items collection iterates in id/insertion
+        // order, not sort order.
+        const items = Array.from(actor.items).sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
 
         const inventory = {
             weapons: items.filter(i => i.type === "weapon"),
@@ -65,13 +75,26 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             loot: items.filter(i => i.type === "loot")
         };
 
+        const inventorySections = [
+            { type: "weapon",     labelKey: "CONSTANTS.Inventory.Weapons",     items: inventory.weapons     },
+            { type: "armor",      labelKey: "CONSTANTS.Inventory.Armor",       items: inventory.armor       },
+            { type: "shield",     labelKey: "CONSTANTS.Inventory.Shields",     items: inventory.shields     },
+            { type: "consumable", labelKey: "CONSTANTS.Inventory.Consumables", items: inventory.consumables },
+            { type: "loot",       labelKey: "CONSTANTS.Inventory.Loot",        items: inventory.loot        },
+        ];
+
         const spellList = items.filter(i => i.type === "spell");
         const spells = {};
         for (let lvl = 1; lvl <= 5; lvl++) {
             spells[lvl] = spellList.filter(s => (s.system?.level?.value ?? 1) === lvl);
         }
 
-        const features = [];
+        const featureList = items.filter(i => i.type === "feature");
+        const featureSections = [
+            { type: "active",   labelKey: "CONSTANTS.Features.Active",   items: featureList.filter(f => f.system?.featureType?.value === "active")   },
+            { type: "passive",  labelKey: "CONSTANTS.Features.Passive",  items: featureList.filter(f => f.system?.featureType?.value === "passive")  },
+            { type: "reaction", labelKey: "CONSTANTS.Features.Reaction", items: featureList.filter(f => f.system?.featureType?.value === "reaction") },
+        ];
 
         const allEffects = Array.from(actor.effects);
         const effects = [
@@ -135,8 +158,9 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             config: CONFIG.WISPERS,
             isGM: baseData.user.isGM,
             inventory,
+            inventorySections,
             spells,
-            features,
+            featureSections,
             effects,
             biographyHTML,
             skillRows,
@@ -154,6 +178,21 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
 
     /** @override */
     _onFirstRender(context, options) {
+        // Capture phase runs before Foundry's bubble-phase submitOnChange handler,
+        // so input.value is already resolved when the form is read.
+        this.element.addEventListener("change", ev => {
+            const input = ev.target;
+            if (input.tagName !== "INPUT" || input.dataset.dtype !== "Number") return;
+            const raw = input.value.trim();
+            if (/^[+-]\d/.test(raw)) {
+                const delta = Number(raw);
+                if (!Number.isNaN(delta)) {
+                    const current = Number(foundry.utils.getProperty(this.actor, input.name)) || 0;
+                    input.value = current + delta;
+                }
+            }
+        }, { capture: true });
+
         this.element.addEventListener("click", ev => {
             const abilityLabel = ev.target.closest(".ability-label[data-roll-ability]");
             if (abilityLabel) {
@@ -187,6 +226,17 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             if (actor.id === this.actor.id) this.render();
         };
         Hooks.on("updateActor", this._onActorUpdate);
+
+        this._onItemChange = (item) => {
+            if (item.parent?.id === this.actor.id) this.render();
+        };
+        Hooks.on("createItem", this._onItemChange);
+        Hooks.on("updateItem", this._onItemChange);
+        Hooks.on("deleteItem", this._onItemChange);
+
+        // Allow drops anywhere on the sheet
+        this.element.addEventListener("dragover", ev => ev.preventDefault());
+        this.element.addEventListener("drop", ev => this._handleDrop(ev));
     }
 
     /** @override */
@@ -195,13 +245,64 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             Hooks.off("updateActor", this._onActorUpdate);
             this._onActorUpdate = null;
         }
+        if (this._onItemChange) {
+            Hooks.off("createItem", this._onItemChange);
+            Hooks.off("updateItem", this._onItemChange);
+            Hooks.off("deleteItem", this._onItemChange);
+            this._onItemChange = null;
+        }
         return super.close(options);
     }
 
     /** @override */
     _onRender(context, options) {
-        const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".sheet-content", initial: "character"});
+        const tabs = new foundry.applications.ux.Tabs({navSelector: ".tabs", contentSelector: ".sheet-content", initial: this._activeTab ?? "character"});
         tabs.bind(this.element);
+        this.element.querySelectorAll(".tabs [data-tab]").forEach(el => {
+            el.addEventListener("click", () => { this._activeTab = el.dataset.tab; });
+        });
+
+        const searchInput = this.element.querySelector(".inventory-header input[type='search']");
+        if (searchInput) {
+            searchInput.addEventListener("input", ev => {
+                const query = ev.target.value.toLowerCase().trim();
+                this.element.querySelectorAll(".inventory-section .item").forEach(row => {
+                    const name = row.querySelector(".item-name h4")?.textContent?.toLowerCase() ?? "";
+                    row.style.display = !query || name.includes(query) ? "" : "none";
+                });
+            });
+        }
+
+        const inventoryBody = this.element.querySelector(".inventory-body");
+        if (inventoryBody) {
+            inventoryBody.addEventListener("dragstart", ev => {
+                const row = ev.target.closest(".item[data-item-id]");
+                if (!row) return;
+                const item = this.actor.items.get(row.dataset.itemId);
+                if (!item) return;
+                ev.dataTransfer.setData("text/plain", JSON.stringify({ type: "Item", uuid: item.uuid }));
+                ev.dataTransfer.effectAllowed = "move";
+            });
+            inventoryBody.addEventListener("dragover", ev => {
+                const row = ev.target.closest(".item[data-item-id]");
+                inventoryBody.querySelectorAll(".drag-above, .drag-below").forEach(el => {
+                    el.classList.remove("drag-above", "drag-below");
+                });
+                if (row) {
+                    const rect = row.getBoundingClientRect();
+                    const before = ev.clientY < rect.top + rect.height / 2;
+                    row.classList.toggle("drag-above", before);
+                    row.classList.toggle("drag-below", !before);
+                }
+            });
+            inventoryBody.addEventListener("dragleave", ev => {
+                if (!inventoryBody.contains(ev.relatedTarget)) {
+                    inventoryBody.querySelectorAll(".drag-above, .drag-below").forEach(el => {
+                        el.classList.remove("drag-above", "drag-below");
+                    });
+                }
+            });
+        }
 
         this.element.querySelectorAll(".skill-pips").forEach(container => {
             container.querySelectorAll(".pip").forEach(pip => {
@@ -218,17 +319,17 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     }
 
     async _rollAbility(key, value) {
-        const baseDie = wispersCharacterSheet._attributeDieFormula(value) ?? "0";
+        const baseDie = WispersCharacterSheet._attributeDieFormula(value) ?? "0";
         if (!baseDie) return;
         const ability = this.actor.system?.abilities?.[key];
         const label = ability?.id ? (game.i18n.localize(`CONSTANTS.Attributes.${ability.id}.long`) || ability.id) : key;
 
-        const config = await wispersCharacterSheet._showRollDialog(label);
+        const config = await WispersCharacterSheet._showRollDialog(label);
         if (config === null) return;
 
         const parts = [baseDie];
         if (config.difficultyDie) parts.push(config.difficultyDie);
-        const formula = wispersCharacterSheet._applyBoonBane(parts, config.boonBane).join(" + ");
+        const formula = WispersCharacterSheet._applyBoonBane(parts, config.boonBane).join(" + ");
         const roll = new Roll(formula);
         await roll.evaluate();
         await roll.toMessage({
@@ -245,22 +346,23 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         let attributeDie = null;
         if (group === "spellSchools") {
             const attrValue = this.actor.system?.abilities?.[entry.linkedAttribute]?.value ?? 0;
-            attributeDie = wispersCharacterSheet._attributeDieFormula(attrValue);
+            attributeDie = WispersCharacterSheet._attributeDieFormula(attrValue);
         }
         const applyAttrBonus = proficiency >= 4 && group === "spellSchools";
         return this._rollProficiency(label, proficiency, {
             attributeDie,
             applyAttrBonus,
-            linkedAttr: entry.linkedAttribute
+            linkedAttr: entry.linkedAttribute,
+            showDifficulty: group === "skills"
         });
     }
 
-    async _rollProficiency(label, proficiency, { attributeDie = null, applyAttrBonus = false, linkedAttr = null } = {}) {
+    async _rollProficiency(label, proficiency, { attributeDie = null, applyAttrBonus = false, linkedAttr = null, showDifficulty = false } = {}) {
         // Untrained rolls (proficiency 0) roll bonus only — "0" passes through
         // _shiftDie unchanged, so tier modifiers are a no-op.
-        const baseDie = wispersCharacterSheet._proficiencyDieFormula(proficiency) ?? "0";
+        const baseDie = WispersCharacterSheet._proficiencyDieFormula(proficiency) ?? "0";
 
-        const config = await wispersCharacterSheet._showRollDialog(label);
+        const config = await WispersCharacterSheet._showRollDialog(label, { showDifficulty });
         if (config === null) return;
 
         const flatBonus = applyAttrBonus && linkedAttr
@@ -270,7 +372,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const dieParts = [baseDie];
         if (attributeDie) dieParts.push(attributeDie);
         if (config.difficultyDie) dieParts.push(config.difficultyDie);
-        const shifted = wispersCharacterSheet._applyBoonBane(dieParts, config.boonBane);
+        const shifted = WispersCharacterSheet._applyBoonBane(dieParts, config.boonBane);
         if (flatBonus !== 0) shifted.push(String(flatBonus));
         const formula = shifted.join(" + ");
         const roll = new Roll(formula);
@@ -281,7 +383,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         });
     }
 
-    static async _showRollDialog(label) {
+    static async _showRollDialog(label, { showDifficulty = true } = {}) {
         const DialogV2 = foundry.applications.api.DialogV2;
         const t = key => game.i18n.localize(`CONSTANTS.Roll.${key}`);
         const title = game.i18n.format("CONSTANTS.Roll.Title", { label });
@@ -290,6 +392,14 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             const key = lvl === 0 ? "DifficultyNone" : `Difficulty${lvl}`;
             return `<option value="${lvl}">${t(key)}</option>`;
         }).join("");
+
+        const difficultyBlock = showDifficulty ? `
+            <div class="form-group">
+                <label>${t("DifficultyDie")}</label>
+                <select name="difficultyLevel">
+                    ${difficultyOptions}
+                </select>
+            </div>` : "";
 
         const content = `
             <div class="form-group">
@@ -300,12 +410,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
                     <option value="boon">${t("Boon")}</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>${t("DifficultyDie")}</label>
-                <select name="difficultyLevel">
-                    ${difficultyOptions}
-                </select>
-            </div>`;
+            ${difficultyBlock}`;
 
         const difficultyDieMap = { 1: "1d4", 2: "1d6", 3: "1d8", 4: "1d10", 5: "1d12" };
 
@@ -315,7 +420,9 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
             ok: {
                 label: t("Roll"),
                 callback: (event, button) => {
-                    const difficultyLevel = Number.parseInt(button.form.elements.difficultyLevel.value, 10) || 0;
+                    const difficultyLevel = showDifficulty
+                        ? (Number.parseInt(button.form.elements.difficultyLevel.value, 10) || 0)
+                        : 0;
                     return {
                         boonBane: button.form.elements.boonBane.value,
                         difficultyDie: difficultyDieMap[difficultyLevel] ?? null
@@ -332,7 +439,7 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         const diceParts = parts.filter(p => tiers.includes(p));
         if (!diceParts.length) return parts;
         const sorted = [...diceParts].sort((a, b) => tiers.indexOf(a) - tiers.indexOf(b));
-        const target = mode === "boon" ? sorted[0] : sorted[sorted.length - 1];
+        const target = mode === "boon" ? sorted[0] : sorted.at(-1);
         const shift = mode === "boon" ? 1 : -1;
         const newDie = tiers[Math.max(0, Math.min(tiers.length - 1, tiers.indexOf(target) + shift))];
         let replaced = false;
@@ -391,11 +498,11 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
     }
 
     static async _onAddSkill(event, target) {
-        await wispersCharacterSheet._promoteToNovice(this, "skills", "Learn a Skill", "All skills are already trained.");
+        await WispersCharacterSheet._promoteToNovice(this, "skills", "Learn a Skill", "All skills are already trained.");
     }
 
     static async _onAddSchool(event, target) {
-        await wispersCharacterSheet._promoteToNovice(this, "spellSchools", "Learn a Spell School", "All spell schools are already trained.");
+        await WispersCharacterSheet._promoteToNovice(this, "spellSchools", "Learn a Spell School", "All spell schools are already trained.");
     }
 
     static async _promoteToNovice(app, group, title, allTrainedMessage) {
@@ -427,5 +534,120 @@ export default class wispersCharacterSheet extends api.HandlebarsApplicationMixi
         await app.actor.update({ [`system.skills.${group}.${result}.proficiency.value`]: 1 });
     }
 
+    static async _onCreateItem(event, target) {
+        const type = target.dataset.type;
+        const featureType = target.dataset.featureType;
+        const name = game.i18n.localize("CONSTANTS.Inventory.NewItem");
+        const itemData = { name, type };
+        if (featureType) itemData["system.featureType.value"] = featureType;
+        await this.actor.createEmbeddedDocuments("Item", [itemData]);
+    }
+
+    static _onEditItem(event, target) {
+        const item = this.actor.items.get(target.dataset.itemId);
+        item?.sheet?.render(true);
+    }
+
+    static async _onDeleteItem(event, target) {
+        const item = this.actor.items.get(target.dataset.itemId);
+        if (!item) return;
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: { title: game.i18n.localize("CONSTANTS.Inventory.DeleteItem") },
+            content: `<p>${foundry.utils.escapeHTML(item.name)}?</p>`,
+            rejectClose: false
+        });
+        if (confirmed) await item.delete();
+    }
+
+    static async _onAddCoins(event, target) {
+        const t = key => game.i18n.localize(`CONSTANTS.Coinage.${key}`);
+        const current = this.actor.system?.currency ?? {};
+        const amounts = await WispersCharacterSheet._showCoinDialog(t("AddTitle"), current);
+        if (!amounts) return;
+        const update = {};
+        for (const [denom, delta] of Object.entries(amounts)) {
+            if (delta === 0) continue;
+            update[`system.currency.${denom}.value`] = (current[denom]?.value ?? 0) + delta;
+        }
+        if (Object.keys(update).length) await this.actor.update(update);
+    }
+
+    static async _onRemoveCoins(event, target) {
+        const t = key => game.i18n.localize(`CONSTANTS.Coinage.${key}`);
+        const current = this.actor.system?.currency ?? {};
+        const amounts = await WispersCharacterSheet._showCoinDialog(t("RemoveTitle"), current);
+        if (!amounts) return;
+        const update = {};
+        for (const [denom, delta] of Object.entries(amounts)) {
+            if (delta === 0) continue;
+            update[`system.currency.${denom}.value`] = Math.max(0, (current[denom]?.value ?? 0) - delta);
+        }
+        if (Object.keys(update).length) await this.actor.update(update);
+    }
+
+    static async _showCoinDialog(title, current) {
+        const DialogV2 = foundry.applications.api.DialogV2;
+        const t = key => game.i18n.localize(`CONSTANTS.Coinage.${key}`);
+        const row = (name, label) => `
+            <div class="form-group">
+                <label>${label} <span class="coin-current">(${current[name]?.value ?? 0})</span></label>
+                <input type="number" name="${name}" value="0" min="0" />
+            </div>`;
+        const content = [
+            row("iron",   t("Iron")),
+            row("copper", t("Copper")),
+            row("silver", t("Silver")),
+            row("gold",   t("Gold")),
+        ].join("");
+        return await DialogV2.prompt({
+            window: { title },
+            content,
+            ok: {
+                label: title,
+                callback: (event, button) => {
+                    const f = name => Math.max(0, Number.parseInt(button.form.elements[name].value, 10) || 0);
+                    return { iron: f("iron"), copper: f("copper"), silver: f("silver"), gold: f("gold") };
+                }
+            },
+            rejectClose: false
+        });
+    }
+
+    async _handleDrop(event) {
+        let dragData;
+        try {
+            dragData = JSON.parse(event.dataTransfer.getData("text/plain"));
+        } catch {
+            return;
+        }
+        if (dragData.type !== "Item") return;
+
+        const sourceItem = fromUuidSync(dragData.uuid) ?? await fromUuid(dragData.uuid);
+        if (!sourceItem) return;
+
+        const targetEl = event.target.closest(".item[data-item-id]");
+        const targetItem = targetEl ? this.actor.items.get(targetEl.dataset.itemId) : null;
+
+        // Clean up any lingering drag indicators
+        this.element.querySelectorAll(".drag-above, .drag-below").forEach(el => {
+            el.classList.remove("drag-above", "drag-below");
+        });
+
+        if (sourceItem.parent === this.actor) {
+            // Same-actor drag: reorder within the same type section
+            if (!targetItem || targetItem.type !== sourceItem.type || targetItem.id === sourceItem.id) return;
+            const rect = targetEl.getBoundingClientRect();
+            const sortBefore = event.clientY < rect.top + rect.height / 2;
+            const siblings = [...this.actor.items]
+                .filter(i => i.type === sourceItem.type && i.id !== sourceItem.id)
+                .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
+            const sorted = foundry.utils.performIntegerSort(sourceItem, { target: targetItem, siblings, sortBefore });
+            const updates = sorted.map(s => ({ _id: s.target.id, sort: s.update.sort }));
+            await this.actor.updateEmbeddedDocuments("Item", updates);
+        } else {
+            // External drop: create a copy on this actor
+            await this.actor.createEmbeddedDocuments("Item", [sourceItem.toObject()]);
+        }
+    }
 
 }
