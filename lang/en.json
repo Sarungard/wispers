@@ -154,6 +154,29 @@
       "Section": "Feature",
       "Activation": "Activation"
     },
+    "Skills": {
+      "Combat": "Combat",
+      "Athletics": "Athletics",
+      "Stealth": "Stealth",
+      "Academics": "Academics",
+      "Persuasion": "Persuasion",
+      "Willpower": "Willpower"
+    },
+    "SpellSchools": {
+      "Arcana": "Arcana",
+      "Elementalism": "Elementalism",
+      "Entropy": "Entropy",
+      "Sacratrope": "Sacratrope",
+      "Sinistrope": "Sinistrope",
+      "Primalism": "Primalism",
+      "Scriptomancy": "Scriptomancy",
+      "RuneScribe": "Rune-Scribe"
+    },
+    "SavingThrows": {
+      "Reflex": "Reflex",
+      "Toughness": "Toughness",
+      "Resolve": "Resolve"
+    },
     "Search": "Search..."
   },
 

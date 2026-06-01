@@ -15,7 +15,8 @@
       "Bash(lessc *)",
       "WebFetch(domain:foundryvtt.com)",
       "PowerShell(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('template.json','utf8'\\)\\); console.log\\('template.json OK'\\)\")",
-      "PowerShell(node -e \"['lang/en.json','lang/hu.json','template.json','system.json'].forEach\\(f=>{try{JSON.parse\\(require\\('fs'\\).readFileSync\\(f,'utf8'\\)\\);console.log\\('OK  ',f\\)}catch\\(e\\){console.log\\('FAIL',f,e.message\\)}}\\)\")"
+      "PowerShell(node -e \"['lang/en.json','lang/hu.json','template.json','system.json'].forEach\\(f=>{try{JSON.parse\\(require\\('fs'\\).readFileSync\\(f,'utf8'\\)\\);console.log\\('OK  ',f\\)}catch\\(e\\){console.log\\('FAIL',f,e.message\\)}}\\)\")",
+      "PowerShell(node -e \"const t=JSON.parse\\(require\\('fs'\\).readFileSync\\('template.json','utf8'\\)\\); console.log\\('template.json OK —', JSON.stringify\\(t\\)\\)\")"
     ]
   },
   "hooks": {

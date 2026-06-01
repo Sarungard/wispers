@@ -33,23 +33,37 @@ Sheets define `static DEFAULT_OPTIONS` and `static PARTS` (a map of part name �
 ### Entry point: `wispers.js`
 
 The sole ES module entry (declared in `system.json` `esmodules`). On the `init` hook it:
-- Stores `CONFIG.WISPERS` (config object from `modules/config.js` — holds select-choice maps like `weaponTypes`, `armorTypes`, `featureTypes`, `currencies`) and toggles `CONFIG.INIT` as a load-phase lock.
+- Stores `CONFIG.WISPERS` (config object from `modules/config.js`) and toggles `CONFIG.INIT` as a load-phase lock. `CONFIG.WISPERS` holds both select-choice maps (`weaponTypes`, `armorTypes`, `featureTypes`, `currencies`) **and** the actor proficiency/ability metadata maps (`abilities`, `skills`, `spellSchools`, `savingthrows`) — see the actor data-layer section.
 - Registers `wispersActor` as `CONFIG.Actor.documentClass` and `WispersItem` as `CONFIG.Item.documentClass`.
-- Registers an item DataModel for **every** item type via `CONFIG.Item.dataModels` (see the item data-layer section below).
+- Registers a DataModel for **every** actor type via `CONFIG.Actor.dataModels` and **every** item type via `CONFIG.Item.dataModels` (see the data-layer sections below).
 - Unregisters the core Actor **and** Item sheets and registers `wispersCharacterSheet` and `WispersItemSheet` as the defaults via `DocumentSheetConfig`.
 - Preloads Handlebars partials from `templates/partials/character/`, `templates/actors/partials/`, and `templates/sheets/item/` (including every `types/<type>.hbs`). **Any new partial must be added to this preload list** or dynamic `{{> (lookup …)}}` includes will fail.
 - Registers Handlebars helpers: `attributeDie`, `proficiencyDie`, `proficiencyPips`, `toLowerCase`, `log`. `proficiencyPips(value)` returns an array of `{level: 1–5, active: boolean}` used to render the 5-pip proficiency widgets.
 
 There are **two `Hooks.once("ready", ...)` registrations** in `wispers.js` — one for GM-only init logic, one to attach the `hotbarDrop` listener. Both run; this is intentional, not a duplicate.
 
-### Data schemas — a deliberate split
+### Data schemas — everything is a DataModel
 
-The system uses **two different schema mechanisms**, on purpose:
+Both actors and items use `foundry.abstract.TypeDataModel` schemas registered in `CONFIG.Actor.dataModels` / `CONFIG.Item.dataModels`. `template.json` is now **only** the list of valid types:
 
-- **Actors → `template.json`.** The `Actor` block is the source of truth for `Character` / `NPC` fields. Both reference shared templates `["base", "skills"]`. The `base` template defines the 6 abilities (Str/Agi/Con/Kno/Pre/Spi), `wounds` (with `lightThreshold.value`, `heavyThreshold.value`, `modifier.value`, and a `consequences` array), `initiative`, and the full `skills` block (combat/social skills, spell schools, saving throws — each with a `proficiency.value` 0–5 and a `linkedAttribute` key into `abilities`). Adding an actor field means editing `template.json`.
-- **Items → DataModels** (see next section). The `Item` block in `template.json` is now **only** `"types": [...]` — the list of valid item types. It carries **no field definitions**; every type's schema lives in a `foundry.abstract.TypeDataModel` class registered in `CONFIG.Item.dataModels`. A registered DataModel fully overrides any template.json entry for that type, so don't re-add item field blocks to `template.json` — they'd be dead and misleading.
+```json
+"Actor": { "types": ["Character", "NPC"] },
+"Item":  { "types": ["weapon", "armor", "shield", "spell", "consumable", "loot", "feature"] }
+```
+
+A registered DataModel **fully overrides** any template.json field block for that type, so don't re-add field definitions to `template.json` — they'd be dead and misleading. `template.json` now contains nothing but the two `types` arrays.
 
 Note: `system.json` declares `primaryTokenAttribute: "health"` and `secondaryTokenAttribute: "mental"`, but neither `health` nor `mental` exist in the actor schema — health-equivalent data lives under `wounds`. Reconcile before relying on token bars.
+
+### Actor data layer: `modules/data/actor/` + `CONFIG.WISPERS`
+
+`CharacterData` and `NPCData` (registered as `CONFIG.Actor.dataModels.Character` / `.NPC`) compose shared field groups from `modules/data/actor/_helpers.js`: `baseActorFields()` (level/abilities/wounds/initiative/biography) and `skillsFields()` (the `skills` block: `skills`/`spellSchools`/`savingthrows`).
+
+**Stored actor data holds only the user's choices** — `proficiency.value`, ability `value`/`start`, etc. The set of abilities/skills/schools/saves that *exist* and their **static metadata** (display `label` as a localization key, and `linkedAttribute`) live in `CONFIG.WISPERS.{abilities,skills,spellSchools,savingthrows}` (in `modules/config.js`). `_helpers.js` **imports `WISPERS` and derives the schema keys from those maps**, so config is the single source of truth: adding a skill there gives both the schema slot and the sheet row. This also means **labels are localizable** (they were previously frozen English strings baked into each actor's data) — `CONSTANTS.Skills.*`, `CONSTANTS.SpellSchools.*`, `CONSTANTS.SavingThrows.*`, `CONSTANTS.Attributes.*.long` in both lang files.
+
+The character sheet reads metadata from config, never from stored data: `_prepareContext` builds `abilityRows`/`skillRows`/`schoolRows`/`saveRows` by merging `CONFIG.WISPERS` metadata (localized label, linkedAttribute) with the live stored value; `_rollAbility`, `_rollProficiencyFromGroup`, and `_promoteToNovice` all look up label/linkedAttribute from `CONFIG.WISPERS`. **Never read `label`/`linkedAttribute`/ability `id` off `actor.system`** — those fields no longer exist there.
+
+**To add a skill / spell school / saving throw**: add one entry to the relevant `CONFIG.WISPERS` map (with a `label` localization key + `linkedAttribute`) and add that key to both lang files. The schema slot and the sheet row follow automatically.
 
 ### Item data layer: `modules/data/item/`
 
@@ -86,7 +100,7 @@ A DataModel's `defineSchema()` **spreads** the groups it needs and adds its own 
 - `spells` — spell items bucketed by `system.level.value` 1..5.
 - `effects` — three categories: temporary (enabled + has duration), passive (enabled + no duration), inactive (disabled).
 - `biographyHTML` — `actor.system.details.biography` run through `foundry.applications.ux.TextEditor.enrichHTML` (with a legacy/identity fallback).
-- `skillRows` / `schoolRows` / `saveRows` — flattened arrays from `system.skills.{skills,spellSchools,savingthrows}`, each row carrying `key`, `label`, `linkedAttribute`, `value`/`proficiency`, and a `bonus` read from the linked ability. (Skills don't currently use the bonus in display logic beyond the inline `+{{bonus}}` shown on each row — see `attributes.hbs` — but it's pulled the same way as schools/saves so the click-to-roll handler can include it.) `skillRows` and `schoolRows` are filtered to trained-only (`value ≥ 1`) unless the per-instance flags `_showAllSkills` / `_showAllSchools` are toggled on. The unfiltered counts are also exposed as `untrainedSkillCount` / `untrainedSchoolCount` so the "Add skill/school" buttons can disable when there's nothing left to learn.
+- `abilityRows` / `skillRows` / `schoolRows` / `saveRows` — built by iterating the `CONFIG.WISPERS` metadata maps (see the actor data-layer section) and merging each entry's localized `label` + `linkedAttribute` with the live value read from `actor.system`. Each row carries `key`, `label`, `linkedAttribute`, `value`/`proficiency`, and a `bonus` read from the linked ability. (Skills don't currently use the bonus in display logic beyond the inline `+{{bonus}}` shown on each row — see `attributes.hbs` — but it's pulled the same way as schools/saves so the click-to-roll handler can include it.) `skillRows` and `schoolRows` are filtered to trained-only (`value ≥ 1`) unless the per-instance flags `_showAllSkills` / `_showAllSchools` are toggled on. The unfiltered counts are also exposed as `untrainedSkillCount` / `untrainedSchoolCount` so the "Add skill/school" buttons can disable when there's nothing left to learn.
 
 A copy of the final context is stashed on `this.sheetContext`.
 

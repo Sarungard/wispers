@@ -3,17 +3,17 @@
         <div class="sidebar-container">
             <h1 class="section-title">Attributes</h1>
             <ul class="ability-list">
-                {{#each system.abilities as |ability key|}}
+                {{#each abilityRows as |row|}}
                     <li class="ability-row">
-                        <label class="ability-label rollable" for="system.abilities.{{@key}}.value"
-                               data-roll-ability="{{@key}}">
-                            {{localize (concat "CONSTANTS.Attributes." ability.id ".long")}}
+                        <label class="ability-label rollable" for="system.abilities.{{row.key}}.value"
+                               data-roll-ability="{{row.key}}">
+                            {{row.label}}
                         </label>
                         <input
                             type="text"
-                            class="ability-die {{attributeDie ability.value}}"
-                            name="system.abilities.{{@key}}.value"
-                            value="{{ability.value}}"
+                            class="ability-die {{attributeDie row.value}}"
+                            name="system.abilities.{{row.key}}.value"
+                            value="{{row.value}}"
                             data-dtype="Number" />
                     </li>
                 {{/each}}

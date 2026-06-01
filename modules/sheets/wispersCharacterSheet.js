@@ -113,12 +113,24 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             relativeTo: actor
         });
 
-        const rawSkills = actor.system?.skills?.skills ?? {};
-        const allSkillRows = Object.entries(rawSkills).map(([key, s]) => {
-            const prof = s.proficiency?.value ?? 0;
+        // Static metadata (labels, linked attributes, the set of entries that
+        // exist) lives in CONFIG.WISPERS; stored actor data holds only values.
+        // Each row merges the config metadata with the live proficiency/ability
+        // value read from actor.system.
+        const cfg = CONFIG.WISPERS ?? {};
+        const abilityData = actor.system?.abilities ?? {};
+        const abilityRows = Object.entries(cfg.abilities ?? {}).map(([key, meta]) => ({
+            key,
+            label: game.i18n.localize(meta.label),
+            value: abilityData[key]?.value ?? 0
+        }));
+
+        const skillData = actor.system?.skills?.skills ?? {};
+        const allSkillRows = Object.entries(cfg.skills ?? {}).map(([key, meta]) => {
+            const prof = skillData[key]?.proficiency?.value ?? 0;
             return {
                 key,
-                label: s.label,
+                label: game.i18n.localize(meta.label),
                 value: prof,
                 trained: prof >= 1
             };
@@ -126,15 +138,15 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
         const untrainedSkillCount = allSkillRows.filter(r => !r.trained).length;
         const skillRows = this._showAllSkills ? allSkillRows : allSkillRows.filter(r => r.trained);
 
-        const rawSchools = actor.system?.skills?.spellSchools ?? {};
-        const allSchoolRows = Object.entries(rawSchools).map(([key, s]) => {
-            const prof = s.proficiency?.value ?? 0;
+        const schoolData = actor.system?.skills?.spellSchools ?? {};
+        const allSchoolRows = Object.entries(cfg.spellSchools ?? {}).map(([key, meta]) => {
+            const prof = schoolData[key]?.proficiency?.value ?? 0;
             return {
                 key,
-                label: s.label,
-                linkedAttribute: s.linkedAttribute,
+                label: game.i18n.localize(meta.label),
+                linkedAttribute: meta.linkedAttribute,
                 value: prof,
-                bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0,
+                bonus: abilityData[meta.linkedAttribute]?.value ?? 0,
                 showBonus: prof >= 4,
                 trained: prof >= 1
             };
@@ -142,13 +154,13 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
         const untrainedSchoolCount = allSchoolRows.filter(r => !r.trained).length;
         const schoolRows = this._showAllSchools ? allSchoolRows : allSchoolRows.filter(r => r.trained);
 
-        const rawSaves = actor.system?.skills?.savingthrows ?? {};
-        const saveRows = Object.entries(rawSaves).map(([key, s]) => ({
+        const saveData = actor.system?.skills?.savingthrows ?? {};
+        const saveRows = Object.entries(cfg.savingthrows ?? {}).map(([key, meta]) => ({
             key,
-            label: s.label,
-            linkedAttribute: s.linkedAttribute,
-            proficiency: s.proficiency?.value ?? 0,
-            bonus: actor.system?.abilities?.[s.linkedAttribute]?.value ?? 0
+            label: game.i18n.localize(meta.label),
+            linkedAttribute: meta.linkedAttribute,
+            proficiency: saveData[key]?.proficiency?.value ?? 0,
+            bonus: abilityData[meta.linkedAttribute]?.value ?? 0
         }));
 
         const context = {
@@ -165,6 +177,7 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             featureSections,
             effects,
             biographyHTML,
+            abilityRows,
             skillRows,
             schoolRows,
             saveRows,
@@ -314,8 +327,8 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
     async _rollAbility(key, value) {
         const baseDie = WispersCharacterSheet._attributeDieFormula(value) ?? "0";
         if (!baseDie) return;
-        const ability = this.actor.system?.abilities?.[key];
-        const label = ability?.id ? (game.i18n.localize(`CONSTANTS.Attributes.${ability.id}.long`) || ability.id) : key;
+        const meta = CONFIG.WISPERS?.abilities?.[key];
+        const label = meta?.label ? game.i18n.localize(meta.label) : key;
 
         const config = await WispersCharacterSheet._showRollDialog(label);
         if (config === null) return;
@@ -333,19 +346,21 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
 
     _rollProficiencyFromGroup(group, key) {
         const entry = this.actor.system?.skills?.[group]?.[key];
-        if (!entry) return;
+        const meta = CONFIG.WISPERS?.[group]?.[key];
+        if (!entry || !meta) return;
         const proficiency = entry.proficiency?.value ?? 0;
-        const label = entry.label ?? key;
+        const label = meta.label ? game.i18n.localize(meta.label) : key;
+        const linkedAttr = meta.linkedAttribute;
         let attributeDie = null;
         if (group === "spellSchools") {
-            const attrValue = this.actor.system?.abilities?.[entry.linkedAttribute]?.value ?? 0;
+            const attrValue = this.actor.system?.abilities?.[linkedAttr]?.value ?? 0;
             attributeDie = WispersCharacterSheet._attributeDieFormula(attrValue);
         }
         const applyAttrBonus = proficiency >= 4 && group === "spellSchools";
         return this._rollProficiency(label, proficiency, {
             attributeDie,
             applyAttrBonus,
-            linkedAttr: entry.linkedAttribute,
+            linkedAttr,
             showDifficulty: group === "skills"
         });
     }
@@ -500,13 +515,17 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
 
     static async _promoteToNovice(app, group, title, allTrainedMessage) {
         const data = app.actor.system?.skills?.[group] ?? {};
+        const meta = CONFIG.WISPERS?.[group] ?? {};
         const untrained = Object.entries(data).filter(([, v]) => (v?.proficiency?.value ?? 0) < 1);
         if (!untrained.length) {
             ui.notifications.info(allTrainedMessage);
             return;
         }
         const options = untrained
-            .map(([key, s]) => `<option value="${key}">${foundry.utils.escapeHTML?.(s.label) ?? s.label}</option>`)
+            .map(([key]) => {
+                const label = meta[key]?.label ? game.i18n.localize(meta[key].label) : key;
+                return `<option value="${key}">${foundry.utils.escapeHTML?.(label) ?? label}</option>`;
+            })
             .join("");
         const content = `
             <div class="form-group">

@@ -154,6 +154,29 @@
       "Section": "Képesség",
       "Activation": "Aktiválás"
     },
+    "Skills": {
+      "Combat": "Harc",
+      "Athletics": "Atlétika",
+      "Stealth": "Lopakodás",
+      "Academics": "Tudományok",
+      "Persuasion": "Meggyőzés",
+      "Willpower": "Akaraterő"
+    },
+    "SpellSchools": {
+      "Arcana": "Arkána",
+      "Elementalism": "Elementalizmus",
+      "Entropy": "Entrópia",
+      "Sacratrope": "Szakratróp",
+      "Sinistrope": "Szinisztróp",
+      "Primalism": "Primalizmus",
+      "Scriptomancy": "Szkriptománcia",
+      "RuneScribe": "Rúnaíró"
+    },
+    "SavingThrows": {
+      "Reflex": "Reflex",
+      "Toughness": "Szívósság",
+      "Resolve": "Elszántság"
+    },
     "Search": "Keresés..."
   },
 

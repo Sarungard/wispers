@@ -3,13 +3,14 @@
 // Mirrors modules/data/item/_helpers.js: DataModels have no template.json
 // `"templates"` inheritance, so the old shared actor `base` + `skills` blocks
 // are expressed here as functions returning fresh `foundry.data.fields.*`.
-// Character and NPC each spread the groups they need.
 //
-// NOTE: per the migration plan, static per-entry metadata (`label`,
-// `linkedAttribute`, ability `id`) is kept in stored data for this pass — a 1:1
-// match with the pre-migration shapes so the character sheet and roll pipeline
-// keep working unchanged. Moving that metadata to CONFIG.WISPERS is a planned
-// follow-up.
+// Stored actor data holds ONLY the user's choices. The set of abilities / skills
+// / spell schools / saving throws — and their static metadata (label,
+// linkedAttribute) — lives in `CONFIG.WISPERS` (modules/config.js). The schema
+// keys below are derived from those maps, so config is the single source of
+// truth: add a skill there and both the schema and the sheet pick it up.
+
+import { WISPERS } from "../../config.js";
 
 const fields = foundry.data.fields;
 
@@ -22,9 +23,8 @@ function intField(initial, { min, max } = {}) {
 }
 
 /** One ability score (open-ended value, so no upper bound). */
-function abilityField(id) {
+function abilityField() {
     return new fields.SchemaField({
-        id: new fields.StringField({ required: true, blank: false, initial: id }),
         value: intField(2, { min: 0 }),
         start: intField(2, { min: 0 }),
         modifiers: new fields.ArrayField(new fields.ObjectField())
@@ -32,34 +32,37 @@ function abilityField(id) {
 }
 
 /** One proficiency entry (skill / spell school / saving throw), 0–5 ladder. */
-function proficiencyEntry(label, linkedAttribute, { withModifiers = false } = {}) {
+function proficiencyEntry({ withModifiers = false } = {}) {
     const schema = {
         proficiency: new fields.SchemaField({
             value: intField(0, { min: 0, max: 5 }),
             max: intField(5)
-        }),
-        linkedAttribute: new fields.StringField({ initial: linkedAttribute }),
-        label: new fields.StringField({ initial: label })
+        })
     };
     if (withModifiers) schema.modifiers = new fields.ArrayField(new fields.ObjectField());
-    return new fields.SchemaField(schema);
+    return schema;
+}
+
+/** Build a SchemaField of proficiency entries, one per key in a config map. */
+function proficiencyGroup(configMap, opts) {
+    const out = {};
+    for (const key of Object.keys(configMap ?? {})) {
+        out[key] = new fields.SchemaField(proficiencyEntry(opts));
+    }
+    return new fields.SchemaField(out);
 }
 
 /** level / abilities / wounds / initiative / biography — the old `base` block. */
 export function baseActorFields() {
+    const abilities = {};
+    for (const key of Object.keys(WISPERS.abilities ?? {})) abilities[key] = abilityField();
+
     return {
         level: new fields.SchemaField({
             value: intField(1, { min: 1 }),
             max: intField(20)
         }),
-        abilities: new fields.SchemaField({
-            str: abilityField("Str"),
-            agi: abilityField("Agi"),
-            con: abilityField("Con"),
-            kno: abilityField("Kno"),
-            pre: abilityField("Pre"),
-            spi: abilityField("Spi")
-        }),
+        abilities: new fields.SchemaField(abilities),
         wounds: new fields.SchemaField({
             modifier: new fields.SchemaField({ value: intField(0) }),
             lightThreshold: new fields.SchemaField({ value: intField(5, { min: 0 }) }),
@@ -78,29 +81,9 @@ export function baseActorFields() {
 export function skillsFields() {
     return {
         skills: new fields.SchemaField({
-            skills: new fields.SchemaField({
-                combat: proficiencyEntry("Combat", "str"),
-                athletics: proficiencyEntry("Athletics", "str"),
-                stealth: proficiencyEntry("Stealth", "agi"),
-                academics: proficiencyEntry("Academics", "kno"),
-                persuasion: proficiencyEntry("Persuasion", "pre"),
-                willpower: proficiencyEntry("Willpower", "spi")
-            }),
-            spellSchools: new fields.SchemaField({
-                arcana: proficiencyEntry("Arcana", "pre"),
-                elementalism: proficiencyEntry("Elementalism", "pre"),
-                entropy: proficiencyEntry("Entropy", "pre"),
-                sacratropy: proficiencyEntry("Sacratrope", "pre"),
-                sinistrope: proficiencyEntry("Sinistrope", "pre"),
-                primalism: proficiencyEntry("Primalism", "pre"),
-                scriptomancy: proficiencyEntry("Scriptomancy", "kno"),
-                "rune-scribe": proficiencyEntry("Rune-Scribe", "kno")
-            }),
-            savingthrows: new fields.SchemaField({
-                reflex: proficiencyEntry("Reflex", "agi", { withModifiers: true }),
-                toughness: proficiencyEntry("Toughness", "con", { withModifiers: true }),
-                resolve: proficiencyEntry("Resolve", "spi", { withModifiers: true })
-            })
+            skills: proficiencyGroup(WISPERS.skills),
+            spellSchools: proficiencyGroup(WISPERS.spellSchools),
+            savingthrows: proficiencyGroup(WISPERS.savingthrows, { withModifiers: true })
         })
     };
 }
