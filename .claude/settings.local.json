@@ -19,7 +19,9 @@
       "PowerShell(node -e \"const t=JSON.parse\\(require\\('fs'\\).readFileSync\\('template.json','utf8'\\)\\); console.log\\('template.json OK —', JSON.stringify\\(t\\)\\)\")",
       "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/en.json'\\)\\); JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/hu.json'\\)\\); console.log\\('both lang files valid JSON'\\)\")",
       "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/en.json'\\)\\); JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/hu.json'\\)\\); console.log\\('lang OK'\\)\")",
-      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/en.json','utf8'\\)\\); JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/hu.json','utf8'\\)\\); console.log\\('JSON_OK'\\)\")"
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/en.json','utf8'\\)\\); JSON.parse\\(require\\('fs'\\).readFileSync\\('lang/hu.json','utf8'\\)\\); console.log\\('JSON_OK'\\)\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('lang/en.json',encoding='utf-8'\\)\\); c=d.get\\('CONSTANTS',{}\\); import sys; print\\('ROLL:', json.dumps\\(c.get\\('Roll',{}\\),indent=1\\)\\); print\\('INIT:', json.dumps\\(c.get\\('Initiative',{}\\),indent=1\\)\\); print\\('TOPKEYS:', list\\(c.keys\\(\\)\\)\\)\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('system.json',encoding='utf-8'\\)\\); print\\('id:',d.get\\('id'\\)\\); print\\('version:',d.get\\('version'\\)\\); print\\('primaryToken:',d.get\\('primaryTokenAttribute'\\)\\); print\\('secondaryToken:',d.get\\('secondaryTokenAttribute'\\)\\); print\\('media:',[m.get\\('url'\\) for m in d.get\\('media',[]\\)]\\); print\\('background:',d.get\\('background'\\)\\); print\\('esmodules:',d.get\\('esmodules'\\)\\); print\\('compatibility:',d.get\\('compatibility'\\)\\)\")"
     ]
   },
   "hooks": {
