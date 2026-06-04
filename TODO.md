@@ -2,6 +2,39 @@
 
 Tracking intentional scaffolding and known inconsistencies in the Wispers FoundryVTT system. CLAUDE.md points here so the architectural doc stays focused; this file is where mutable project state lives.
 
+## Design specs (finalized, not yet implemented)
+
+Resolution rules decided by the project owner, written up for implementation. The long-term
+goal is to finalize all actor/item templates, then author content as JSON compendiums — so
+these schemas must be settled *before* authoring to avoid re-migrating data.
+
+- **[Weapons & Combat](docs/specs/weapons-combat.md)** — the threat → react → wound combat
+  loop, weapon categories + specific-weapon proficiencies, AP attack costs, proficiency-gated
+  properties, and the actor/weapon schema changes they require. Removes the `combat` skill.
+  Depends on a separate wound-table spec (TBD).
+- **[Spellcasting](docs/specs/spellcasting.md)** — gather → degree → resolve: a school check
+  generates ephemeral spellpower vs per-spell thresholds, yielding one of four degrees; the
+  degree sets the final spellpower (threat). Casting time = AP cost. Damaging spells reuse the
+  weapons react/wound loop; effects are bespoke per spell. Shares the wound-table dependency.
+- **[Wound Tables](docs/specs/wound-tables.md)** — resolves a determined severity into a
+  concrete wound: roll `1d8 + source modifier + actor wounds.modifier` into a ~20-row table
+  per severity. Hybrid storage (RollTables → `wound`-type Items carrying ActiveEffects). Wounds
+  are embedded Items that stack and clear by manual recovery. Adds a `wound` item type and the
+  first compendium packs. **Supersedes the `wounds.consequences[]` idea** in the weapons spec.
+- **[Effects & Conditions](docs/specs/effects-conditions.md)** — the effect engine wounds,
+  weapon properties, and spell effects all depend on. Everything is a native ActiveEffect; flat
+  stat mods land on `.bonus` accumulators (NOT editable base fields) folded into `effective`
+  values by a (finally-implemented) `prepareDerivedData`; roll-time levers (Boon/Bane, die-tier
+  shift, flat-to-total) are `flags.wispers.*` accumulators read by the roll pipeline. Conditions
+  are a compendium surfaced as token statuses. Active/reaction features become activatable
+  AP-cost actions. Resolves the "TBD effect vocabulary" left open by the three prior specs.
+- **[Armor & Shields](docs/specs/armor-shields.md)** — closes the combat loop. Armor passively
+  **raises wound thresholds**, but only against attacks targeting a save it **covers**
+  (per-armor, default physical) — so the boost is computed per-hit from the attack's targetSave.
+  Shields are **active-only**: spend AP to block as a reaction. Adds an actor **armor proficiency
+  track** (by type); under-proficiency imposes penalties via the effects engine. Consolidates
+  the shared equipment fields to just `equipped`. Flags the `armorValue` default retune.
+
 ## Known WIP / scaffolding
 
 These are intentional placeholders, not bugs to fix opportunistically — flag them when relevant but don't silently rewrite:
