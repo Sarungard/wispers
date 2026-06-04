@@ -101,6 +101,17 @@
       "Difficulty5": "5 — Extrém (d12)",
       "Roll": "Dobás"
     },
+    "Initiative": {
+      "PromptTitle": "Kezdeményezés — {name}",
+      "PromptLabel": "Kezdeményezés / Akciópontok",
+      "PromptHint": "Az alacsonyabb lép előbb. Ez a szám egyben az akciópontjaid is a köröd végéig.",
+      "Confirm": "Megerősítés"
+    },
+    "ActionPoints": {
+      "Label": "Akciópontok",
+      "Short": "AP",
+      "Tooltip": "Akciópontok (maradék / max ebben a körben)"
+    },
     "Tabs": {
       "Character": "Karakter",
       "Inventory": "Felszerelés",

@@ -18,6 +18,10 @@
                 {{system.class.name}}
                 <span class="character-level">{{localize "SYSTEM.LevelShort"}} {{system.level.value}}</span>
             </div>
+            <div class="action-points" title="{{localize "CONSTANTS.ActionPoints.Tooltip"}}">
+                <span class="ap-label">{{localize "CONSTANTS.ActionPoints.Short"}}</span>
+                <span class="ap-value">{{system.initiative.remaining}}<span class="ap-sep">/</span>{{system.initiative.total}}</span>
+            </div>
         </div>
 
         <div class="saves-row">

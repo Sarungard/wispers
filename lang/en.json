@@ -101,6 +101,17 @@
       "Difficulty5": "5 — Extreme (d12)",
       "Roll": "Roll"
     },
+    "Initiative": {
+      "PromptTitle": "Set Initiative — {name}",
+      "PromptLabel": "Initiative / Action Points",
+      "PromptHint": "Lower acts first. This number is also your action points until your turn ends.",
+      "Confirm": "Confirm"
+    },
+    "ActionPoints": {
+      "Label": "Action Points",
+      "Short": "AP",
+      "Tooltip": "Action Points (remaining / max this turn)"
+    },
     "Tabs": {
       "Character": "Character",
       "Inventory": "Inventory",

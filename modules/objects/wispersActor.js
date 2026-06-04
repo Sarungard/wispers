@@ -20,6 +20,30 @@ export default class wispersActor extends Actor {
     // Calculations should done here and then update the Actor with the new details
   }
 
+  /**
+   * Reset initiative + action points to a freshly chosen number (start of a new
+   * turn). `total` is the chosen number and the AP cap; `remaining` is the live
+   * pool. Any unspent AP from the previous turn is discarded by this overwrite.
+   */
+  async resetInitiative(value) {
+    return this.update({
+      "system.initiative.total": value,
+      "system.initiative.remaining": value
+    });
+  }
+
+  /**
+   * Spend `cost` action points from the remaining pool. Action costs are not yet
+   * configured per-action — this is the spend primitive they will call.
+   * @returns {Promise<boolean>} false (without spending) if the pool is too low.
+   */
+  async spendActionPoints(cost) {
+    const remaining = this.system?.initiative?.remaining ?? 0;
+    if (cost > remaining) return false;
+    await this.update({ "system.initiative.remaining": remaining - cost });
+    return true;
+  }
+
   setNote(note) {
 
         // Methode to update Character Notes

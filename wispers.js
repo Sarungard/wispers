@@ -5,6 +5,7 @@ import CharacterData from "./modules/data/actor/character.js";
 import NPCData from "./modules/data/actor/npc.js";
 import wispersCharacterSheet from "./modules/sheets/wispersCharacterSheet.js";
 import WispersItemSheet from "./modules/sheets/wispersItemSheet.js";
+import WispersCombat from "./modules/combat/wispersCombat.js";
 import WeaponData from "./modules/data/item/weapon.js";
 import ArmorData from "./modules/data/item/armor.js";
 import ShieldData from "./modules/data/item/shield.js";
@@ -21,6 +22,7 @@ Hooks.once("init", async () => {
   CONFIG.INIT = true;
   CONFIG.Actor.documentClass = wispersActor;
   CONFIG.Item.documentClass = WispersItem;
+  CONFIG.Combat.documentClass = WispersCombat;
 
   // Actor data schemas (DataModels). Keys must match the actor type names in
   // template.json `Actor.types`.
@@ -177,6 +179,17 @@ Handlebars.registerHelper("proficiencyPips", function (value) {
 Hooks.once("ready", function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+
+  // Re-prompt a combatant for their next initiative/action-point number the
+  // moment their turn ends. Fires on every client; WispersCombat decides which
+  // single client actually shows the dialog. (See modules/combat/wispersCombat.js.)
+  Hooks.on("combatTurnChange", (combat, prior, current) => {
+    if (!(combat instanceof WispersCombat)) return;
+    const endedId = prior?.combatantId;
+    if (!endedId || endedId === current?.combatantId) return;
+    const ended = combat.combatants.get(endedId);
+    if (ended) WispersCombat.onTurnEnd(ended);
+  });
 });
 
 /* -------------------------------------------- */
