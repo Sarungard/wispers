@@ -13,6 +13,7 @@ import SpellData from "./modules/data/item/spell.js";
 import ConsumableData from "./modules/data/item/consumable.js";
 import LootData from "./modules/data/item/loot.js";
 import FeatureData from "./modules/data/item/feature.js";
+import WoundData from "./modules/data/item/wound.js";
 
 Hooks.once("init", async () => {
   console.log("WISPERS | Initalizing Wispers Core System");
@@ -44,6 +45,7 @@ Hooks.once("init", async () => {
     consumable: ConsumableData,
     loot: LootData,
     feature: FeatureData,
+    wound: WoundData,
   };
 
   // Register custom Sheets and unregister the core defaults.
@@ -103,6 +105,7 @@ function preloadHandlebarsTemplates() {
     "systems/wispers/templates/sheets/item/types/spell.hbs",
     "systems/wispers/templates/sheets/item/types/consumable.hbs",
     "systems/wispers/templates/sheets/item/types/feature.hbs",
+    "systems/wispers/templates/sheets/item/types/wound.hbs",
   ];
 
   return foundry.applications.handlebars.loadTemplates(templatePaths);
@@ -171,6 +174,22 @@ Handlebars.registerHelper("proficiencyDie", function (value) {
 });
 Handlebars.registerHelper("proficiencyPips", function (value) {
   return [1, 2, 3, 4, 5].map(i => ({ level: i, active: i <= value }));
+});
+// Map a 0–5 proficiency level to its named tier, localized. Mirrored in
+// wispersCharacterSheet._proficiencyTerm (used by the expandable card).
+const PROFICIENCY_TERMS = ["Untrained", "Novice", "Trained", "Adept", "Expert", "Master"];
+Handlebars.registerHelper("proficiencyTerm", function (value) {
+  const i = Math.max(0, Math.min(5, Math.trunc(Number(value) || 0)));
+  return game.i18n.localize(`CONSTANTS.Proficiency.${PROFICIENCY_TERMS[i]}`);
+});
+// Map a die formula string ("1d8", "2d6", …) to a die CSS class ("d8") for the
+// dice-icon background. Used by the inventory/spellbook roll controls, which
+// show a weapon's own die rather than a 0–5 proficiency tier.
+Handlebars.registerHelper("dieClass", function (formula) {
+  if (typeof formula !== "string") return "noDie";
+  const m = formula.match(/d(\d+)/i);
+  const cls = m ? `d${m[1]}` : null;
+  return ["d4", "d6", "d8", "d10", "d12"].includes(cls) ? cls : "noDie";
 });
 /* -------------------------------------------- */
 /*  Ready Hook                                  */

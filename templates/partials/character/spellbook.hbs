@@ -4,7 +4,7 @@
             <input type="search" spellcheck="false" placeholder="{{localize "CONSTANTS.Search"}}" />
         </div>
       </header>
-  {{#each spells as |spells spellLevel|}}
+  {{#each spells as |levelSpells spellLevel|}}
     <li class='item flexrow items-header'>
       <div class='item-name'>
         {{localize 'CONSTANTS.Item.Spell.SpellLVL' level=spellLevel}}
@@ -13,6 +13,7 @@
         <a
           class='item-control item-create'
           title='{{localize "DOCUMENT.Create" type='Spell'}}'
+          data-action='createItem'
           data-type='spell'
           data-spell-level='{{spellLevel}}'
         >
@@ -21,28 +22,31 @@
         </a>
       </div>
     </li>
-    {{#each spells as |item id|}}
-      <li class='item flexrow' data-item-id='{{item._id}}'>
+    {{#each levelSpells as |entry|}}
+      <li class='item flexrow' data-item-id='{{entry.item._id}}'>
         <div class='item-name flexrow'>
-          <div class='item-image'>
-            <a class='rollable' data-roll-type='item'><img
-                src='{{item.img}}'
-                title='{{item.name}}'
-                width='24'
-                height='24'
-              /></a>
+          <div class='item-image' data-roll-spell="{{entry.item._id}}"
+                data-tooltip="{{localize 'CONSTANTS.Roll.Spellpower'}}">
+            <img src='{{entry.item.img}}' title='{{entry.item.name}}' width='24' height='24' />
           </div>
-          <h4>{{item.name}}</h4>
+          <h4 class="item-toggle" data-action="toggleDescription"
+              data-tooltip="{{localize 'CONSTANTS.Item.Description'}}">{{entry.item.name}}</h4>
         </div>
+        <div class="item-meta" data-tooltip="{{localize 'CONSTANTS.Inventory.ColGroup'}}">{{entry.group}}</div>
+        <div class="item-meta" data-tooltip="{{localize 'CONSTANTS.Inventory.ColProf'}}">{{entry.prof}}</div>
         <div class='item-controls'>
           <a
-            class='item-control item-edit'
+            class='item-control'
+            data-action='editItem'
+            data-item-id='{{entry.item._id}}'
             title='{{localize "DOCUMENT.Edit" type='spell'}}'
           >
             <i class='fas fa-edit'></i>
           </a>
           <a
-            class='item-control item-delete'
+            class='item-control'
+            data-action='deleteItem'
+            data-item-id='{{entry.item._id}}'
             title='{{localize "DOCUMENT.Delete" type='spell'}}'
           >
             <i class='fas fa-trash'></i>

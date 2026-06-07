@@ -4,7 +4,7 @@
     <div class="form-group">
         <label>{{localize "CONSTANTS.Armor.Type"}}</label>
         <select name="system.armorType.value">
-            {{selectOptions config.armorTypes selected=system.armorType.value localize=true}}
+            {{selectOptions armorTypeChoices selected=system.armorType.value localize=true}}
         </select>
     </div>
 
@@ -14,8 +14,15 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "CONSTANTS.Armor.Proficiency"}}</label>
-        <input type="text" name="system.proficiency.value" value="{{system.proficiency.value}}" data-dtype="Number" />
+        <label>{{localize "CONSTANTS.Armor.Covers"}}</label>
+        <select name="system.covers" multiple>
+            {{selectOptions saveChoices selected=coversArray localize=true}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Armor.RequiredProficiency"}}</label>
+        <input type="text" name="system.requiredProficiency.value" value="{{system.requiredProficiency.value}}" data-dtype="Number" />
     </div>
 
     <div class="form-group">

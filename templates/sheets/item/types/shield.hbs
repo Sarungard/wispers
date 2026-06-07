@@ -7,8 +7,15 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "CONSTANTS.Shield.Proficiency"}}</label>
-        <input type="text" name="system.proficiency.value" value="{{system.proficiency.value}}" data-dtype="Number" />
+        <label>{{localize "CONSTANTS.Shield.Covers"}}</label>
+        <select name="system.covers" multiple>
+            {{selectOptions saveChoices selected=coversArray localize=true}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Shield.BlockApCost"}}</label>
+        <input type="text" name="system.block.apCost" value="{{system.block.apCost}}" data-dtype="Number" />
     </div>
 
     <div class="form-group">

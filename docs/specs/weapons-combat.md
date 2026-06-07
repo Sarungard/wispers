@@ -1,6 +1,6 @@
 # Spec: Weapons & Combat
 
-> **Status:** Design finalized, **not yet implemented**. This document is the source of
+> **Status:** Design finalized; **data layer + roller half implemented** (schema, actor weapon-proficiency tracks, `_resolveWeaponProficiency`, `_rollWeaponAttack` threat roll + chat card wired to the inventory die icon). The defender react → wound loop, AP cost, gated-property display, and the proficiency-editor UI remain — see §8. This document is the source of
 > truth for the weapon/combat data model and resolution flow. It exists so the work can
 > be picked up cold in a later session. Decisions marked **[USER]** were made by the
 > project owner; decisions marked **[ASSUMED]** are inferred to fill a gap and should be
@@ -331,20 +331,21 @@ This is its own resolution to be written down separately (like this spec). Until
 
 ## 8. Implementation checklist
 
-- [ ] `config.js`: add `weaponCategories`, `weaponProperties`; remove `combat` from `skills`.
-- [ ] Lang (`en.json` + `hu.json`): add `CONSTANTS.WeaponCategories.*`,
-      `CONSTANTS.WeaponProperties.*`; remove `CONSTANTS.Skills.Combat`.
-- [ ] Actor `_helpers.js`: add `system.skills.weapons.{categories, specific}`; tighten
-      `wounds.consequences` entry schema.
-- [ ] `wispersCharacterSheet._prepareSubmitData`: extend the 0–5 clamp to weapon proficiencies.
-- [ ] `weapon.js`: replace schema per §3.4.
-- [ ] `wispersCharacterSheet`: `_resolveWeaponProficiency`, `_rollWeaponAttack`, attack
-      chat card, reaction handler; wire a `.rollable` attack control.
+- [x] `config.js`: add `weaponCategories`, `weaponProperties`; remove `combat` from `skills`.
+- [x] Lang (`en.json` + `hu.json`): add `CONSTANTS.WeaponCategories.*`; remove `CONSTANTS.Skills.Combat`.
+      (`CONSTANTS.WeaponProperties.*` deferred — the registry is empty until properties are authored.)
+- [x] Actor `_helpers.js`: add `system.skills.weapons.{categories, specific}`. (`wounds.consequences`
+      was **removed**, not tightened — superseded by embedded wound Items, wound-tables.md §5.1.)
+- [x] `wispersCharacterSheet._prepareSubmitData`: extend the 0–5 clamp to weapon proficiencies.
+- [x] `weapon.js`: replace schema per §3.4.
+- [~] `wispersCharacterSheet`: `_resolveWeaponProficiency` ✓, `_rollWeaponAttack` + attack chat card ✓,
+      `.rollable` attack control (inventory die icon) ✓. **Reaction handler pending.**
 - [ ] Character sheet UI: weapon-proficiency editor (categories + learned specifics);
       proficiency-gated property display on weapons.
 - [ ] `WispersItem.roll()`: redirect weapons to the attack flow (or leave for spells/items).
-- [ ] Decide & implement the wound-table mechanism (§6) — separate spec.
-- [ ] Update `CLAUDE.md` (combat/roll sections) and `TODO.md` once implemented.
+- [~] Decide & implement the wound-table mechanism (§6) — decided (wound-tables.md); schema/plumbing
+      done, `applyWound` resolver + content pending.
+- [x] Update `CLAUDE.md` (combat/roll sections) and `TODO.md`.
 
 ## 9. Touched/affected files (for the implementer)
 

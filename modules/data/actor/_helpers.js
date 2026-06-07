@@ -22,32 +22,40 @@ function intField(initial, { min, max } = {}) {
     return new fields.NumberField(opts);
 }
 
-/** One ability score (open-ended value, so no upper bound). */
+/**
+ * One ability score. `value` is the editable base the sheet input binds to;
+ * `bonus` is the effect accumulator ActiveEffects ADD into (effects MUST NOT
+ * target `value` — see effects-conditions.md §1.1). `prepareDerivedData` folds
+ * `effective = value + bonus`.
+ */
 function abilityField() {
     return new fields.SchemaField({
         value: intField(2, { min: 0 }),
         start: intField(2, { min: 0 }),
-        modifiers: new fields.ArrayField(new fields.ObjectField())
+        bonus: intField(0)
     });
 }
 
-/** One proficiency entry (skill / spell school / saving throw), 0–5 ladder. */
-function proficiencyEntry({ withModifiers = false } = {}) {
-    const schema = {
+/**
+ * One proficiency entry (skill / spell school / saving throw / weapon category /
+ * armor type), 0–5 ladder. `value` is editable base; `bonus` is the effect
+ * accumulator (folded to `effective`, clamped 0–5, in prepareDerivedData).
+ */
+function proficiencyEntry() {
+    return {
         proficiency: new fields.SchemaField({
             value: intField(0, { min: 0, max: 5 }),
-            max: intField(5)
+            max: intField(5),
+            bonus: intField(0)
         })
     };
-    if (withModifiers) schema.modifiers = new fields.ArrayField(new fields.ObjectField());
-    return schema;
 }
 
 /** Build a SchemaField of proficiency entries, one per key in a config map. */
-function proficiencyGroup(configMap, opts) {
+function proficiencyGroup(configMap) {
     const out = {};
     for (const key of Object.keys(configMap ?? {})) {
-        out[key] = new fields.SchemaField(proficiencyEntry(opts));
+        out[key] = new fields.SchemaField(proficiencyEntry());
     }
     return new fields.SchemaField(out);
 }
@@ -63,11 +71,14 @@ export function baseActorFields() {
             max: intField(20)
         }),
         abilities: new fields.SchemaField(abilities),
+        // No HP counter. `effectiveThreat` vs these thresholds picks a wound
+        // severity; the wound-table resolver produces the actual wound, embedded
+        // as a `wound` Item (wound-tables.md §5.1). `modifier` is the wound-roll
+        // modifier accumulated by effects.
         wounds: new fields.SchemaField({
             modifier: new fields.SchemaField({ value: intField(0) }),
             lightThreshold: new fields.SchemaField({ value: intField(5, { min: 0 }) }),
-            heavyThreshold: new fields.SchemaField({ value: intField(10, { min: 0 }) }),
-            consequences: new fields.ArrayField(new fields.ObjectField())
+            heavyThreshold: new fields.SchemaField({ value: intField(10, { min: 0 }) })
         }),
         initiative: new fields.SchemaField({
             total: intField(0),
@@ -77,13 +88,30 @@ export function baseActorFields() {
     };
 }
 
-/** The full `skills` block: combat/social skills, spell schools, saving throws. */
+/**
+ * The full `skills` block: social/utility skills, spell schools, saving throws,
+ * plus the v1 combat proficiency tracks — weapon categories + open per-slug
+ * specific-weapon entries (weapons-combat.md §3.2) and armor-type proficiencies
+ * (armor-shields.md §4). All ride the same 0–5 proficiency ladder.
+ */
 export function skillsFields() {
     return {
         skills: new fields.SchemaField({
             skills: proficiencyGroup(WISPERS.skills),
             spellSchools: proficiencyGroup(WISPERS.spellSchools),
-            savingthrows: proficiencyGroup(WISPERS.savingthrows, { withModifiers: true })
+            savingthrows: proficiencyGroup(WISPERS.savingthrows),
+            weapons: new fields.SchemaField({
+                // Fixed: one entry per WISPERS.weaponCategories key.
+                categories: proficiencyGroup(WISPERS.weaponCategories),
+                // Open: slug -> { proficiency: { value, max, bonus } }, authored
+                // as the player learns specific weapons. Specific overrides
+                // category at attack time (weapons-combat.md §2.1).
+                specific: new fields.TypedObjectField(
+                    new fields.SchemaField(proficiencyEntry())
+                )
+            }),
+            // Armor proficiency by weight class (light/medium/heavy).
+            armor: proficiencyGroup(WISPERS.armorTypes)
         })
     };
 }

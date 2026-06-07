@@ -3,7 +3,9 @@
 
     <div class="form-group">
         <label>{{localize "CONSTANTS.Spell.School"}}</label>
-        <input type="text" name="system.school.value" value="{{system.school.value}}" />
+        <select name="system.school.value">
+            {{selectOptions schoolChoices selected=system.school.value localize=true}}
+        </select>
     </div>
 
     <div class="form-group">
@@ -49,13 +51,64 @@
         <input type="text" name="system.components.materialComponents" value="{{system.components.materialComponents}}" />
     </div>
 
-    <div class="form-group">
-        <label>{{localize "CONSTANTS.Spell.DamageDice"}}</label>
-        <input type="text" name="system.damage.dice.value" value="{{system.damage.dice.value}}" />
-    </div>
+    <fieldset class="spell-degrees">
+        <legend>{{localize "CONSTANTS.Spell.Degrees"}}</legend>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.DegreeCriticalFailure"}}</label>
+            <input type="text" name="system.degrees.criticalFailure" value="{{system.degrees.criticalFailure}}" data-dtype="Number" />
+        </div>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.DegreeFailure"}}</label>
+            <input type="text" name="system.degrees.failure" value="{{system.degrees.failure}}" data-dtype="Number" />
+        </div>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.DegreeSuccess"}}</label>
+            <input type="text" name="system.degrees.success" value="{{system.degrees.success}}" data-dtype="Number" />
+        </div>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.DegreeCriticalSuccess"}}</label>
+            <input type="text" name="system.degrees.criticalSuccess" value="{{system.degrees.criticalSuccess}}" data-dtype="Number" />
+        </div>
+    </fieldset>
 
-    <div class="form-group">
-        <label>{{localize "CONSTANTS.Spell.DamageType"}}</label>
-        <input type="text" name="system.damage.damageType.value" value="{{system.damage.damageType.value}}" />
-    </div>
+    <fieldset class="spell-scaling">
+        <legend>{{localize "CONSTANTS.Spell.Scaling"}}</legend>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.ScalingBonus"}}</label>
+            <input type="text" name="system.scaling.spellpowerBonus" value="{{system.scaling.spellpowerBonus}}" data-dtype="Number" />
+        </div>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.ScalingMult"}}</label>
+            <input type="text" name="system.scaling.spellpowerMult" value="{{system.scaling.spellpowerMult}}" data-dtype="Number" />
+        </div>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.ScalingRider"}}</label>
+            <input type="text" name="system.scaling.rider" value="{{system.scaling.rider}}" />
+        </div>
+    </fieldset>
+
+    <fieldset class="spell-resolution">
+        <legend>{{localize "CONSTANTS.Spell.Resolution"}}</legend>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.DealsWound"}}</label>
+            <input type="checkbox" name="system.resolution.dealsWound" {{#if system.resolution.dealsWound}}checked{{/if}} />
+        </div>
+        <div class="form-group">
+            <label>{{localize "CONSTANTS.Spell.TargetSave"}}</label>
+            <select name="system.resolution.targetSave">
+                {{selectOptions saveChoices selected=system.resolution.targetSave localize=true}}
+            </select>
+        </div>
+        <div class="form-group stacked">
+            <label>{{localize "CONSTANTS.Spell.WoundMod"}}</label>
+            <div class="triple-row">
+                <label class="mini">{{localize "CONSTANTS.Spell.WoundLight"}}</label>
+                <input type="text" name="system.resolution.wound.light" value="{{system.resolution.wound.light}}" data-dtype="Number" />
+                <label class="mini">{{localize "CONSTANTS.Spell.WoundNormal"}}</label>
+                <input type="text" name="system.resolution.wound.normal" value="{{system.resolution.wound.normal}}" data-dtype="Number" />
+                <label class="mini">{{localize "CONSTANTS.Spell.WoundHeavy"}}</label>
+                <input type="text" name="system.resolution.wound.heavy" value="{{system.resolution.wound.heavy}}" data-dtype="Number" />
+            </div>
+        </div>
+    </fieldset>
 </fieldset>

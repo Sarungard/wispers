@@ -28,6 +28,7 @@
       "Source": "Forrás",
       "Uses": "Felhasználás",
       "UsesMax": "Max",
+      "NoDescription": "Nincs leírás.",
       "Spell": {
         "SpellLVL": "Level {level} Spells",
         "AddLVL": "Add LVL {level}"
@@ -39,11 +40,19 @@
       "Melee": "Közelharci",
       "Ranged": "Távolsági",
       "Range": "Hatótáv",
-      "Proficiency": "Jártasság",
       "Equipped": "Felszerelve",
-      "DamageDice": "Sebzéskocka",
-      "CircumstanceDice": "Körülménykocka",
-      "DamageType": "Sebzéstípus"
+      "Category": "Kategória",
+      "Slug": "Konkrét fegyver (slug)",
+      "WeaponDie": "Fegyverkocka",
+      "TargetSave": "Célzott mentő",
+      "ApCost": "AP költség",
+      "WoundMod": "Sebmódosító",
+      "WoundLight": "Könnyű",
+      "WoundNormal": "Normál",
+      "WoundHeavy": "Súlyos",
+      "Properties": "Tulajdonságok",
+      "PropertyKey": "Tulajdonság",
+      "MinProficiency": "Min. jártasság"
     },
     "Armor": {
       "Section": "Páncél",
@@ -51,21 +60,29 @@
       "Light": "Könnyű",
       "Medium": "Közepes",
       "Heavy": "Nehéz",
+      "LightDesc": "Vászon-, bőr- és más, mozgást alig gátló páncélok.",
+      "MediumDesc": "Sodronying és pikkelypáncél — egyensúly a védelem és a mozgékonyság között.",
+      "HeavyDesc": "Vértezet és teljes páncél — maximális védelem a fürgeség rovására.",
       "Value": "Páncélérték",
-      "Proficiency": "Jártasság",
-      "Equipped": "Felszerelve"
+      "Equipped": "Felszerelve",
+      "Covers": "Védett mentők",
+      "RequiredProficiency": "Szükséges jártasság",
+      "Properties": "Tulajdonságok"
     },
     "Shield": {
       "Section": "Pajzs",
       "Value": "Pajzsérték",
-      "Proficiency": "Jártasság",
-      "Equipped": "Felszerelve"
+      "Equipped": "Felszerelve",
+      "Covers": "Védett mentők",
+      "Block": "Blokk",
+      "BlockApCost": "Blokk AP költség",
+      "Properties": "Tulajdonságok"
     },
     "Spell": {
       "Section": "Varázslat",
       "School": "Iskola",
       "Level": "Szint",
-      "CastingTime": "Varázslási idő",
+      "CastingTime": "Varázslási idő (AP)",
       "Range": "Hatótáv",
       "Duration": "Időtartam",
       "Components": "Összetevők",
@@ -73,8 +90,22 @@
       "Somatic": "Szomatikus",
       "Material": "Anyagi",
       "MaterialComponents": "Anyagi összetevők",
-      "DamageDice": "Sebzéskocka",
-      "DamageType": "Sebzéstípus"
+      "Degrees": "Fokozat-küszöbök",
+      "DegreeCriticalFailure": "Kritikus kudarc ≥",
+      "DegreeFailure": "Kudarc ≥",
+      "DegreeSuccess": "Siker ≥ (Varázserő-igény)",
+      "DegreeCriticalSuccess": "Kritikus siker ≥",
+      "Scaling": "Kritikus siker skálázás",
+      "ScalingBonus": "Varázserő bónusz",
+      "ScalingMult": "Varázserő szorzó",
+      "ScalingRider": "Kiegészítő hatás",
+      "Resolution": "Feloldás",
+      "DealsWound": "Sebet okoz",
+      "TargetSave": "Célzott mentő",
+      "WoundMod": "Sebmódosító",
+      "WoundLight": "Könnyű",
+      "WoundNormal": "Normál",
+      "WoundHeavy": "Súlyos"
     },
     "Consumable": {
       "Section": "Fogyóeszköz"
@@ -99,7 +130,10 @@
       "Difficulty3": "3 — Közepes (d8)",
       "Difficulty4": "4 — Nehéz (d10)",
       "Difficulty5": "5 — Extrém (d12)",
-      "Roll": "Dobás"
+      "Roll": "Dobás",
+      "Threat": "Fenyegetés",
+      "Spellpower": "Összegyűjtött varázserő",
+      "Degree": "Fokozat"
     },
     "Initiative": {
       "PromptTitle": "Kezdeményezés — {name}",
@@ -126,6 +160,8 @@
       "Shields": "Pajzsok",
       "Consumables": "Fogyóeszközök",
       "Loot": "Zsákmány",
+      "ColGroup": "Csoport",
+      "ColProf": "Jártasság",
       "ColQty": "Db",
       "ColWgt": "Súly",
       "ColPrice": "Ár",
@@ -148,7 +184,35 @@
     "Wounds": {
       "Active": "Sebek",
       "Light": "Könnyű",
-      "Heavy": "Súlyos"
+      "Normal": "Normál",
+      "Heavy": "Súlyos",
+      "Severity": "Súlyosság",
+      "Recovery": "Gyógyulás",
+      "Section": "Seb"
+    },
+    "WeaponCategories": {
+      "Maces": "Buzogányok",
+      "Daggers": "Tőrök",
+      "Axes": "Fejszék",
+      "Swords": "Kardok",
+      "Bows": "Íjak",
+      "Crossbows": "Számszeríjak",
+      "Hammers": "Pörölyök",
+      "Polearms": "Szálfegyverek",
+      "MacesDesc": "Tompa, zúzó fegyverek — buzogányok, botok és reggelcsillagok, melyek átütik a páncélt.",
+      "DaggersDesc": "Könnyű pengék gyors, közeli munkára — tőrök, kések és stilétók.",
+      "AxesDesc": "Vágó fegyverek — kézi fejszék és csatabárdok, melyek mélyre hatolnak.",
+      "SwordsDesc": "A képzett harcos pengéi — rövid kardoktól a pallosokig.",
+      "BowsDesc": "Húrral feszített távolsági fegyverek — rövid és hosszúíjak, melyek biztos kezet kívánnak.",
+      "CrossbowsDesc": "Gépezetes távolsági fegyverek — könnyű célozni, lassú újratölteni.",
+      "HammersDesc": "Nehéz, kétkezes zúzófegyverek — harci pörölyök és buzogányok a nyers erőhöz.",
+      "PolearmsDesc": "Hosszú nyelű, távtartó fegyverek — lándzsák, alabárdok és glévék."
+    },
+    "SpellDegrees": {
+      "CriticalFailure": "Kritikus kudarc",
+      "Failure": "Kudarc",
+      "Success": "Siker",
+      "CriticalSuccess": "Kritikus siker"
     },
     "Character": {
       "Appearance": "Megjelenés",
@@ -166,15 +230,33 @@
       "EditFeature": "Szerkesztés",
       "DeleteFeature": "Törlés",
       "Section": "Képesség",
-      "Activation": "Aktiválás"
+      "Activation": "Aktiválás",
+      "ApCost": "AP költség",
+      "AppliesEffect": "Hatást alkalmaz",
+      "Target": "Cél",
+      "TargetSelf": "Önmaga",
+      "TargetOther": "Cél"
+    },
+    "Proficiency": {
+      "Untrained": "Képzetlen",
+      "Novice": "Kezdő",
+      "Trained": "Gyakorlott",
+      "Adept": "Jártas",
+      "Expert": "Szakértő",
+      "Master": "Mester"
     },
     "Skills": {
-      "Combat": "Harc",
       "Athletics": "Atlétika",
       "Stealth": "Lopakodás",
       "Academics": "Tudományok",
       "Persuasion": "Meggyőzés",
-      "Willpower": "Akaraterő"
+      "Willpower": "Akaraterő",
+      "Proficiency": "Jártasság",
+      "AthleticsDesc": "Testi erő és ügyesség próbái — mászás, ugrás, úszás és fizikai akadályok leküzdése.",
+      "StealthDesc": "Észrevétlen és nesztelen mozgás, rejtőzködés, követés és kézügyesség.",
+      "AcademicsDesc": "Ismeretek felidézése — tudás, nyelvek, történelem, valamint a természet- és mágiatudományok.",
+      "PersuasionDesc": "Mások befolyásolása bájjal, érveléssel, megtévesztéssel vagy megfélemlítéssel.",
+      "WillpowerDesc": "Lelki szilárdság a félelemmel, kísértéssel és az elmét érő behatásokkal szemben."
     },
     "SpellSchools": {
       "Arcana": "Arkána",
@@ -184,12 +266,23 @@
       "Sinistrope": "Szinisztróp",
       "Primalism": "Primalizmus",
       "Scriptomancy": "Szkriptománcia",
-      "RuneScribe": "Rúnaíró"
+      "RuneScribe": "Rúnaíró",
+      "ArcanaDesc": "A mágia nyers szerkezetének tudománya — védőjelek, jóslás és az arkán erő irányítása.",
+      "ElementalismDesc": "A tűz, víz, levegő és föld parancsolása, a nyers elemek varázshatássá formálása.",
+      "EntropyDesc": "A pusztulás, felbomlás és a rend szétzilálásának mágiája — átkok, sorvasztás és káosz.",
+      "SacratropeDesc": "A megszentelt erő csatornázása — gyógyítás, áldás és védelem a tisztátalan ellen.",
+      "SinistropeDesc": "A romlás és a tisztátalan tiltott mágiája — nekromancia, vér és árnyék.",
+      "PrimalismDesc": "A vadállatok, a növekedés és a természet megszelídítetlen mágiája.",
+      "ScriptomancyDesc": "Írott szavakkal, jelekkel és vésett képletekkel végzett varázslás.",
+      "RuneScribeDesc": "Tartós rúnák vésése, melyek ereje tárgyakban és védőjelekben él tovább."
     },
     "SavingThrows": {
       "Reflex": "Reflex",
       "Toughness": "Szívósság",
-      "Resolve": "Elszántság"
+      "Resolve": "Elszántság",
+      "ReflexDesc": "Félreugrás, fedezékbe vetődés és gyors reagálás a hirtelen veszély elkerülésére.",
+      "ToughnessDesc": "Fizikai megpróbáltatások elviselése — méreg, betegség, kimerültség és testi sérülés.",
+      "ResolveDesc": "Helytállás a félelemmel, bűvöléssel és az elmét, lelket érő támadásokkal szemben."
     },
     "Search": "Keresés..."
   },
@@ -202,7 +295,8 @@
     "Item": {
       "item": "Item",
       "feature": "Feature",
-      "spell": "Spell"
+      "spell": "Spell",
+      "wound": "Seb"
     }
   }
 }

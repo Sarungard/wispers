@@ -2,10 +2,44 @@
     <legend>{{localize "CONSTANTS.Weapon.Section"}}</legend>
 
     <div class="form-group">
-        <label>{{localize "CONSTANTS.Weapon.Type"}}</label>
-        <select name="system.weaponType.value">
-            {{selectOptions config.weaponTypes selected=system.weaponType.value localize=true}}
+        <label>{{localize "CONSTANTS.Weapon.Category"}}</label>
+        <select name="system.category.value">
+            {{selectOptions weaponCategoryChoices selected=system.category.value localize=true}}
         </select>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.Slug"}}</label>
+        <input type="text" name="system.slug.value" value="{{system.slug.value}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.WeaponDie"}}</label>
+        <input type="text" name="system.attack.weaponDie.value" value="{{system.attack.weaponDie.value}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.TargetSave"}}</label>
+        <select name="system.attack.targetSave.value">
+            {{selectOptions saveChoices selected=system.attack.targetSave.value localize=true}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Weapon.ApCost"}}</label>
+        <input type="text" name="system.attack.apCost.value" value="{{system.attack.apCost.value}}" data-dtype="Number" />
+    </div>
+
+    <div class="form-group stacked">
+        <label>{{localize "CONSTANTS.Weapon.WoundMod"}}</label>
+        <div class="triple-row">
+            <label class="mini">{{localize "CONSTANTS.Weapon.WoundLight"}}</label>
+            <input type="text" name="system.attack.wound.light" value="{{system.attack.wound.light}}" data-dtype="Number" />
+            <label class="mini">{{localize "CONSTANTS.Weapon.WoundNormal"}}</label>
+            <input type="text" name="system.attack.wound.normal" value="{{system.attack.wound.normal}}" data-dtype="Number" />
+            <label class="mini">{{localize "CONSTANTS.Weapon.WoundHeavy"}}</label>
+            <input type="text" name="system.attack.wound.heavy" value="{{system.attack.wound.heavy}}" data-dtype="Number" />
+        </div>
     </div>
 
     <div class="form-group">
@@ -15,27 +49,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "CONSTANTS.Weapon.Proficiency"}}</label>
-        <input type="text" name="system.proficiency.value" value="{{system.proficiency.value}}" data-dtype="Number" />
-    </div>
-
-    <div class="form-group">
         <label>{{localize "CONSTANTS.Weapon.Equipped"}}</label>
         <input type="checkbox" name="system.equipped.value" {{#if system.equipped.value}}checked{{/if}} />
-    </div>
-
-    <div class="form-group">
-        <label>{{localize "CONSTANTS.Weapon.DamageDice"}}</label>
-        <input type="text" name="system.damage.dice.value" value="{{system.damage.dice.value}}" />
-    </div>
-
-    <div class="form-group">
-        <label>{{localize "CONSTANTS.Weapon.CircumstanceDice"}}</label>
-        <input type="text" name="system.damage.circumstanceDice.value" value="{{system.damage.circumstanceDice.value}}" />
-    </div>
-
-    <div class="form-group">
-        <label>{{localize "CONSTANTS.Weapon.DamageType"}}</label>
-        <input type="text" name="system.damage.damageType.value" value="{{system.damage.damageType.value}}" />
     </div>
 </fieldset>

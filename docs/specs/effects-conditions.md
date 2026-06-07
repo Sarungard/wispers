@@ -1,6 +1,6 @@
 # Spec: Effects & Conditions
 
-> **Status:** Design finalized, **not yet implemented**. Source of truth for the effect engine
+> **Status:** Design finalized; **base→effective + roll-time levers implemented** (`prepareDerivedData`, `.bonus` accumulators, `flags.wispers.*` lever folding in the roll pipeline, the `feature.activation` block, widened effect bucketing). Effect suppression, `_onActivateFeature`, the `CONFIG.statusEffects` registry, and authored conditions remain — see §10. Source of truth for the effect engine
 > that wounds, weapon properties, and spell effects all depend on. References: `wound-tables.md`
 > (wound ActiveEffects), `weapons-combat.md` §4 (proficiency-gated properties), `spellcasting.md`
 > §4.2 (spell effects). **[USER]** = decided by the project owner; **[ASSUMED]** = inference to
@@ -273,19 +273,19 @@ the sheet when the gate fails.
 
 ## 10. Implementation checklist
 
-- [ ] `wispersActor.prepareDerivedData()`: base→effective for abilities + proficiencies (§3).
-- [ ] `_helpers.js`: add `.bonus` accumulators; drop unused `modifiers` arrays.
-- [ ] `wispers.js` die helpers + sheet die-formula helpers: read `effective` (§3).
-- [ ] `config.js`: `effectScopes`; `conditions` (ready-populated); extend `weaponProperties`.
-- [ ] `wispersCharacterSheet`: `_collectRollMods`, fold levers into all rollers (§4.2).
-- [ ] `feature.js`: `activation` block; `wispersCharacterSheet`: `_onActivateFeature` + controls.
+- [x] `wispersActor.prepareDerivedData()`: base→effective for abilities + proficiencies (§3).
+- [x] `_helpers.js`: add `.bonus` accumulators; drop unused `modifiers` arrays.
+- [x] Sheet die-formula reads + die-icon call sites: use `.effective` (§3).
+- [x] `config.js`: `effectScopes`; `conditions` (`{}` placeholder, ready-populated later); `weaponProperties` (`{}`).
+- [x] `wispersCharacterSheet`: `_collectRollMods`, fold levers into all rollers via `_buildRollFormula` (§4.2).
+- [~] `feature.js`: `activation` block ✓. **`_onActivateFeature` + activate controls pending.**
 - [ ] Weapon-effect suppression by equip + proficiency gate (§7).
 - [ ] `ready` hook: build `CONFIG.statusEffects` from `packs/conditions`.
-- [ ] `system.json`: declare `packs/conditions`; author starter conditions.
-- [ ] Widen effect bucketing in `_prepareContext` (rounds/turns, not just seconds).
+- [~] `system.json`: declare `packs/conditions` ✓. **Authoring starter conditions pending.**
+- [x] Widen effect bucketing in `_prepareContext` (rounds/turns, not just seconds).
 - [ ] Wire dependents: wound AEs, weapon properties, spell `effects[]` (their TBD vocab is now
       this spec's §3–4 changes + §5 conditions).
-- [ ] Update `CLAUDE.md` (effects, roll flow, prepareDerivedData) and `TODO.md` once implemented.
+- [x] Update `CLAUDE.md` (effects, roll flow, prepareDerivedData) and `TODO.md`.
 
 ## 11. Touched/affected files (for the implementer)
 

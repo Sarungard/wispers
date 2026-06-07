@@ -27,15 +27,15 @@
         <div class="saves-row">
             <div class="save">
                 <span class="save-label rollable" data-roll-save="reflex">{{localize "CONSTANTS.SavingThrows.Reflex"}}</span>
-                <span class="save-die die {{proficiencyDie system.skills.savingthrows.reflex.proficiency.value}}">+{{system.abilities.agi.value}}</span>
+                <span class="save-die die rollable {{proficiencyDie system.skills.savingthrows.reflex.proficiency.effective}}" data-roll-save="reflex">+{{system.abilities.agi.effective}}</span>
             </div>
             <div class="save">
                 <span class="save-label rollable" data-roll-save="toughness">{{localize "CONSTANTS.SavingThrows.Toughness"}}</span>
-                <span class="save-die die {{proficiencyDie system.skills.savingthrows.toughness.proficiency.value}}">+{{system.abilities.con.value}}</span>
+                <span class="save-die die rollable {{proficiencyDie system.skills.savingthrows.toughness.proficiency.effective}}" data-roll-save="toughness">+{{system.abilities.con.effective}}</span>
             </div>
             <div class="save">
                 <span class="save-label rollable" data-roll-save="resolve">{{localize "CONSTANTS.SavingThrows.Resolve"}}</span>
-                <span class="save-die die {{proficiencyDie system.skills.savingthrows.resolve.proficiency.value}}">+{{system.abilities.spi.value}}</span>
+                <span class="save-die die rollable {{proficiencyDie system.skills.savingthrows.resolve.proficiency.effective}}" data-roll-save="resolve">+{{system.abilities.spi.effective}}</span>
             </div>
             <div class="save">
                 <span class="save-label">Light Wound</span>

@@ -1,6 +1,6 @@
 # Spec: Armor & Shields
 
-> **Status:** Design finalized, **not yet implemented**. Closes the combat loop by defining how
+> **Status:** Design finalized; **schema layer implemented** (armor/shield schemas with `covers`/`requiredProficiency`/`block`, the actor armor-proficiency track, `equippedField`, the clamp extension, retuned `armorValue`). The `_effectiveWoundThresholds` resolver, the block reaction, penalty suppression, the proficiency-editor UI, and authored content remain — see §10. Closes the combat loop by defining how
 > `armorValue` and shields enter the threat → react → wound pipeline. References:
 > `weapons-combat.md` (the loop, equipment fields, proficiency pattern), `wound-tables.md`
 > (severity from thresholds), `effects-conditions.md` (penalties, activatable reactions,
@@ -251,19 +251,20 @@ pass, flagged so it isn't shipped as-is.
 
 ## 10. Implementation checklist
 
-- [ ] `_helpers.js` (item): add `equippedField()`; retire `equipmentFields()` after migration.
-- [ ] `armor.js`: new schema (§6.2) — drop item proficiency; add `covers`, `requiredProficiency`,
-      `properties`; retune `armorValue` default.
-- [ ] `shield.js`: new schema (§6.3) — `covers`, `block.apCost`, `properties`; drop item proficiency.
-- [ ] `_helpers.js` (actor): add `armor: proficiencyGroup(WISPERS.armorTypes)`.
-- [ ] `wispersCharacterSheet._prepareSubmitData`: extend clamp to `skills.armor.*`.
+- [x] `_helpers.js` (item): add `equippedField()`; retire `equipmentFields()` (and `damageFields()`).
+- [x] `armor.js`: new schema (§6.2) — drop item proficiency; add `covers`, `requiredProficiency`,
+      `properties`; retune `armorValue` default (10 → 2).
+- [x] `shield.js`: new schema (§6.3) — `covers`, `block.apCost`, `properties`; drop item proficiency.
+- [x] `_helpers.js` (actor): add `armor: proficiencyGroup(WISPERS.armorTypes)`.
+- [x] `wispersCharacterSheet._prepareSubmitData`: extend clamp to `skills.armor.*`.
 - [ ] `wispersCharacterSheet`: `_effectiveWoundThresholds`; add the **block** reaction to the
       react prompt; armor-penalty suppression.
-- [ ] Sheet UI: armor proficiency editor (three types); equip/coverage display; block control.
+- [~] Sheet UI: the armor/shield **item** sheets edit `covers`/`requiredProficiency`/`block` ✓.
+      The actor-side armor-proficiency editor + equip/coverage display + block control are pending.
 - [ ] Author armor/shield content with retuned values + penalty ActiveEffects (compendium).
-- [ ] Update `weapons-combat.md` §1.1 and `spellcasting.md` §1.1 to call
-      `_effectiveWoundThresholds` and offer the block reaction (cross-refs added).
-- [ ] Update `CLAUDE.md` (combat, item types) and `TODO.md` once implemented.
+- [x] `weapons-combat.md` / `spellcasting.md` already cross-reference `_effectiveWoundThresholds`
+      and the block reaction (the runtime call lands with the react handler).
+- [x] Update `CLAUDE.md` (combat, item types) and `TODO.md`.
 
 ## 11. Touched/affected files (for the implementer)
 

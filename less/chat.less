@@ -1,0 +1,81 @@
+// main: ./wispers.less
+//
+// Chat-card styling for the cards posted by the character sheet — roll cards
+// (skills/saves/schools/weapons/spells) enriched with icon + description +
+// proficiency tier, and the description-only cards for non-rollable items.
+//
+// These classes live in chat messages, OUTSIDE the .wispers.sheet root, so the
+// rules here are intentionally NOT scoped to the sheet.
+
+@parchment-border: #b3946a;
+@ink: #3a2e1f;
+@ink-soft: #6a553a;
+@accent: #8b4513;
+
+.wispers-chat-card {
+  color: @ink;
+
+  .wispers-chat-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .wispers-chat-icon {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border: 1px solid @parchment-border;
+    border-radius: 3px;
+    background: rgba(255, 250, 235, 0.5);
+  }
+
+  .wispers-chat-titles {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .wispers-chat-title {
+    display: block;
+    font-family: "Cinzel", serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.1;
+    color: @ink;
+  }
+
+  .wispers-chat-sub {
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: @accent;
+  }
+
+  .wispers-chat-meta {
+    font-size: 11px;
+    color: @ink-soft;
+    margin-bottom: 4px;
+  }
+
+  .wispers-chat-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: @ink;
+    border-top: 1px dashed fade(@parchment-border, 70%);
+    padding-top: 4px;
+    // Item/proficiency descriptions are authored as plain text — preserve their
+    // line breaks; enriched HTML (links, etc.) still renders fine.
+    white-space: pre-wrap;
+
+    p { margin: 0 0 6px; &:last-child { margin-bottom: 0; } }
+  }
+
+  .wispers-chat-empty {
+    font-style: italic;
+    color: @ink-soft;
+  }
+}

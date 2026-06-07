@@ -1,0 +1,15 @@
+<fieldset class="item-type-fields wound-fields">
+    <legend>{{localize "CONSTANTS.Wounds.Section"}}</legend>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Wounds.Severity"}}</label>
+        <select name="system.severity.value">
+            {{selectOptions woundSeverityChoices selected=system.severity.value localize=true}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Wounds.Recovery"}}</label>
+        <input type="text" name="system.recovery.value" value="{{system.recovery.value}}" />
+    </div>
+</fieldset>

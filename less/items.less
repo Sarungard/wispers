@@ -18,6 +18,7 @@
 
   .items-list .item-name {
     flex: 2;
+    min-width: 0; // let the name shrink/ellipsize so the meta columns don't wrap
     margin: 0;
     overflow: hidden;
     font-size: 13px;
@@ -118,5 +119,99 @@
   .item-formula {
     flex: 0 0 200px;
     padding: 0 8px;
+  }
+
+  // Expandable item description "card". Clicking an item name (the .item-toggle
+  // <h4>) appends a .item-summary node to the row and toggles .expanded (see
+  // _expandItemSummary). The row is a flexrow, so flex-wrap + a 100%-basis
+  // summary makes it wrap onto its own full-width line below the row, pushing
+  // the items beneath it down.
+  .item[data-item-id] {
+    flex-wrap: wrap;
+
+    .item-toggle {
+      cursor: pointer;
+      transition: color 0.12s ease;
+
+      &:hover {
+        color: #8b4513;
+      }
+    }
+
+    &.expanded > .item-name .item-toggle {
+      color: #8b4513;
+    }
+  }
+
+  // Per-item list columns: proficiency Group + tier (see inventory.hbs /
+  // spellbook.hbs). Compact, content-clipped so the name column keeps shrinking.
+  .item-meta {
+    flex: 0 0 74px;
+    text-align: center;
+    font-size: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #3a2e1f;
+  }
+
+  .item-summary {
+    flex: 0 0 100%;
+    width: 100%;
+    margin: 4px 2px 2px;
+    padding: 8px 10px;
+    border-top: 1px dashed rgba(179, 148, 106, 0.7);
+    background: rgba(255, 250, 235, 0.55);
+    border-radius: 0 0 3px 3px;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #3a2e1f;
+
+    // "Other properties" — a compact key/value grid above the description.
+    .item-props {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 14px;
+      margin: 0 0 6px;
+
+      .item-prop-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        border-bottom: 1px dotted rgba(179, 148, 106, 0.5);
+        padding: 1px 0;
+
+        dt {
+          font-family: "Cinzel", serif;
+          font-size: 10px;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          color: #6a553a;
+        }
+        dd {
+          margin: 0;
+          font-size: 11px;
+          font-weight: 600;
+          text-align: right;
+        }
+      }
+    }
+
+    // Descriptions are authored in a plain <textarea>, so preserve their line
+    // breaks; enriched HTML (@UUID links, etc.) still renders normally.
+    .item-summary-text {
+      white-space: pre-wrap;
+
+      p {
+        margin: 0 0 6px;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+
+    .item-summary-empty {
+      font-style: italic;
+      color: #6a553a;
+    }
   }
 }

@@ -30,7 +30,8 @@ export default class WispersItemSheet extends api.HandlebarsApplicationMixin(she
         shield: "systems/wispers/templates/sheets/item/types/shield.hbs",
         spell: "systems/wispers/templates/sheets/item/types/spell.hbs",
         consumable: "systems/wispers/templates/sheets/item/types/consumable.hbs",
-        feature: "systems/wispers/templates/sheets/item/types/feature.hbs"
+        feature: "systems/wispers/templates/sheets/item/types/feature.hbs",
+        wound: "systems/wispers/templates/sheets/item/types/wound.hbs"
         // loot has no type-specific fields — it renders the shared fields only.
     };
 
@@ -42,16 +43,32 @@ export default class WispersItemSheet extends api.HandlebarsApplicationMixin(she
     async _prepareContext(options) {
         const baseData = await super._prepareContext(options);
         const item = this.item;
+        const W = CONFIG.WISPERS;
+        // The WISPERS.* metadata maps are key -> { label, ... } objects; flatten to
+        // key -> localizationKey so {{selectOptions ... localize=true}} can render
+        // them.
+        const flatLabels = map => Object.fromEntries(
+            Object.entries(map ?? {}).map(([k, v]) => [k, v.label])
+        );
+        const sys = item.system ?? {};
         return {
             ...baseData,
             item,
-            system: item.system,
-            config: CONFIG.WISPERS,
+            system: sys,
+            config: W,
+            saveChoices: flatLabels(W.savingthrows),
+            schoolChoices: flatLabels(W.spellSchools),
+            weaponCategoryChoices: flatLabels(W.weaponCategories),
+            armorTypeChoices: flatLabels(W.armorTypes),
+            targetChoices: { self: "CONSTANTS.Features.TargetSelf", target: "CONSTANTS.Features.TargetOther" },
+            woundSeverityChoices: { light: "CONSTANTS.Wounds.Light", normal: "CONSTANTS.Wounds.Normal", heavy: "CONSTANTS.Wounds.Heavy" },
+            // SetField -> array for the multi-select `selected=` argument.
+            coversArray: sys.covers ? Array.from(sys.covers) : [],
             editable: this.isEditable,
             typePartial: WispersItemSheet.TYPE_PARTS[item.type] ?? null,
             // Features aren't physical inventory, so they have no quantity/weight/
             // price/source. Gate the shared inventory fieldset on their presence.
-            hasInventoryFields: "quantity" in (item.system ?? {})
+            hasInventoryFields: "quantity" in sys
         };
     }
 

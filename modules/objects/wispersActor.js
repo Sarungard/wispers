@@ -3,21 +3,37 @@ export default class wispersActor extends Actor {
     super.prepareData();
   }
 
+  /**
+   * Fold effect accumulators into `effective` values. Effects ADD into the
+   * separate `.bonus` field (never the editable `.value` the sheet binds to —
+   * see effects-conditions.md §1.1), and this is where `effective = base + bonus`
+   * is computed. Rolls and die-icon display read `effective`, not the raw base.
+   */
   prepareDerivedData() {
-    const actorData = this.system;
-    // Switch on the type of Actor to prepare the data differently
-    this._preparePlayerCharacterData(actorData);
-  }
+    super.prepareDerivedData();
+    const sys = this.system;
+    if (!sys) return;
 
-  _preparePlayerCharacterData(actorData) {
-    // Make separate variables for convenience
+    // Abilities: open-ended, no clamp.
+    for (const a of Object.values(sys.abilities ?? {})) {
+      a.effective = (a.value ?? 0) + (a.bonus ?? 0);
+    }
 
-    this._setCharacterDetails(actorData);
-  }
-
-  async _setCharacterDetails(data) {
-
-    // Calculations should done here and then update the Actor with the new details
+    // Proficiency ladders: effective is clamped to the 0–5 ladder.
+    const clampProf = v => Math.max(0, Math.min(5, v));
+    const foldGroup = group => {
+      for (const entry of Object.values(group ?? {})) {
+        const p = entry?.proficiency;
+        if (p) p.effective = clampProf((p.value ?? 0) + (p.bonus ?? 0));
+      }
+    };
+    const skills = sys.skills ?? {};
+    foldGroup(skills.skills);
+    foldGroup(skills.spellSchools);
+    foldGroup(skills.savingthrows);
+    foldGroup(skills.weapons?.categories);
+    foldGroup(skills.weapons?.specific);
+    foldGroup(skills.armor);
   }
 
   /**

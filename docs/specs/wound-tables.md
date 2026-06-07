@@ -1,6 +1,6 @@
 # Spec: Wound Tables
 
-> **Status:** Design finalized, **not yet implemented**. Source of truth for how a determined
+> **Status:** Design finalized; **schema + plumbing implemented** (the `wound` item type + sheet partial, the trimmed `wounds` block, the declared packs, and the `CONFIG.WISPERS.woundTables` placeholder). The `applyWound` resolver, the wounds display/recovery UI, and the authored content (wound Items + RollTables) remain — see §8. Source of truth for how a determined
 > wound becomes a concrete consequence. This is the shared dependency referenced by
 > `weapons-combat.md` §6 and `spellcasting.md` §4.1 — both call into the resolver defined here.
 > **[USER]** = decided by the project owner; **[ASSUMED]** = inference to confirm.
@@ -244,20 +244,21 @@ re-migration.
 
 ## 8. Implementation checklist
 
-- [ ] `template.json`: add `wound` to `Item.types`.
-- [ ] `modules/data/item/wound.js`: `WoundData` per §4.
-- [ ] `wispers.js`: register `CONFIG.Item.dataModels.wound`; add the wound item-sheet partial
+- [x] `template.json`: add `wound` to `Item.types`.
+- [x] `modules/data/item/wound.js`: `WoundData` per §4.
+- [x] `wispers.js`: register `CONFIG.Item.dataModels.wound`; add the wound item-sheet partial
       to the preload list.
-- [ ] `WispersItemSheet.TYPE_PARTS`: add `wound`; create `templates/sheets/item/types/wound.hbs`.
-- [ ] `config.js`: add `WISPERS.woundTables` (fill UUIDs after packs exist).
-- [ ] `_helpers.js`: trim the `wounds` block (drop `consequences`).
-- [ ] `system.json`: declare the `wounds` and `wound-tables` packs.
+- [x] `WispersItemSheet.TYPE_PARTS`: add `wound`; create `templates/sheets/item/types/wound.hbs`.
+- [x] `config.js`: add `WISPERS.woundTables` (placeholder `null` UUIDs — fill after packs exist).
+- [x] `_helpers.js`: trim the `wounds` block (drop `consequences`).
+- [x] `system.json`: declare the `wounds` and `wound-tables` packs.
 - [ ] Author content: ~20 wound Items per severity (with ActiveEffects) + 3 RollTables.
 - [ ] `wispersCharacterSheet`: `applyWound(...)` resolver (called by the weapon/spell react
-      handler); a Wounds display + recover button; exclude `wound` from inventory groupings.
-- [ ] Update `weapons-combat.md` §3.3 and `spellcasting.md` to reference embedded wound Items
+      handler); a Wounds display + recover button. (Note: `wound` is already naturally excluded
+      from inventory groupings — it isn't in any inventory bucket.)
+- [x] Update `weapons-combat.md` §3.3 and `spellcasting.md` to reference embedded wound Items
       (drop `consequences[]`).
-- [ ] Update `CLAUDE.md` (item types, wounds) and `TODO.md` once implemented.
+- [x] Update `CLAUDE.md` (item types, wounds) and `TODO.md`.
 
 ## 9. Touched/affected files (for the implementer)
 

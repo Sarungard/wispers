@@ -28,6 +28,7 @@
       "Source": "Source",
       "Uses": "Uses",
       "UsesMax": "Max",
+      "NoDescription": "No description.",
       "Spell": {
         "SpellLVL": "Level {level} Spells",
         "AddLVL": "Add LVL {level}"
@@ -39,11 +40,19 @@
       "Melee": "Melee",
       "Ranged": "Ranged",
       "Range": "Range",
-      "Proficiency": "Proficiency",
       "Equipped": "Equipped",
-      "DamageDice": "Damage Dice",
-      "CircumstanceDice": "Circumstance Dice",
-      "DamageType": "Damage Type"
+      "Category": "Category",
+      "Slug": "Specific Weapon (slug)",
+      "WeaponDie": "Weapon Die",
+      "TargetSave": "Targets Save",
+      "ApCost": "AP Cost",
+      "WoundMod": "Wound Modifier",
+      "WoundLight": "Light",
+      "WoundNormal": "Normal",
+      "WoundHeavy": "Heavy",
+      "Properties": "Properties",
+      "PropertyKey": "Property",
+      "MinProficiency": "Min. Proficiency"
     },
     "Armor": {
       "Section": "Armor",
@@ -51,21 +60,29 @@
       "Light": "Light",
       "Medium": "Medium",
       "Heavy": "Heavy",
+      "LightDesc": "Padded, leather, and other unrestrictive armor that barely slows you down.",
+      "MediumDesc": "Mail and scale — a balance of protection and mobility.",
+      "HeavyDesc": "Plate and other full armor — maximum protection at the cost of agility.",
       "Value": "Armor Value",
-      "Proficiency": "Proficiency",
-      "Equipped": "Equipped"
+      "Equipped": "Equipped",
+      "Covers": "Covers Saves",
+      "RequiredProficiency": "Required Proficiency",
+      "Properties": "Properties"
     },
     "Shield": {
       "Section": "Shield",
       "Value": "Shield Value",
-      "Proficiency": "Proficiency",
-      "Equipped": "Equipped"
+      "Equipped": "Equipped",
+      "Covers": "Covers Saves",
+      "Block": "Block",
+      "BlockApCost": "Block AP Cost",
+      "Properties": "Properties"
     },
     "Spell": {
       "Section": "Spell",
       "School": "School",
       "Level": "Level",
-      "CastingTime": "Casting Time",
+      "CastingTime": "Casting Time (AP)",
       "Range": "Range",
       "Duration": "Duration",
       "Components": "Components",
@@ -73,8 +90,22 @@
       "Somatic": "Somatic",
       "Material": "Material",
       "MaterialComponents": "Material Components",
-      "DamageDice": "Damage Dice",
-      "DamageType": "Damage Type"
+      "Degrees": "Degree Thresholds",
+      "DegreeCriticalFailure": "Critical Failure ≥",
+      "DegreeFailure": "Failure ≥",
+      "DegreeSuccess": "Success ≥ (Spellpower Req.)",
+      "DegreeCriticalSuccess": "Critical Success ≥",
+      "Scaling": "Critical-Success Scaling",
+      "ScalingBonus": "Spellpower Bonus",
+      "ScalingMult": "Spellpower Multiplier",
+      "ScalingRider": "Rider Effect",
+      "Resolution": "Resolution",
+      "DealsWound": "Deals a Wound",
+      "TargetSave": "Targets Save",
+      "WoundMod": "Wound Modifier",
+      "WoundLight": "Light",
+      "WoundNormal": "Normal",
+      "WoundHeavy": "Heavy"
     },
     "Consumable": {
       "Section": "Consumable"
@@ -99,7 +130,10 @@
       "Difficulty3": "3 — Moderate (d8)",
       "Difficulty4": "4 — Hard (d10)",
       "Difficulty5": "5 — Extreme (d12)",
-      "Roll": "Roll"
+      "Roll": "Roll",
+      "Threat": "Threat",
+      "Spellpower": "Gathered Spellpower",
+      "Degree": "Degree"
     },
     "Initiative": {
       "PromptTitle": "Set Initiative — {name}",
@@ -126,6 +160,8 @@
       "Shields": "Shields",
       "Consumables": "Consumables",
       "Loot": "Loot",
+      "ColGroup": "Group",
+      "ColProf": "Proficiency",
       "ColQty": "Qty",
       "ColWgt": "Wgt",
       "ColPrice": "Price",
@@ -148,7 +184,35 @@
     "Wounds": {
       "Active": "Wounds",
       "Light": "Light",
-      "Heavy": "Heavy"
+      "Normal": "Normal",
+      "Heavy": "Heavy",
+      "Severity": "Severity",
+      "Recovery": "Recovery",
+      "Section": "Wound"
+    },
+    "WeaponCategories": {
+      "Maces": "Maces",
+      "Daggers": "Daggers",
+      "Axes": "Axes",
+      "Swords": "Swords",
+      "Bows": "Bows",
+      "Crossbows": "Crossbows",
+      "Hammers": "Hammers",
+      "Polearms": "Polearms",
+      "MacesDesc": "Blunt crushing weapons — maces, clubs, and morningstars that batter through armor.",
+      "DaggersDesc": "Light blades for quick, close work — daggers, knives, and stilettos.",
+      "AxesDesc": "Chopping weapons — hand axes and battleaxes that bite deep on the swing.",
+      "SwordsDesc": "Bladed weapons of the trained fighter — short swords to greatswords.",
+      "BowsDesc": "Drawn ranged weapons — shortbows and longbows demanding a steady hand.",
+      "CrossbowsDesc": "Mechanical ranged weapons — easy to aim, slow to reload.",
+      "HammersDesc": "Heavy two-handed crushers — warhammers and mauls built for raw impact.",
+      "PolearmsDesc": "Long-hafted reach weapons — spears, halberds, and glaives that keep foes at bay."
+    },
+    "SpellDegrees": {
+      "CriticalFailure": "Critical Failure",
+      "Failure": "Failure",
+      "Success": "Success",
+      "CriticalSuccess": "Critical Success"
     },
     "Character": {
       "Appearance": "Appearance",
@@ -166,15 +230,33 @@
       "EditFeature": "Edit",
       "DeleteFeature": "Delete",
       "Section": "Feature",
-      "Activation": "Activation"
+      "Activation": "Activation",
+      "ApCost": "AP Cost",
+      "AppliesEffect": "Applies Effect",
+      "Target": "Target",
+      "TargetSelf": "Self",
+      "TargetOther": "Target"
+    },
+    "Proficiency": {
+      "Untrained": "Untrained",
+      "Novice": "Novice",
+      "Trained": "Trained",
+      "Adept": "Adept",
+      "Expert": "Expert",
+      "Master": "Master"
     },
     "Skills": {
-      "Combat": "Combat",
       "Athletics": "Athletics",
       "Stealth": "Stealth",
       "Academics": "Academics",
       "Persuasion": "Persuasion",
-      "Willpower": "Willpower"
+      "Willpower": "Willpower",
+      "Proficiency": "Proficiency",
+      "AthleticsDesc": "Feats of bodily power and control — climbing, jumping, swimming, and forcing your way past physical obstacles.",
+      "StealthDesc": "Moving unseen and unheard, hiding, tailing a mark, and sleight of hand.",
+      "AcademicsDesc": "Recall of lore, languages, history, and the natural and arcane sciences.",
+      "PersuasionDesc": "Swaying others through charm, reason, deception, or intimidation.",
+      "WillpowerDesc": "Mental fortitude against fear, temptation, and intrusions on the mind."
     },
     "SpellSchools": {
       "Arcana": "Arcana",
@@ -184,12 +266,23 @@
       "Sinistrope": "Sinistrope",
       "Primalism": "Primalism",
       "Scriptomancy": "Scriptomancy",
-      "RuneScribe": "Rune-Scribe"
+      "RuneScribe": "Rune-Scribe",
+      "ArcanaDesc": "The study of raw magical structure — wards, divination, and the manipulation of arcane force.",
+      "ElementalismDesc": "Command of fire, water, air, and earth, shaping the raw elements into spell effects.",
+      "EntropyDesc": "Magic of decay, dissolution, and the unmaking of order — curses, withering, and disorder.",
+      "SacratropeDesc": "Channeling of consecrated power — healing, blessing, and protection from the profane.",
+      "SinistropeDesc": "Forbidden magic of corruption and the profane — necromancy, blood, and shadow.",
+      "PrimalismDesc": "The untamed magic of beasts, growth, and the natural world.",
+      "ScriptomancyDesc": "Spellcraft worked through written words, sigils, and inscribed formulae.",
+      "RuneScribeDesc": "The carving of enduring runes whose power persists in objects and wards."
     },
     "SavingThrows": {
       "Reflex": "Reflex",
       "Toughness": "Toughness",
-      "Resolve": "Resolve"
+      "Resolve": "Resolve",
+      "ReflexDesc": "Dodging, dropping, and reacting fast to avoid sudden danger.",
+      "ToughnessDesc": "Enduring physical punishment — poison, disease, exhaustion, and bodily trauma.",
+      "ResolveDesc": "Holding firm against fear, charm, and assaults on the mind and spirit."
     },
     "Search": "Search..."
   },
@@ -207,7 +300,8 @@
       "loot": "Loot",
       "item": "Item",
       "feature": "Feature",
-      "spell": "Spell"
+      "spell": "Spell",
+      "wound": "Wound"
     }
   }
 }

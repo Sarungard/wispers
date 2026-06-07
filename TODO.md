@@ -2,7 +2,29 @@
 
 Tracking intentional scaffolding and known inconsistencies in the Wispers FoundryVTT system. CLAUDE.md points here so the architectural doc stays focused; this file is where mutable project state lives.
 
-## Design specs (finalized, not yet implemented)
+## Design specs — implementation status
+
+**Foundation phase landed (schemas + effects engine).** The data-layer half of all five specs
+is implemented: every actor/item schema is final and editable, `wispersActor.prepareDerivedData`
+computes base→effective, roll-time `flags.wispers.*` levers feed the roll pipeline, the `wound`
+item type exists, and the `wounds` / `wound-tables` / `conditions` packs are declared (empty). See
+the approved foundation plan for the exact surface. **Schemas are now settled — safe to author
+content against them.**
+
+**Still to do (deferred, in dependency order):**
+- **Runtime combat/cast flow** — The roll triggers and chat cards for attacks/casts are done
+  (`_rollWeaponAttack`, `_castSpell`, `_spellDegree`, degree/threat cards). Remaining: the defender
+  **react** handler (subtractive mitigation: `effectiveThreat = max(0, threat − saveResult)`),
+  `_effectiveWoundThresholds` + shield **block** reaction, and the shared `applyWound(...)` resolver.
+  React UX is single-client / GM-mediated (mirror `wispersCombat._isResponsibleUser`).
+- **Effect application** — weapon-property + armor under-proficiency **suppression** (equip +
+  proficiency gate), the `ready` hook building `CONFIG.statusEffects` from the conditions
+  compendium. (Weapon proficiency resolution `_resolveWeaponProficiency` is done.)
+- **Content** — author wound Items / RollTables / conditions in the packs and fill
+  `WISPERS.woundTables` UUIDs; a sheet UI for weapon/armor proficiency editing, gated properties,
+  the wounds display + recover button, and the `.rollable` attack/cast/activate controls.
+- **`WispersItem.roll()` redirect** — weapons → attack flow, spells → cast flow (currently both
+  fall through to the description card, since their `damage` blocks are gone).
 
 Resolution rules decided by the project owner, written up for implementation. The long-term
 goal is to finalize all actor/item templates, then author content as JSON compendiums — so
@@ -39,17 +61,16 @@ these schemas must be settled *before* authoring to avoid re-migrating data.
 
 These are intentional placeholders, not bugs to fix opportunistically — flag them when relevant but don't silently rewrite:
 
-- **Hotbar item macros silently fail.** `createItemMacro` writes the command `game.wisperssystem.rollItemMacro(uuid)`, but `game.wisperssystem` is never assigned (the `rollItemMacro` function in `wispers.js` is module-local). To fix: expose it on the `init` or `ready` hook (e.g., `game.wisperssystem = { rollItemMacro };`).
-- **`wispersActor.prepareDerivedData()` is a stub.** It calls `_preparePlayerCharacterData` → `_setCharacterDetails`, which has only a comment. All derived stats (modifiers, computed saves, etc.) need to be implemented here. Until then, the sheet reads bonuses straight from `system.abilities.<x>.value` — see next item.
-- **Save/school "bonus" is just the raw attribute value.** `header.hbs` and `_prepareContext` both use `system.abilities.<linkedAttribute>.value` directly as the save/school bonus. This is a passable stand-in but will need to become a derived value (proficiency + ability + situational) once `prepareDerivedData` is implemented.
-- **Empty stub modules**: `modules/dice.js`, `modules/dialog.js`, `modules/listeners.js`. Their names indicate intended responsibility (currently the roll/dialog logic lives inline in `wispersCharacterSheet.js`). `packs/` exists but is empty. (`modules/combat/` now holds the initiative/action-point system — see CLAUDE.md.)
+- **Hotbar item macros silently fail.** `createItemMacro` writes the command `game.wisperssystem.rollItemMacro(uuid)`, but `game.wisperssystem` is never assigned (the `rollItemMacro` function in `wispers.js` is module-local). To fix: expose it on the `init` or `ready` hook (e.g., `game.wisperssystem = { rollItemMacro };`). **Note:** the new `_rollWeaponAttack` and `_castSpell` sheet methods now handle weapon/spell clicks; `rollItemMacro` redirects remain (deferred until `WispersItem.roll()` is repointed).
+- **`wispersActor.prepareDerivedData()` now folds base→effective.** It computes `abilities.<x>.effective = value + bonus` and `…proficiency.effective = clamp(value + bonus, 0..5)` for every proficiency ladder (skills/schools/saves/weapon categories/weapon specifics/armor). Rolls and die icons read `.effective`. **Still a stub for richer derived stats** (a full derived *save total* = proficiency + ability + situational, an HP/threshold derivation, Strength-derived encumbrance) — those remain to implement here.
+- **Save/school "bonus" is the linked attribute's *effective* value.** `header.hbs` and `_prepareContext` now use `system.abilities.<linkedAttribute>.effective` (was raw `.value`). Still a passable stand-in — a true derived save value (proficiency + ability + situational) is future work in `prepareDerivedData`.
+- **Empty stub modules**: `modules/dice.js`, `modules/dialog.js`, `modules/listeners.js`. Their names indicate intended responsibility (currently the roll/dialog logic lives inline in `wispersCharacterSheet.js`). The `wounds` / `wound-tables` / `conditions` packs are now **declared** in `system.json` but their `packs/` databases are still empty (content phase). (`modules/combat/` holds the initiative/action-point system — see CLAUDE.md.)
 - **Action-point costs are not configured.** `wispersActor.spendActionPoints(cost)` is the spend primitive, but nothing calls it yet — per-action costs (move/attack/cast) still need a config + UI to deduct AP. Initiative itself is "currently unbound": the prompt accepts any integer with no min/max.
 - **Encumbrance cap is a hard-coded `10`.** `_prepareContext` computes slot-based load (`weight × quantity`) against a static `ENCUMBRANCE_MAX = 10`. A later pass should derive the cap from Strength.
 
 ## Known inconsistencies
 
 - **`system.json` token attributes don't exist.** It declares `primaryTokenAttribute: "health"` and `secondaryTokenAttribute: "mental"`, but neither field exists in the actor schema — health-equivalent data lives under `wounds`. Reconcile before relying on token bars.
-- **`system.json` asset paths use the wrong folder.** `media` and `background` reference `systems/wispers-system/assets/...`, but the system `id` is `wispers` and all templates reference `systems/wispers/...`. The canonical install folder is `systems/wispers/` — update the `wispers-system` paths when next touched.
-- **Weapon damage path mismatch.** `WispersItem.roll()` reads `system.damage.dice.value`, which only the `spell` schema provides (its inline `damage` block). Weapons store their damage under `system.dice.value` (via the shared `damageFields()` group), so a weapon's `roll()` skips the damage roll and posts a description card instead. Reconcile the path (or normalize the schemas) before wiring weapon attacks.
+- **`WispersItem.roll()` is now description-only for weapons & spells.** The `damage` blocks were removed from both schemas (weapons → attack/threat model, spells → spellpower/degree model), so `roll()` no longer finds `system.damage.dice.value` and posts a description card for every type. This is intentional pending the deferred `roll()` redirect (weapons → `_rollWeaponAttack`, spells → `_castSpell`). The old weapon/spell damage-path mismatch is resolved by the schema rewrite.
 - **Two biography fields.** `baseActorFields()` defines a top-level `system.biography`, but the character sheet reads/writes `system.details.biography` (from `CharacterData`). The base-level field is currently dead — remove it or repoint the sheet.
 - **`system.class.name` has no placeholder default anymore.** `CharacterData.class.name` initializes to `""` (the old `template.json` `"dingus"` placeholder is gone with the DataModel migration). Listed only so the old note isn't missed — nothing to do here.

@@ -14,4 +14,21 @@
         <span class="sep">/</span>
         <input type="text" name="system.uses.max" value="{{system.uses.max}}" data-dtype="Number" />
     </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Features.ApCost"}}</label>
+        <input type="text" name="system.activation.apCost" value="{{system.activation.apCost}}" data-dtype="Number" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Features.AppliesEffect"}}</label>
+        <input type="text" name="system.activation.appliesEffect" value="{{system.activation.appliesEffect}}" />
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "CONSTANTS.Features.Target"}}</label>
+        <select name="system.activation.target">
+            {{selectOptions targetChoices selected=system.activation.target localize=true}}
+        </select>
+    </div>
 </fieldset>

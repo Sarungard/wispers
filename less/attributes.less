@@ -121,6 +121,20 @@
     min-width: 28px;
     text-align: right;
   }
+  // Always-visible named proficiency tier (untrained … master) on every
+  // proficiency row. Sits just before the pips; sized to content so it stays
+  // compact in the 2-column skills/schools grid.
+  .skill-tier {
+    flex-shrink: 0;
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    color: #6a553a;
+    text-align: right;
+  }
   .skill-pips {
     display: flex;
     align-items: center;
@@ -145,6 +159,69 @@
     }
     &:hover {
       opacity: 0.6;
+    }
+  }
+
+  // Skill name acts as an expand toggle for its description card (mirrors the
+  // item-card pattern). The die icon still rolls; only the name expands.
+  .skill-toggle {
+    cursor: pointer;
+    transition: color 0.12s ease;
+
+    &:hover {
+      color: #8b4513;
+    }
+  }
+
+  // Expandable skill "card". The .skill-row is both a grid cell AND a flexrow, so
+  // flex-wrap + a full-width summary makes the cell grow downward, pushing the
+  // grid rows below it down — the same trick as the item cards. Scoped to
+  // .expanded so the wrap only kicks in while a card is open (keeps the denser
+  // spell-school / saving-throw rows on a single line).
+  .skill-row.expanded {
+    flex-wrap: wrap;
+
+    .skill-name { color: #8b4513; }
+  }
+
+  .skill-summary {
+    flex: 0 0 100%;
+    width: 100%;
+    margin: 6px 0 2px;
+    padding: 8px 10px;
+    border-top: 1px dashed rgba(179, 148, 106, 0.7);
+    background: rgba(255, 250, 235, 0.55);
+    border-radius: 3px;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #3a2e1f;
+
+    .skill-summary-prof {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+
+      .skill-die {
+        width: 22px;
+        height: 22px;
+      }
+      .skill-prof-level {
+        font-family: "Cinzel", serif;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #6a553a;
+      }
+    }
+
+    .skill-summary-desc {
+      white-space: pre-wrap;
+    }
+    .skill-summary-empty {
+      font-style: italic;
+      color: #6a553a;
     }
   }
 

@@ -15,8 +15,8 @@
   "media": [
     {
       "type": "setup",
-      "url": "systems/wispers-system/assets/anvil-impact.png",
-      "thumbnail": "systems/wispers-system/assets/anvil-impact.png"
+      "url": "systems/wispers/assets/anvil-impact.png",
+      "thumbnail": "systems/wispers/assets/anvil-impact.png"
     }
   ],
   "version": "0.0.1",
@@ -39,7 +39,29 @@
       "path": "lang/hu.json"
     }
   ],
-  "packs": [],
+  "packs": [
+    {
+      "name": "wounds",
+      "label": "Wounds",
+      "path": "packs/wounds",
+      "type": "Item",
+      "system": "wispers"
+    },
+    {
+      "name": "wound-tables",
+      "label": "Wound Tables",
+      "path": "packs/wound-tables",
+      "type": "RollTable",
+      "system": "wispers"
+    },
+    {
+      "name": "conditions",
+      "label": "Conditions",
+      "path": "packs/conditions",
+      "type": "ActiveEffect",
+      "system": "wispers"
+    }
+  ],
   "packFolders": [],
   "socket": false,
   "url": "https://github.com/Sarungard/wispers",

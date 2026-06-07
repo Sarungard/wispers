@@ -26,8 +26,10 @@
             {{#each section.items as |item|}}
             <li class="item flexrow" data-item-id="{{item.id}}">
                 <div class="item-name flexrow">
-                    <img class="item-image" src="{{item.img}}" alt="{{item.name}}" />
-                    <h4>{{item.name}}</h4>
+                    <img class="item-image rollable" src="{{item.img}}" alt="{{item.name}}" data-item-card="{{item.id}}"
+                          data-tooltip="{{localize 'CONSTANTS.Item.Description'}}"/>
+                    <h4 class="item-toggle" data-action="toggleDescription"
+                        data-tooltip="{{localize 'CONSTANTS.Item.Description'}}">{{item.name}}</h4>
                 </div>
                 <div class="item-prop">{{item.system.uses.value}} / {{item.system.uses.max}}</div>
                 <div class="item-controls flexrow">

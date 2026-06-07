@@ -1,6 +1,6 @@
 # Spec: Spellcasting
 
-> **Status:** Design finalized, **not yet implemented**. Source of truth for the spell data
+> **Status:** Design finalized; **data layer + roller half implemented** (schema, `_castSpell` school check + `_spellDegree` calculation + chat card wired to the spellbook die icon). The react → wound resolution, AP cost, effect application, and the `WispersItem.roll()` redirect remain — see §9. Source of truth for the spell data
 > model and casting resolution. Companion to `weapons-combat.md` — spells reuse its
 > **threat → react → wound** loop and its (still-undecided) wound-table mechanism.
 > **[USER]** = decided by the project owner; **[ASSUMED]** = reasonable inference filling a
@@ -307,16 +307,17 @@ Reuse the existing plumbing — don't fork the dialog.
 
 ## 9. Implementation checklist
 
-- [ ] `config.js`: add `spellDegrees` (and later `spellEffectTypes`).
-- [ ] Lang (`en.json` + `hu.json`): `CONSTANTS.SpellDegrees.*` (+ any effect/casting strings).
-- [ ] `spell.js`: revise schema per §6.2 (fix `school` choices; repurpose `castingTime`;
+- [x] `config.js`: add `spellDegrees` (+ `spellDegreeOrder`). (`spellEffectTypes` still later.)
+- [x] Lang (`en.json` + `hu.json`): `CONSTANTS.SpellDegrees.*` (+ `Roll.Spellpower`/`Roll.Degree` card strings).
+- [x] `spell.js`: revise schema per §6.2 (fix `school` choices; repurpose `castingTime`;
       add `degrees`/`scaling`/`resolution`; remove old `damage` block).
-- [ ] `wispersCharacterSheet`: `_castSpell`, `_spellDegree`, cast chat card; refactor the
-      roll core so cast + weapon attack share threat building and the react/wound resolver.
-- [ ] Spellbook tab UI: a `.rollable` cast control; show degree thresholds / requirement.
+- [~] `wispersCharacterSheet`: `_castSpell` ✓, `_spellDegree` ✓, cast chat card ✓; the shared
+      `_buildRollFormula` core is factored ✓. **The react/wound resolver is still pending.**
+- [~] Spellbook tab UI: a `.rollable` cast control (die icon) ✓; degree thresholds are editable on the
+      spell item sheet ✓. (No threshold readout on the spellbook row itself yet.)
 - [ ] `WispersItem.roll()`: redirect spells to the cast flow.
-- [ ] Resolve the shared wound-table mechanism (separate spec).
-- [ ] Update `CLAUDE.md` (roll/spell sections) and `TODO.md` once implemented.
+- [~] Resolve the shared wound-table mechanism (separate spec) — decided; resolver/content pending.
+- [x] Update `CLAUDE.md` (roll/spell sections) and `TODO.md`.
 
 ## 10. Touched/affected files (for the implementer)
 

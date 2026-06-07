@@ -30,27 +30,31 @@ export function baseFields() {
     };
 }
 
-/** Proficiency / equipped / type — shared by weapons, armor, shields. */
-export function equipmentFields() {
+/**
+ * `equipped` flag — shared by weapons, armor, shields. The old `equipmentFields()`
+ * group (item-level proficiency + a free `type` string) was retired in the v1
+ * combat migration: proficiency now lives on the actor (weapon categories/slugs,
+ * armor types) and each type carries its own typed field. See armor-shields.md §6.1.
+ */
+export function equippedField() {
     return {
-        proficiency: new fields.SchemaField({
-            value: new fields.NumberField({ required: true, nullable: false, initial: 0, integer: true, min: 0, max: 5 }),
-            max: new fields.NumberField({ required: true, nullable: false, initial: 5, integer: true })
-        }),
         equipped: new fields.SchemaField({
             value: new fields.BooleanField({ initial: false })
-        }),
-        type: new fields.StringField({ initial: "" })
+        })
     };
 }
 
-/** Damage dice / circumstance dice / damage type. */
-export function damageFields() {
-    return {
-        dice: new fields.SchemaField({ value: new fields.StringField({ initial: "1d6" }) }),
-        circumstanceDice: new fields.SchemaField({ value: new fields.StringField({ initial: "1d6" }) }),
-        damageType: new fields.SchemaField({ value: new fields.StringField({ initial: "physical" }) })
-    };
+/**
+ * Proficiency-gated property list — shared by weapons, armor, shields. Each entry
+ * references a key in a config registry (e.g. WISPERS.weaponProperties) and is
+ * active for a wielder only when their effective proficiency >= minProficiency
+ * (weapons-combat.md §4). Mechanics are realized by the effects engine.
+ */
+export function gatedProperties() {
+    return new fields.ArrayField(new fields.SchemaField({
+        key: new fields.StringField(),
+        minProficiency: new fields.NumberField({ initial: 0, integer: true, min: 0, max: 5 })
+    }));
 }
 
 /** Limited-use counter — shared by consumables and features. */
