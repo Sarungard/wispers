@@ -1,0 +1,169 @@
+<div class="sheet-body">
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Skills</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="skills-toolbar">
+        <button type="button" class="skill-tool-btn" data-action="toggleAllSkills"
+            title="{{#if showAllSkills}}Hide untrained skills{{else}}Show all skills{{/if}}">
+            <i class="fas {{#if showAllSkills}}fa-eye-slash{{else}}fa-eye{{/if}}"></i>
+        </button>
+        <button type="button" class="skill-tool-btn" data-action="addSkill"
+            {{#unless untrainedSkillCount}}disabled{{/unless}}
+            title="Learn a new skill at Novice (1)">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <div class="skills-section">
+        {{#each skillRows as |row|}}
+            <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
+                <span class="skill-die rollable {{proficiencyDie row.effective}}" data-roll-skill="{{row.key}}"></span>
+                <span class="skill-name skill-toggle" data-action="toggleSkillDescription"
+                      data-skill-group="skills" data-skill-key="{{row.key}}"
+                      data-tooltip="{{localize 'CONSTANTS.Item.Description'}}">{{row.label}}</span>
+                <span class="skill-tier">{{proficiencyTerm row.effective}}</span>
+                <div class="skill-pips" data-field="system.skills.skills.{{row.key}}.proficiency.value" data-value="{{row.value}}">
+                    {{#each (proficiencyPips row.value) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Spell Schools</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="skills-toolbar">
+        <button type="button" class="skill-tool-btn" data-action="toggleAllSchools"
+            title="{{#if showAllSchools}}Hide untrained schools{{else}}Show all schools{{/if}}">
+            <i class="fas {{#if showAllSchools}}fa-eye-slash{{else}}fa-eye{{/if}}"></i>
+        </button>
+        <button type="button" class="skill-tool-btn" data-action="addSchool"
+            {{#unless untrainedSchoolCount}}disabled{{/unless}}
+            title="Learn a new spell school at Novice (1)">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <div class="skills-section">
+        {{#each schoolRows as |row|}}
+            <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
+                <span class="skill-die rollable {{proficiencyDie row.effective}}" data-roll-school="{{row.key}}"></span>
+                <span class="skill-name skill-toggle" data-action="toggleSkillDescription"
+                      data-skill-group="spellSchools" data-skill-key="{{row.key}}"
+                      data-tooltip="{{localize 'CONSTANTS.Item.Description'}}">{{row.label}}</span>
+                <span class="skill-attr">{{row.linkedAttribute}}</span>
+                {{#if row.showBonus}}<span class="save-bonus">+{{row.bonus}}</span>{{/if}}
+                <span class="skill-tier">{{proficiencyTerm row.effective}}</span>
+                <div class="skill-pips" data-field="system.skills.spellSchools.{{row.key}}.proficiency.value" data-value="{{row.value}}">
+                    {{#each (proficiencyPips row.value) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Saving Throws</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="saves-section">
+        {{#each saveRows as |row|}}
+            <div class="skill-row">
+                <span class="skill-die rollable {{proficiencyDie row.effectiveProficiency}}" data-roll-save="{{row.key}}"></span>
+                <span class="skill-name skill-toggle" data-action="toggleSkillDescription"
+                      data-skill-group="savingthrows" data-skill-key="{{row.key}}"
+                      data-tooltip="{{localize 'CONSTANTS.Item.Description'}}">{{row.label}}</span>
+                <span class="skill-attr">{{row.linkedAttribute}}</span>
+                <span class="save-bonus">+{{row.bonus}}</span>
+                <span class="skill-tier">{{proficiencyTerm row.effectiveProficiency}}</span>
+                <div class="skill-pips" data-field="system.skills.savingthrows.{{row.key}}.proficiency.value" data-value="{{row.proficiency}}">
+                    {{#each (proficiencyPips row.proficiency) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Weapon Proficiencies</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="skills-toolbar">
+        <button type="button" class="skill-tool-btn" data-action="toggleAllWeapons"
+            title="{{#if showAllWeapons}}Hide untrained weapon categories{{else}}Show all weapon categories{{/if}}">
+            <i class="fas {{#if showAllWeapons}}fa-eye-slash{{else}}fa-eye{{/if}}"></i>
+        </button>
+        <button type="button" class="skill-tool-btn" data-action="addWeapon"
+            {{#unless untrainedWeaponCount}}disabled{{/unless}}
+            title="Learn a new weapon category at Novice (1)">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <div class="skills-section">
+        {{#each weaponRows as |row|}}
+            <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
+                <span class="skill-die {{proficiencyDie row.effective}}"></span>
+                <span class="skill-name skill-toggle" data-action="toggleSkillDescription"
+                      data-skill-group="weaponCategories" data-skill-key="{{row.key}}"
+                      data-tooltip="{{localize 'CONSTANTS.Item.Description'}}">{{row.label}}</span>
+                <span class="skill-tier">{{proficiencyTerm row.effective}}</span>
+                <div class="skill-pips" data-field="system.skills.weapons.categories.{{row.key}}.proficiency.value" data-value="{{row.value}}">
+                    {{#each (proficiencyPips row.value) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">Armor Proficiencies</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="skills-toolbar">
+        <button type="button" class="skill-tool-btn" data-action="toggleAllArmor"
+            title="{{#if showAllArmor}}Hide untrained armor types{{else}}Show all armor types{{/if}}">
+            <i class="fas {{#if showAllArmor}}fa-eye-slash{{else}}fa-eye{{/if}}"></i>
+        </button>
+        <button type="button" class="skill-tool-btn" data-action="addArmor"
+            {{#unless untrainedArmorCount}}disabled{{/unless}}
+            title="Learn a new armor type at Novice (1)">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <div class="skills-section">
+        {{#each armorRows as |row|}}
+            <div class="skill-row{{#unless row.trained}} untrained{{/unless}}">
+                <span class="skill-die {{proficiencyDie row.effective}}"></span>
+                <span class="skill-name skill-toggle" data-action="toggleSkillDescription"
+                      data-skill-group="armorTypes" data-skill-key="{{row.key}}"
+                      data-tooltip="{{localize 'CONSTANTS.Item.Description'}}">{{row.label}}</span>
+                <span class="skill-tier">{{proficiencyTerm row.effective}}</span>
+                <div class="skill-pips" data-field="system.skills.armor.{{row.key}}.proficiency.value" data-value="{{row.value}}">
+                    {{#each (proficiencyPips row.value) as |pip|}}
+                        <span class="pip{{#if pip.active}} active{{/if}}" data-level="{{pip.level}}"></span>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
