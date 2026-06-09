@@ -46,7 +46,8 @@
       "Bash(sed -n '/\"Armor\": {/,/}/p' lang/en.json)",
       "Bash(sed -n '/\"WeaponCategories\": {/,/}/p' lang/hu.json)",
       "Bash(sed -n '/\"Armor\": {/,/}/p' lang/hu.json)",
-      "Bash(grep -iE \"^\\(d4|d6|d8|d10|d12|OneValueBorder\\)\\\\.png$\")"
+      "Bash(grep -iE \"^\\(d4|d6|d8|d10|d12|OneValueBorder\\)\\\\.png$\")",
+      "Bash(npx --no-install lessc less/wispers.less wispers.css)"
     ]
   },
   "hooks": {

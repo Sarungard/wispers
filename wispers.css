@@ -1245,22 +1245,16 @@
   outline: none;
   border-bottom-color: #8b4513;
 }
-.wispers.sheet.character .character-namebar .character-class {
-  font-family: "Cinzel", serif;
-  font-size: 13px;
-  color: #6a553a;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-.wispers.sheet.character .character-namebar .character-level {
-  color: #8b4513;
-  font-weight: 700;
-  margin-left: 4px;
+.wispers.sheet.character .character-namebar .character-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
 }
 .wispers.sheet.character .character-namebar .action-points {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 4px;
   padding: 2px 8px;
   border: 1px solid #b3946a;
@@ -1283,6 +1277,49 @@
 .wispers.sheet.character .character-namebar .action-points .ap-sep {
   color: #b3946a;
   margin: 0 1px;
+}
+.wispers.sheet.character .character-namebar .level-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.wispers.sheet.character .character-namebar .character-level {
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8b4513;
+  letter-spacing: 0.06em;
+}
+.wispers.sheet.character .character-namebar .character-class {
+  flex: 1;
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  color: #6a553a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.wispers.sheet.character .character-namebar .level-up-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: #3a2e1f;
+  background: rgba(179, 148, 106, 0.18);
+  border: 1px solid #b3946a;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 1;
+}
+.wispers.sheet.character .character-namebar .level-up-btn:hover {
+  background: rgba(179, 148, 106, 0.35);
+  color: #8b4513;
+}
+.wispers.sheet.character .character-namebar .level-up-btn i {
+  font-size: 12px;
 }
 .wispers.sheet.character .saves-row {
   display: flex;

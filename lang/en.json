@@ -2,7 +2,8 @@
   "SYSTEM": {
     "SystemName": "Wispers",
     "LevelShort": "Lvl",
-    "LevelFull": "Level"
+    "LevelFull": "Level",
+    "LevelUp": "Level Up"
   },
 
   "CONSTANTS": {

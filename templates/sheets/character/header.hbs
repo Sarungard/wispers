@@ -14,13 +14,19 @@
                 type="text"
                 name="name"
                 value="{{actor.name}}" />
-            <div class="character-class">
-                {{system.class.name}}
-                <span class="character-level">{{localize "SYSTEM.LevelShort"}} {{system.level.value}}</span>
-            </div>
-            <div class="action-points" title="{{localize "CONSTANTS.ActionPoints.Tooltip"}}">
-                <span class="ap-label">{{localize "CONSTANTS.ActionPoints.Short"}}</span>
-                <span class="ap-value">{{system.initiative.remaining}}<span class="ap-sep">/</span>{{system.initiative.total}}</span>
+            <div class="character-meta">
+                <div class="level-row">
+                    <span class="character-level">{{localize "SYSTEM.LevelShort"}} {{system.level.value}}</span>
+                    <span class="character-class">{{system.class.name}}</span>
+                    <button type="button" class="level-up-btn" data-action="levelUp"
+                            title="{{localize "SYSTEM.LevelUp"}}">
+                        <i class="fas fa-angles-up"></i>
+                    </button>
+                </div>
+                <div class="action-points" title="{{localize "CONSTANTS.ActionPoints.Tooltip"}}">
+                    <span class="ap-label">{{localize "CONSTANTS.ActionPoints.Short"}}</span>
+                    <span class="ap-value">{{system.initiative.remaining}}<span class="ap-sep">/</span>{{system.initiative.total}}</span>
+                </div>
             </div>
         </div>
 

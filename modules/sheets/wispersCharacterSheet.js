@@ -34,6 +34,7 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             addArmor: WispersCharacterSheet._onAddArmor,
             addCoins: WispersCharacterSheet._onAddCoins,
             removeCoins: WispersCharacterSheet._onRemoveCoins,
+            levelUp: WispersCharacterSheet._onLevelUp,
             createItem: WispersCharacterSheet._onCreateItem,
             editItem: WispersCharacterSheet._onEditItem,
             deleteItem: WispersCharacterSheet._onDeleteItem,
@@ -1277,6 +1278,13 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             update[`system.currency.${denom}.value`] = Math.max(0, (current[denom]?.value ?? 0) - delta);
         }
         if (Object.keys(update).length) await this.actor.update(update);
+    }
+
+    // Placeholder level-up: bumps the character level by one. The full
+    // level-up flow (ability/proficiency gains) is not yet designed.
+    static async _onLevelUp(event, target) {
+        const current = Number(this.actor.system?.level?.value ?? 0);
+        await this.actor.update({ "system.level.value": current + 1 });
     }
 
     static async _showCoinDialog(title, current) {
