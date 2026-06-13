@@ -14,13 +14,16 @@
 .wispers.sheet.character {
   color: @ink;
   font-family: "Roboto", sans-serif;
-  min-width: 680px;
-  min-height: 780px;
 
+  // NB: min sizes live on .window-content, NOT the application root. Putting them
+  // on the root (.wispers.sheet.character) overrides the height Foundry applies when
+  // minimizing the window, so the sheet refuses to collapse to its title bar.
   .window-content {
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-width: 680px;
+    min-height: 780px;
     padding: 8px;
     background: @parchment-bg;
     background-image:
@@ -160,18 +163,13 @@
     background-size: contain;
   }
 
-  // Biography tab
-  .biography-tab {
-    display: flex;
-    gap: 10px;
-    height: 100%;
-  }
+  // Personality block (Appearance / Traits / Ideals / Bonds / Flaws),
+  // now stacked full-width inside the merged Character tab.
   .characteristics {
-    flex: 0 0 220px;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    overflow-y: auto;
+    margin-bottom: 4px;
 
     label {
       font-family: "Cinzel", serif;
@@ -182,14 +180,21 @@
       margin-bottom: 2px;
     }
     textarea {
+      width: 100%;
       min-height: 44px;
     }
   }
+  // Biography + Notes rich-text editors.
   .biography-editor {
-    flex: 1;
     border: 1px solid @parchment-border;
     border-radius: 2px;
     background: @parchment-bg-soft;
     overflow: hidden;
+    margin-bottom: 4px;
+
+    prose-mirror {
+      display: block;
+      min-height: 120px;
+    }
   }
 }

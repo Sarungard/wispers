@@ -30,6 +30,13 @@
       "Uses": "Uses",
       "UsesMax": "Max",
       "NoDescription": "No description.",
+      "TabDetails": "Details",
+      "TabEffects": "Effects",
+      "Properties": "Properties",
+      "MinProficiency": "Min. Proficiency",
+      "AddProperty": "Add Property",
+      "RemoveProperty": "Remove Property",
+      "NoProperties": "No properties.",
       "Spell": {
         "SpellLVL": "Level {level} Spells",
         "AddLVL": "Add LVL {level}"
@@ -116,7 +123,22 @@
       "Toggle": "Toggle Effect",
       "Temporary": "Temporary Effects",
       "Passive": "Passive Effects",
-      "Inactive": "Inactive Effects"
+      "Inactive": "Inactive Effects",
+      "Label": "Effects",
+      "None": "No effects.",
+      "New": "New Effect"
+    },
+    "WeaponProperties": {
+      "Versatile": { "Label": "Versatile", "Desc": "Can be wielded in one or two hands." },
+      "TwoHanded": { "Label": "Two-Handed", "Desc": "Requires both hands to wield." },
+      "Light": { "Label": "Light", "Desc": "Small and easily handled — well suited to an off hand." },
+      "Finesse": { "Label": "Finesse", "Desc": "Relies on precision rather than power." },
+      "Reach": { "Label": "Reach", "Desc": "Strikes at a greater distance than normal." },
+      "Thrown": { "Label": "Thrown", "Desc": "Can be thrown to make a ranged attack." },
+      "Cleave": { "Label": "Cleave", "Desc": "A telling blow may carry into a second foe." },
+      "Piercing": { "Label": "Piercing", "Desc": "Punches through part of a target's armor." },
+      "Guard": { "Label": "Guard", "Desc": "Aids defense — improves blocking or parrying." },
+      "Loading": { "Label": "Loading", "Desc": "Must be reloaded between attacks." }
     },
     "Roll": {
       "Title": "Roll: {label}",
@@ -217,6 +239,17 @@
       "CriticalSuccess": "Critical Success"
     },
     "Character": {
+      "SectionDetails": "Character Details",
+      "SectionPersonality": "Personality",
+      "SectionBiography": "Biography",
+      "SectionNotes": "Notes",
+      "Race": "Race",
+      "Background": "Background",
+      "Homeregion": "Home Region",
+      "Alignment": "Alignment",
+      "Age": "Age",
+      "Height": "Height",
+      "Weight": "Weight",
       "Appearance": "Appearance",
       "Traits": "Personality Traits",
       "Ideals": "Ideals",

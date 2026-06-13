@@ -4,6 +4,36 @@ export default class wispersActor extends Actor {
   }
 
   /**
+   * Equip-gated effect suppression (effects-conditions.md §7, armor-shields.md §5).
+   *
+   * Foundry applies an item's `transfer:true` ActiveEffects to the actor as soon as
+   * the item is owned, regardless of whether it is worn/wielded. For *equippable*
+   * items (weapons/armor/shields — those whose `system` carries an `equipped` flag)
+   * we only want the effect to apply while the item is actually equipped, so we drop
+   * suppressed effects from the generator core iterates in `applyActiveEffects()`.
+   *
+   * Non-equippable sources are unaffected: a wound, a passive feature, or a condition
+   * placed directly on the actor has no `equipped` flag, so it always applies while
+   * present. Because this runs on every `prepareData` cycle and toggling `equipped`
+   * updates the item (re-preparing the actor), the gate is live with no extra wiring.
+   */
+  *allApplicableEffects() {
+    for (const effect of super.allApplicableEffects()) {
+      if (wispersActor._isEquipSuppressed(effect)) continue;
+      yield effect;
+    }
+  }
+
+  /** True when `effect` is transferred from an equippable item that isn't equipped. */
+  static _isEquipSuppressed(effect) {
+    const source = effect.parent;
+    if (source?.documentName !== "Item") return false;
+    const sys = source.system ?? {};
+    if (!("equipped" in sys)) return false;   // not an equippable item — never gated
+    return !sys.equipped?.value;              // suppress while unequipped
+  }
+
+  /**
    * Fold effect accumulators into `effective` values. Effects ADD into the
    * separate `.bonus` field (never the editable `.value` the sheet binds to —
    * see effects-conditions.md §1.1), and this is where `effective = base + bonus`

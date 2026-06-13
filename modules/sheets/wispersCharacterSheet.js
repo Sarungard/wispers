@@ -201,6 +201,10 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             secrets: actor.isOwner,
             relativeTo: actor
         });
+        const notesHTML = await enrich(actor.system?.details?.notes ?? "", {
+            secrets: actor.isOwner,
+            relativeTo: actor
+        });
 
         // Static metadata (labels, linked attributes, the set of entries that
         // exist) lives in CONFIG.WISPERS; stored actor data holds only values.
@@ -300,6 +304,7 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             featureSections,
             effects,
             biographyHTML,
+            notesHTML,
             abilityRows,
             skillRows,
             schoolRows,

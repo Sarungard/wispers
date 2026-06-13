@@ -80,16 +80,59 @@ Hooks.once("ready", async () => {
   // Finished Initalization Phase and release lock
   CONFIG.INIT = false;
 
+  // Surface the authored conditions compendium as toggleable token statuses
+  // (effects-conditions.md §5). No-op until the pack has content.
+  await buildConditionRegistry();
+
   // Only execute when run as Gamemaster
   if (!game.user.isGM) {
     return;
   }
 });
 
+/**
+ * Populate `CONFIG.statusEffects` and `WISPERS.conditions` from the conditions
+ * compendium (effects-conditions.md §5). Conditions are authored as effect-bearing
+ * **Items** (the pack is `type: "Item"` — ActiveEffect is not a valid compendium
+ * type), each carrying one or more transfer:true ActiveEffects. We register one
+ * status entry per condition Item, sourcing the toggle's `changes` from its
+ * effects so toggling a status on a token applies the real modifiers natively.
+ *
+ * The condition's stable status id is read from `flags.wispers.conditionId`, else
+ * derived from the item name. Safe no-op while the pack is empty.
+ */
+async function buildConditionRegistry() {
+  const pack = game.packs?.get("wispers.conditions");
+  if (!pack) return;
+
+  let docs;
+  try {
+    docs = await pack.getDocuments();
+  } catch (err) {
+    console.warn("Wispers | Could not load conditions compendium:", err);
+    return;
+  }
+
+  const existing = new Set(CONFIG.statusEffects.map(s => s.id));
+  for (const item of docs) {
+    const id = item.flags?.wispers?.conditionId
+      ?? item.name.slugify({ strict: true });
+    if (!id || existing.has(id)) continue;
+
+    // Merge the change rows from every transfer effect on the condition Item.
+    const changes = Array.from(item.effects)
+      .filter(e => e.transfer !== false)
+      .flatMap(e => e.changes ?? []);
+
+    CONFIG.statusEffects.push({ id, name: item.name, img: item.img, changes });
+    existing.add(id);
+    WISPERS.conditions[id] = { uuid: item.uuid };
+  }
+}
+
 function preloadHandlebarsTemplates() {
   const templatePaths = [
     "systems/wispers/templates/partials/character/attributes.hbs",
-    "systems/wispers/templates/partials/character/biography.hbs",
     "systems/wispers/templates/partials/character/effects.hbs",
     "systems/wispers/templates/partials/character/features.hbs",
     "systems/wispers/templates/partials/character/inventory.hbs",
@@ -100,6 +143,8 @@ function preloadHandlebarsTemplates() {
     "systems/wispers/templates/actors/partials/inventory.hbs",
     "systems/wispers/templates/sheets/item/header.hbs",
     "systems/wispers/templates/sheets/item/body.hbs",
+    "systems/wispers/templates/sheets/item/effects.hbs",
+    "systems/wispers/templates/sheets/item/partials/properties.hbs",
     "systems/wispers/templates/sheets/item/types/weapon.hbs",
     "systems/wispers/templates/sheets/item/types/armor.hbs",
     "systems/wispers/templates/sheets/item/types/shield.hbs",

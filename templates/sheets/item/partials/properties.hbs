@@ -1,0 +1,35 @@
+{{!--
+    Proficiency-gated property editor — shared by weapon/armor/shield item sheets.
+    Each row binds system.properties.<i>.{key,minProficiency} (an ArrayField, see
+    item/_helpers.js gatedProperties()). `key` chooses from WISPERS.weaponProperties
+    (flattened to `weaponPropertyChoices` in WispersItemSheet._prepareContext). Rows
+    are added/removed via the addProperty / removeProperty sheet actions, which mutate
+    the array on the item; submitOnChange persists in-row edits.
+--}}
+<fieldset class="item-properties">
+    <legend>
+        {{localize "CONSTANTS.Item.Properties"}}
+        {{#if editable}}
+        <a class="property-add" data-action="addProperty" title="{{localize 'CONSTANTS.Item.AddProperty'}}">
+            <i class="fas fa-plus"></i>
+        </a>
+        {{/if}}
+    </legend>
+
+    {{#each system.properties as |prop i|}}
+    <div class="form-group property-row" data-index="{{i}}">
+        <select name="system.properties.{{i}}.key">
+            {{selectOptions @root.weaponPropertyChoices selected=prop.key localize=true}}
+        </select>
+        <label class="mini">{{localize "CONSTANTS.Item.MinProficiency"}}</label>
+        <input type="text" name="system.properties.{{i}}.minProficiency" value="{{prop.minProficiency}}" data-dtype="Number" />
+        {{#if @root.editable}}
+        <a class="property-remove" data-action="removeProperty" data-index="{{i}}" title="{{localize 'CONSTANTS.Item.RemoveProperty'}}">
+            <i class="fas fa-trash"></i>
+        </a>
+        {{/if}}
+    </div>
+    {{else}}
+    <p class="hint">{{localize "CONSTANTS.Item.NoProperties"}}</p>
+    {{/each}}
+</fieldset>

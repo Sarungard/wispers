@@ -35,11 +35,10 @@ woundRoll = 1d8  +  source.wound[severity]  +  defender.system.wounds.modifier.v
   results).
 - The total is **clamped** to the table's row range before lookup (see §3.3).
 
-> **[ASSUMED]** three separate ~20-row tables (one per severity), each rolled with the same
+> **[LOCKED]** Three separate ~20-row tables (one per severity), each rolled with the same
 > `1d8 + mods` mechanic but themed to its severity (a heavy table's worst row is far nastier
-> than a light table's). The owner said "roll on the *corresponding* table," which implies
-> one table per severity. Confirm vs a single shared 20-row table where severity only changes
-> the modifier tier.
+> than a light table's). Confirmed with the project owner over a single shared 20-row table —
+> author `Wounds — Light` / `Wounds — Normal` / `Wounds — Heavy` as three RollTables.
 
 ### 1.2 Worked example
 

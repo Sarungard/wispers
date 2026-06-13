@@ -2,58 +2,82 @@
 
     <div class="form-group subMain">
         <div class="menu-hr-container"><hr class="menu-hr"></div>
-        <span class="section-label">Character Details</span>
+        <span class="section-label">{{localize "CONSTANTS.Character.SectionDetails"}}</span>
         <div class="menu-hr-container"><hr class="menu-hr"></div>
     </div>
 
     <div class="character-fields">
         <div class="character-input-half-width">
-            <div class="character-input-label">Race</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
+            <div class="character-input-label">{{localize "CONSTANTS.Character.Race"}}</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.race" value="{{system.details.race}}"></div>
         </div>
         <div class="character-input-half-width">
-            <div class="character-input-label">Background</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
+            <div class="character-input-label">{{localize "CONSTANTS.Character.Background"}}</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.background" value="{{system.details.background}}"></div>
         </div>
         <div class="character-input-half-width">
-            <div class="character-input-label">Homeregion</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
+            <div class="character-input-label">{{localize "CONSTANTS.Character.Homeregion"}}</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.homeRegion" value="{{system.details.homeRegion}}"></div>
         </div>
         <div class="character-input-half-width">
-            <div class="character-input-label">Alignment</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
+            <div class="character-input-label">{{localize "CONSTANTS.Character.Alignment"}}</div>
+            <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.alignment" value="{{system.details.alignment}}"></div>
         </div>
         <div class="character-input-half-width">
-            <div class="character-input-label">Title</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
-        </div>
-        <div class="character-input-half-width">
-            <div class="character-input-label">Nickname</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
-        </div>
-        <div class="character-input-half-width">
-            <div class="character-input-label">Age</div>
+            <div class="character-input-label">{{localize "CONSTANTS.Character.Age"}}</div>
             <div class="character-input-box"><input class="character-input-half" type="number" name="system.details.age" value="{{system.details.age}}"></div>
         </div>
         <div class="character-input-half-width">
-            <div class="character-input-label">Family</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
-        </div>
-        <div class="character-input-half-width">
-            <div class="character-input-label">Height</div>
+            <div class="character-input-label">{{localize "CONSTANTS.Character.Height"}}</div>
             <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.height" value="{{system.details.height}}"></div>
         </div>
         <div class="character-input-half-width">
-            <div class="character-input-label">Weight</div>
+            <div class="character-input-label">{{localize "CONSTANTS.Character.Weight"}}</div>
             <div class="character-input-box"><input class="character-input-half" type="text" name="system.details.weight" value="{{system.details.weight}}"></div>
         </div>
-        <div class="character-input-half-width">
-            <div class="character-input-label">Eye Color</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
-        </div>
-        <div class="character-input-half-width">
-            <div class="character-input-label">Hair Color</div>
-            <div class="character-input-box"><input class="character-input-half" type="text"></div>
-        </div>
     </div>
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">{{localize "CONSTANTS.Character.SectionPersonality"}}</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="characteristics flexcol">
+        <label>{{localize "CONSTANTS.Character.Appearance"}}</label>
+        <textarea name="system.details.appearance">{{system.details.appearance}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Traits"}}</label>
+        <textarea name="system.details.trait">{{system.details.trait}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Ideals"}}</label>
+        <textarea name="system.details.ideal">{{system.details.ideal}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Bonds"}}</label>
+        <textarea name="system.details.bond">{{system.details.bond}}</textarea>
+        <label>{{localize "CONSTANTS.Character.Flaws"}}</label>
+        <textarea name="system.details.flaw">{{system.details.flaw}}</textarea>
+    </div>
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">{{localize "CONSTANTS.Character.SectionBiography"}}</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="biography-editor">
+        <prose-mirror name="system.details.biography" value="{{system.details.biography}}">
+            {{{biographyHTML}}}
+        </prose-mirror>
+    </div>
+
+    <div class="form-group subMain">
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+        <span class="section-label">{{localize "CONSTANTS.Character.SectionNotes"}}</span>
+        <div class="menu-hr-container"><hr class="menu-hr"></div>
+    </div>
+
+    <div class="biography-editor">
+        <prose-mirror name="system.details.notes" value="{{system.details.notes}}">
+            {{{notesHTML}}}
+        </prose-mirror>
+    </div>
+
 </div>

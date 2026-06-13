@@ -58,7 +58,7 @@
       "name": "conditions",
       "label": "Conditions",
       "path": "packs/conditions",
-      "type": "ActiveEffect",
+      "type": "Item",
       "system": "wispers"
     }
   ],

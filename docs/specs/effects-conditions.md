@@ -150,12 +150,19 @@ Conditions are authored as **content in a compendium** (the JSON-compendium goal
 and surfaced as **token status icons** via `CONFIG.statusEffects` (one-click toggle, visible on
 tokens).
 
-- **Compendium** `packs/conditions` of ActiveEffect documents (or effect-bearing Items —
-  **[ASSUMED]** ActiveEffect documents, simplest), each authored with its `changes` (flat mods
-  and/or `flags.wispers.*` levers from §3–4), `img`, `name`, and a stable `statuses`/`id`.
-- **Registry built from the compendium at `ready`:** load the condition docs and register
-  `CONFIG.statusEffects` entries (`{ id, name, img, changes, … }`) from them, so the canonical
-  data lives in the editable compendium and the token UI is generated from it.
+- **Compendium** `packs/conditions` of **effect-bearing Items** (pack `type: "Item"`), each
+  authored with one or more transfer ActiveEffects carrying its `changes` (flat mods and/or
+  `flags.wispers.*` levers from §3–4), plus `img`, `name`, and a stable id.
+  - **[CORRECTION]** The earlier "ActiveEffect documents, simplest" assumption is **invalid** —
+    `ActiveEffect` is not a compendium-eligible document type in Foundry (packs hold
+    Actor/Item/JournalEntry/RollTable/Scene/Macro/Playlist/Cards/Adventure only). The pack is
+    therefore `Item`; the condition's status id is read from `flags.wispers.conditionId`, else
+    derived from the item name (`name.slugify`).
+- **Registry built from the compendium at `ready`:** `buildConditionRegistry()` (in `wispers.js`)
+  loads the condition Items and registers `CONFIG.statusEffects` entries
+  (`{ id, name, img, changes }`, merging the changes from each Item's transfer effects) plus
+  `WISPERS.conditions[id] = { uuid }`, so the canonical data lives in the editable compendium and
+  the token UI is generated from it. **Implemented** — a safe no-op until the pack has content.
 - **Toggling** a status on a token/actor applies/removes the full effect (native). Because the
   registry carries the real `changes`, the standard toggle applies them — no per-condition code.
 
@@ -253,8 +260,9 @@ the sheet when the gate fails.
   `duration?.seconds` only — also treat `duration.rounds`/`turns` as temporary.
 
 ### 8.6 Compendium packs (`system.json`)
-- Declare `packs/conditions` (`type: "ActiveEffect"`) alongside the wound packs from
-  `wound-tables.md` §6.4. Author the starter conditions (Bleeding, Prone, Stunned, Staggered, …).
+- Declare `packs/conditions` (`type: "Item"` — see §5 correction; **not** `ActiveEffect`)
+  alongside the wound packs from `wound-tables.md` §6.4. Author the starter conditions
+  (Bleeding, Prone, Stunned, Staggered, …) as effect-bearing Items.
 
 ## 9. Open questions / deferred
 
@@ -280,8 +288,9 @@ the sheet when the gate fails.
 - [x] `wispersCharacterSheet`: `_collectRollMods`, fold levers into all rollers via `_buildRollFormula` (§4.2).
 - [~] `feature.js`: `activation` block ✓. **`_onActivateFeature` + activate controls pending.**
 - [ ] Weapon-effect suppression by equip + proficiency gate (§7).
-- [ ] `ready` hook: build `CONFIG.statusEffects` from `packs/conditions`.
-- [~] `system.json`: declare `packs/conditions` ✓. **Authoring starter conditions pending.**
+- [x] `ready` hook: build `CONFIG.statusEffects` from `packs/conditions` (`buildConditionRegistry()`).
+- [x] `system.json`: declare `packs/conditions` (corrected `ActiveEffect` → `Item`). **Authoring
+      starter conditions pending.**
 - [x] Widen effect bucketing in `_prepareContext` (rounds/turns, not just seconds).
 - [ ] Wire dependents: wound AEs, weapon properties, spell `effects[]` (their TBD vocab is now
       this spec's §3–4 changes + §5 conditions).

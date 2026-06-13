@@ -1,0 +1,48 @@
+{{!--
+    Item ActiveEffects manager. Wounds, passive features, and conditions carry their
+    mechanical payload as transfer:true ActiveEffects on the item (wound-tables.md §4,
+    effects-conditions.md §6) — this tab is where they're authored. CRUD is wired via
+    the createEffect / editEffect / deleteEffect / toggleEffect sheet actions.
+--}}
+<section class="item-effects">
+    <ol class="items-list effects-list">
+        <li class="items-header flexrow">
+            <h3 class="item-name effect-name">{{localize "CONSTANTS.Effect.Label"}}</h3>
+            <div class="effect-source">{{localize "EFFECT.TabDuration"}}</div>
+            <div class="item-controls effect-controls flexrow">
+                {{#if editable}}
+                <a class="effect-control" data-action="createEffect" title="{{localize 'DOCUMENT.Create' type='Effect'}}">
+                    <i class="fas fa-plus"></i> {{localize "DOCUMENT.New" type="Effect"}}
+                </a>
+                {{/if}}
+            </div>
+        </li>
+
+        <ol class="item-list">
+        {{#each effects as |effect|}}
+            <li class="item effect flexrow" data-effect-id="{{effect.id}}">
+                <div class="item-name effect-name flexrow">
+                    <img class="item-image" src="{{effect.img}}" />
+                    <h4>{{effect.name}}</h4>
+                </div>
+                <div class="effect-duration">{{effect.duration.label}}</div>
+                <div class="item-controls effect-controls flexrow">
+                    <a class="effect-control" data-action="toggleEffect" title="{{localize 'CONSTANTS.Effect.Toggle'}}">
+                        <i class="fas {{#if effect.disabled}}fa-toggle-off{{else}}fa-toggle-on{{/if}}"></i>
+                    </a>
+                    {{#if @root.editable}}
+                    <a class="effect-control" data-action="editEffect" title="{{localize 'DOCUMENT.Update' type='Effect'}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="effect-control" data-action="deleteEffect" title="{{localize 'DOCUMENT.Delete' type='Effect'}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    {{/if}}
+                </div>
+            </li>
+        {{else}}
+            <li class="item effect"><p class="hint">{{localize "CONSTANTS.Effect.None"}}</p></li>
+        {{/each}}
+        </ol>
+    </ol>
+</section>

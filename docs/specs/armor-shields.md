@@ -235,6 +235,11 @@ mechanic: +10 to thresholds makes a wearer nearly immune. Retune to small values
 authoring the armor compendium, and sanity-check against typical threats. This is a balance
 pass, flagged so it isn't shipped as-is.
 
+> **[LOCKED]** Authoring convention agreed with the project owner: author armor at
+> **light 1 / medium 2 / heavy 3** and shields at **1–2**. (Schema defaults stay `armorValue 2`,
+> i.e. a medium value, so a fresh armor is sane out of the box.) Revisit only if play shows
+> these are too weak/strong vs typical threats.
+
 ## 9. Open questions / deferred
 
 - **Light vs heavy threshold boost** (§1.1) — single `armorValue` raises both equally vs separate

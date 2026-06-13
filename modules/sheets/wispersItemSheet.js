@@ -5,11 +5,27 @@ const sheets = foundry.applications.sheets;
 
 export default class WispersItemSheet extends api.HandlebarsApplicationMixin(sheets.ItemSheetV2) {
 
+    // Tracks the active body tab across the submitOnChange re-renders (mirrors the
+    // character sheet) so editing a field doesn't snap the user back to Details.
+    _activeTab = null;
+    // Re-render when this item's own ActiveEffects change. Embedded-AE CRUD on the
+    // Effects tab doesn't always trip ItemSheetV2's automatic re-render, so subscribe
+    // explicitly (same workaround the character sheet uses for effect displays).
+    _onEffectChange = null;
+
     static DEFAULT_OPTIONS = {
         tag: "form",
         classes: ["wispers", "sheet", "item"],
         position: { width: 500, height: "auto" },
         window: { resizable: true },
+        actions: {
+            createEffect: WispersItemSheet._onCreateEffect,
+            editEffect: WispersItemSheet._onEditEffect,
+            deleteEffect: WispersItemSheet._onDeleteEffect,
+            toggleEffect: WispersItemSheet._onToggleEffect,
+            addProperty: WispersItemSheet._onAddProperty,
+            removeProperty: WispersItemSheet._onRemoveProperty
+        },
         form: {
             submitOnChange: true,
             closeOnSubmit: false
@@ -60,10 +76,14 @@ export default class WispersItemSheet extends api.HandlebarsApplicationMixin(she
             schoolChoices: flatLabels(W.spellSchools),
             weaponCategoryChoices: flatLabels(W.weaponCategories),
             armorTypeChoices: flatLabels(W.armorTypes),
+            // Choices for the gated-properties editor (weapon/armor/shield).
+            weaponPropertyChoices: flatLabels(W.weaponProperties),
             targetChoices: { self: "CONSTANTS.Features.TargetSelf", target: "CONSTANTS.Features.TargetOther" },
             woundSeverityChoices: { light: "CONSTANTS.Wounds.Light", normal: "CONSTANTS.Wounds.Normal", heavy: "CONSTANTS.Wounds.Heavy" },
             // SetField -> array for the multi-select `selected=` argument.
             coversArray: sys.covers ? Array.from(sys.covers) : [],
+            // The item's ActiveEffects, for the Effects tab list.
+            effects: Array.from(item.effects),
             editable: this.isEditable,
             typePartial: WispersItemSheet.TYPE_PARTS[item.type] ?? null,
             // Features aren't physical inventory, so they have no quantity/weight/
@@ -77,5 +97,100 @@ export default class WispersItemSheet extends api.HandlebarsApplicationMixin(she
         super._onFirstRender?.(context, options);
         // Honour the sheet-wide "+2 / -5" relative-number convention.
         installRelativeNumberInputs(this.element, this.item);
+
+        // Re-render when this item's own ActiveEffects change (see field note above).
+        this._onEffectChange = (effect) => {
+            if (effect.parent?.id === this.item.id) this.render();
+        };
+        Hooks.on("createActiveEffect", this._onEffectChange);
+        Hooks.on("updateActiveEffect", this._onEffectChange);
+        Hooks.on("deleteActiveEffect", this._onEffectChange);
+    }
+
+    /** @override */
+    _onRender(context, options) {
+        super._onRender?.(context, options);
+        // Bind the Details/Effects tab group, preserving the active tab across the
+        // submitOnChange re-renders (mirrors the character sheet).
+        const tabs = new foundry.applications.ux.Tabs({
+            navSelector: ".tabs", contentSelector: ".sheet-content", initial: this._activeTab ?? "details"
+        });
+        tabs.bind(this.element);
+        this.element.querySelectorAll(".tabs [data-tab]").forEach(el => {
+            el.addEventListener("click", () => { this._activeTab = el.dataset.tab; });
+        });
+    }
+
+    /** @override */
+    close(options) {
+        if (this._onEffectChange) {
+            Hooks.off("createActiveEffect", this._onEffectChange);
+            Hooks.off("updateActiveEffect", this._onEffectChange);
+            Hooks.off("deleteActiveEffect", this._onEffectChange);
+            this._onEffectChange = null;
+        }
+        return super.close(options);
+    }
+
+    /* -------------------------------------------- */
+    /*  ActiveEffect CRUD (Effects tab)             */
+    /* -------------------------------------------- */
+
+    /** Create a new transfer ActiveEffect on this item and open its config. */
+    static async _onCreateEffect(event, target) {
+        event.preventDefault();
+        const created = await this.item.createEmbeddedDocuments("ActiveEffect", [{
+            name: game.i18n.localize("CONSTANTS.Effect.New"),
+            img: "icons/svg/aura.svg",
+            origin: this.item.uuid,
+            transfer: true,
+            disabled: false
+        }]);
+        created[0]?.sheet.render(true);
+    }
+
+    /** Open the clicked effect's config sheet. */
+    static _onEditEffect(event, target) {
+        event.preventDefault();
+        const id = target.closest("[data-effect-id]")?.dataset.effectId;
+        this.item.effects.get(id)?.sheet.render(true);
+    }
+
+    /** Delete the clicked effect. */
+    static async _onDeleteEffect(event, target) {
+        event.preventDefault();
+        const id = target.closest("[data-effect-id]")?.dataset.effectId;
+        if (id) await this.item.deleteEmbeddedDocuments("ActiveEffect", [id]);
+    }
+
+    /** Enable/disable the clicked effect. */
+    static async _onToggleEffect(event, target) {
+        event.preventDefault();
+        const id = target.closest("[data-effect-id]")?.dataset.effectId;
+        const effect = this.item.effects.get(id);
+        if (effect) await effect.update({ disabled: !effect.disabled });
+    }
+
+    /* -------------------------------------------- */
+    /*  Gated properties (weapon/armor/shield)      */
+    /* -------------------------------------------- */
+
+    /** Append a new gated-property row, defaulting to the first registry key. */
+    static async _onAddProperty(event, target) {
+        event.preventDefault();
+        const list = foundry.utils.deepClone(this.item.system.properties ?? []);
+        const firstKey = Object.keys(CONFIG.WISPERS.weaponProperties ?? {})[0] ?? "";
+        list.push({ key: firstKey, minProficiency: 0 });
+        await this.item.update({ "system.properties": list });
+    }
+
+    /** Remove the gated-property row at the clicked index. */
+    static async _onRemoveProperty(event, target) {
+        event.preventDefault();
+        const index = Number(target.closest("[data-index]")?.dataset.index);
+        if (Number.isNaN(index)) return;
+        const list = foundry.utils.deepClone(this.item.system.properties ?? []);
+        list.splice(index, 1);
+        await this.item.update({ "system.properties": list });
     }
 }

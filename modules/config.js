@@ -112,12 +112,27 @@ WISPERS.weaponCategories = {
     polearms:  { label: "CONSTANTS.WeaponCategories.Polearms",  description: "CONSTANTS.WeaponCategories.PolearmsDesc" }
 };
 
-// Registry of weapon/armor property definitions. Properties are keyword-coded;
-// the mechanical triggers/effects are realized later by the effects engine
-// (effects-conditions.md §7). The registry pins the vocabulary so compendium
-// items reference keys, not free strings. Each entry (when authored):
-//   key: { label, description, (later) effect/maneuver wiring }
-WISPERS.weaponProperties = {};
+// Registry of weapon/armor/shield property definitions. Properties are
+// keyword-coded; the mechanical triggers/effects are realized later by the
+// effects engine (effects-conditions.md §7). The registry pins the vocabulary so
+// compendium items reference keys, not free strings — the gated-properties editor
+// on the weapon/armor/shield sheets (system.properties[].key) chooses from here.
+// Each entry is `{ label, description }` (localization keys); the `(later)`
+// effect/maneuver wiring hangs off the same key once the effects engine lands.
+// Phase 1: these are display-only keywords (the proficiency gate is still honored
+// for display), shared by all three gated-property item types.
+WISPERS.weaponProperties = {
+    versatile:  { label: "CONSTANTS.WeaponProperties.Versatile.Label",  description: "CONSTANTS.WeaponProperties.Versatile.Desc" },
+    twoHanded:  { label: "CONSTANTS.WeaponProperties.TwoHanded.Label",  description: "CONSTANTS.WeaponProperties.TwoHanded.Desc" },
+    light:      { label: "CONSTANTS.WeaponProperties.Light.Label",      description: "CONSTANTS.WeaponProperties.Light.Desc" },
+    finesse:    { label: "CONSTANTS.WeaponProperties.Finesse.Label",    description: "CONSTANTS.WeaponProperties.Finesse.Desc" },
+    reach:      { label: "CONSTANTS.WeaponProperties.Reach.Label",      description: "CONSTANTS.WeaponProperties.Reach.Desc" },
+    thrown:     { label: "CONSTANTS.WeaponProperties.Thrown.Label",     description: "CONSTANTS.WeaponProperties.Thrown.Desc" },
+    cleave:     { label: "CONSTANTS.WeaponProperties.Cleave.Label",     description: "CONSTANTS.WeaponProperties.Cleave.Desc" },
+    piercing:   { label: "CONSTANTS.WeaponProperties.Piercing.Label",   description: "CONSTANTS.WeaponProperties.Piercing.Desc" },
+    guard:      { label: "CONSTANTS.WeaponProperties.Guard.Label",      description: "CONSTANTS.WeaponProperties.Guard.Desc" },
+    loading:    { label: "CONSTANTS.WeaponProperties.Loading.Label",    description: "CONSTANTS.WeaponProperties.Loading.Desc" }
+};
 
 // The four casting degrees: labels + (documentation of) the global structural
 // rule. See spellcasting.md §3. `success` is the spell's static "Spellpower

@@ -258,4 +258,234 @@
       }
     }
   }
+
+  // ---- Body tabs (Details / Effects) -------------------------------------
+  // The body is a flex column: a pinned tab strip over the scrolling content.
+  .item-body > .tabs {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 6px;
+    border-bottom: 2px solid @parchment-border;
+    padding-bottom: 6px;
+
+    .item {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 30px;
+      border: 1px solid @parchment-border;
+      border-radius: 4px;
+      background: rgba(255, 250, 235, 0.4);
+      color: @ink-soft;
+      cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+
+      i { font-size: 14px; }
+
+      &:hover {
+        color: @accent;
+        border-color: @accent;
+      }
+      &.active {
+        color: @parchment-bg;
+        background: @accent;
+        border-color: @parchment-border-strong;
+      }
+    }
+  }
+
+  .item-body > .sheet-content {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    // Without this every tab renders at once. The active tab keeps the column
+    // gap the fieldsets relied on when they were direct children of .item-body.
+    .tab { display: none; }
+    .tab.active {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
+  // ---- Wound-modifier triples (weapon / spell) ---------------------------
+  .triple-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    input[type="text"],
+    input[type="number"] {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+  }
+
+  // Compact inline labels used inside .triple-row and the properties editor.
+  .mini {
+    flex: 0 0 auto;
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: @ink-soft;
+  }
+
+  // ---- Gated-properties editor (weapon / armor / shield) -----------------
+  .item-properties {
+    legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .property-add {
+        color: @accent;
+        cursor: pointer;
+        font-size: 11px;
+        line-height: 1;
+
+        &:hover { color: @ink; }
+      }
+    }
+
+    .property-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 7px;
+
+      &:last-child { margin-bottom: 0; }
+
+      select {
+        flex: 1;
+        min-width: 0;
+      }
+      input[type="text"] {
+        flex: 0 0 60px;
+        text-align: center;
+      }
+
+      .property-remove {
+        flex: 0 0 auto;
+        color: @ink-soft;
+        cursor: pointer;
+
+        &:hover { color: @accent; }
+      }
+    }
+  }
+
+  // ---- Effects tab list --------------------------------------------------
+  .item-effects {
+    .items-list,
+    .item-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .items-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 6px;
+      border-bottom: 1px solid @parchment-border;
+      background: rgba(255, 250, 235, 0.55);
+
+      .effect-name {
+        flex: 1;
+        margin: 0;
+        font-family: "Cinzel", serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: @accent;
+      }
+      .effect-source,
+      .effect-duration {
+        flex: 0 0 88px;
+        text-align: center;
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: @ink-soft;
+      }
+    }
+
+    .item.effect {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 6px;
+      border-bottom: 1px solid rgba(179, 148, 106, 0.4);
+
+      &:hover { background: rgba(139, 69, 19, 0.06); }
+
+      .effect-name {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+
+        .item-image {
+          flex: 0 0 24px;
+          width: 24px;
+          height: 24px;
+          object-fit: cover;
+          border: 1px solid @parchment-border;
+          border-radius: 3px;
+        }
+        h4 {
+          margin: 0;
+          font-family: "Roboto", sans-serif;
+          font-size: 13px;
+          font-weight: 500;
+          color: @ink;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .effect-duration {
+        flex: 0 0 88px;
+        text-align: center;
+        font-size: 11px;
+        color: @ink-soft;
+      }
+
+      .hint { margin: 0; }
+    }
+
+    .item-controls.effect-controls {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .effect-control {
+        color: @ink-soft;
+        cursor: pointer;
+        font-size: 13px;
+        white-space: nowrap;
+        transition: color 0.15s ease;
+
+        &:hover { color: @accent; }
+      }
+    }
+  }
+
+  // Italic hint line used by empty-state property/effect lists.
+  .hint {
+    margin: 2px 0 0;
+    font-size: 11px;
+    font-style: italic;
+    color: @ink-soft;
+  }
 }

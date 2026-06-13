@@ -38,7 +38,20 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
                 height: new fields.StringField({ initial: "" }),
                 weight: new fields.StringField({ initial: "" }),
                 biography: new fields.HTMLField({ initial: "" }),
-                notes: new fields.HTMLField({ initial: "" })
+                notes: new fields.HTMLField({ initial: "" }),
+                // Curated identity strings. Live under `details` to avoid colliding
+                // with the unrelated top-level numeric `race` / `background` fields.
+                race: new fields.StringField({ initial: "" }),
+                background: new fields.StringField({ initial: "" }),
+                alignment: new fields.StringField({ initial: "" }),
+                homeRegion: new fields.StringField({ initial: "" }),
+                // Personality — previously bound in biography.hbs with no schema slot,
+                // so they silently dropped on save. Plain (multi-line) strings.
+                appearance: new fields.StringField({ initial: "" }),
+                trait: new fields.StringField({ initial: "" }),
+                ideal: new fields.StringField({ initial: "" }),
+                bond: new fields.StringField({ initial: "" }),
+                flaw: new fields.StringField({ initial: "" })
             })
         };
     }

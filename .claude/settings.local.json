@@ -47,7 +47,19 @@
       "Bash(sed -n '/\"WeaponCategories\": {/,/}/p' lang/hu.json)",
       "Bash(sed -n '/\"Armor\": {/,/}/p' lang/hu.json)",
       "Bash(grep -iE \"^\\(d4|d6|d8|d10|d12|OneValueBorder\\)\\\\.png$\")",
-      "Bash(npx --no-install lessc less/wispers.less wispers.css)"
+      "Bash(npx --no-install lessc less/wispers.less wispers.css)",
+      "Bash(claude update *)",
+      "Bash(find docs *)",
+      "Bash(ls docs/specs)",
+      "Bash(grep -nE \"^#{2,3} \" docs/specs/armor-shields.md)",
+      "Bash(node --check wispers.js)",
+      "Bash(node --check modules/data/actor/character.js)",
+      "Bash(echo \"--- exit $? \\(1 = no matches, good\\) ---\")",
+      "Bash(node -e \"['lang/en.json','lang/hu.json','system.json'].forEach\\(f=>{JSON.parse\\(require\\('fs'\\).readFileSync\\(f,'utf8'\\)\\);console.log\\('OK',f\\)}\\)\")",
+      "Bash(echo \"---exit:$?---\")",
+      "Bash(cp modules/objects/wispersActor.js /tmp/chk.mjs)",
+      "Bash(node --check /tmp/chk.mjs)",
+      "Bash(rm /tmp/chk.mjs)"
     ]
   },
   "hooks": {

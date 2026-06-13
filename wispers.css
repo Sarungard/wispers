@@ -31,13 +31,13 @@
 .wispers.sheet.character {
   color: #3a2e1f;
   font-family: "Roboto", sans-serif;
-  min-width: 680px;
-  min-height: 780px;
 }
 .wispers.sheet.character .window-content {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-width: 680px;
+  min-height: 780px;
   padding: 8px;
   background: #f4ebd0;
   background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.07), transparent 50%);
@@ -176,17 +176,11 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
-.wispers.sheet.character .biography-tab {
-  display: flex;
-  gap: 10px;
-  height: 100%;
-}
 .wispers.sheet.character .characteristics {
-  flex: 0 0 220px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow-y: auto;
+  margin-bottom: 4px;
 }
 .wispers.sheet.character .characteristics label {
   font-family: "Cinzel", serif;
@@ -197,14 +191,19 @@
   margin-bottom: 2px;
 }
 .wispers.sheet.character .characteristics textarea {
+  width: 100%;
   min-height: 44px;
 }
 .wispers.sheet.character .biography-editor {
-  flex: 1;
   border: 1px solid #b3946a;
   border-radius: 2px;
   background: #faf2dc;
   overflow: hidden;
+  margin-bottom: 4px;
+}
+.wispers.sheet.character .biography-editor prose-mirror {
+  display: block;
+  min-height: 120px;
 }
 .die {
   color: #191813;
@@ -700,6 +699,209 @@
   margin: 0;
   accent-color: #8b4513;
   cursor: pointer;
+}
+.wispers.sheet.item .item-body > .tabs {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 6px;
+  border-bottom: 2px solid #b3946a;
+  padding-bottom: 6px;
+}
+.wispers.sheet.item .item-body > .tabs .item {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 30px;
+  border: 1px solid #b3946a;
+  border-radius: 4px;
+  background: rgba(255, 250, 235, 0.4);
+  color: #6a553a;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.wispers.sheet.item .item-body > .tabs .item i {
+  font-size: 14px;
+}
+.wispers.sheet.item .item-body > .tabs .item:hover {
+  color: #8b4513;
+  border-color: #8b4513;
+}
+.wispers.sheet.item .item-body > .tabs .item.active {
+  color: #f4ebd0;
+  background: #8b4513;
+  border-color: #8a6f4b;
+}
+.wispers.sheet.item .item-body > .sheet-content {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.wispers.sheet.item .item-body > .sheet-content .tab {
+  display: none;
+}
+.wispers.sheet.item .item-body > .sheet-content .tab.active {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.wispers.sheet.item .triple-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wispers.sheet.item .triple-row input[type="text"],
+.wispers.sheet.item .triple-row input[type="number"] {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+.wispers.sheet.item .mini {
+  flex: 0 0 auto;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6a553a;
+}
+.wispers.sheet.item .item-properties legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wispers.sheet.item .item-properties legend .property-add {
+  color: #8b4513;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+}
+.wispers.sheet.item .item-properties legend .property-add:hover {
+  color: #3a2e1f;
+}
+.wispers.sheet.item .item-properties .property-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 7px;
+}
+.wispers.sheet.item .item-properties .property-row:last-child {
+  margin-bottom: 0;
+}
+.wispers.sheet.item .item-properties .property-row select {
+  flex: 1;
+  min-width: 0;
+}
+.wispers.sheet.item .item-properties .property-row input[type="text"] {
+  flex: 0 0 60px;
+  text-align: center;
+}
+.wispers.sheet.item .item-properties .property-row .property-remove {
+  flex: 0 0 auto;
+  color: #6a553a;
+  cursor: pointer;
+}
+.wispers.sheet.item .item-properties .property-row .property-remove:hover {
+  color: #8b4513;
+}
+.wispers.sheet.item .item-effects .items-list,
+.wispers.sheet.item .item-effects .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wispers.sheet.item .item-effects .items-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px;
+  border-bottom: 1px solid #b3946a;
+  background: rgba(255, 250, 235, 0.55);
+}
+.wispers.sheet.item .item-effects .items-header .effect-name {
+  flex: 1;
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #8b4513;
+}
+.wispers.sheet.item .item-effects .items-header .effect-source,
+.wispers.sheet.item .item-effects .items-header .effect-duration {
+  flex: 0 0 88px;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6a553a;
+}
+.wispers.sheet.item .item-effects .item.effect {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(179, 148, 106, 0.4);
+}
+.wispers.sheet.item .item-effects .item.effect:hover {
+  background: rgba(139, 69, 19, 0.06);
+}
+.wispers.sheet.item .item-effects .item.effect .effect-name {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.wispers.sheet.item .item-effects .item.effect .effect-name .item-image {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border: 1px solid #b3946a;
+  border-radius: 3px;
+}
+.wispers.sheet.item .item-effects .item.effect .effect-name h4 {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3a2e1f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wispers.sheet.item .item-effects .item.effect .effect-duration {
+  flex: 0 0 88px;
+  text-align: center;
+  font-size: 11px;
+  color: #6a553a;
+}
+.wispers.sheet.item .item-effects .item.effect .hint {
+  margin: 0;
+}
+.wispers.sheet.item .item-effects .item-controls.effect-controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.wispers.sheet.item .item-effects .item-controls.effect-controls .effect-control {
+  color: #6a553a;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.wispers.sheet.item .item-effects .item-controls.effect-controls .effect-control:hover {
+  color: #8b4513;
+}
+.wispers.sheet.item .hint {
+  margin: 2px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  color: #6a553a;
 }
 .wispers.sheet.character .coinage-row {
   display: flex;

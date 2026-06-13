@@ -30,6 +30,13 @@
       "Uses": "Felhasználás",
       "UsesMax": "Max",
       "NoDescription": "Nincs leírás.",
+      "TabDetails": "Részletek",
+      "TabEffects": "Hatások",
+      "Properties": "Tulajdonságok",
+      "MinProficiency": "Min. jártasság",
+      "AddProperty": "Tulajdonság hozzáadása",
+      "RemoveProperty": "Tulajdonság eltávolítása",
+      "NoProperties": "Nincsenek tulajdonságok.",
       "Spell": {
         "SpellLVL": "Level {level} Spells",
         "AddLVL": "Add LVL {level}"
@@ -116,7 +123,22 @@
       "Toggle": "Hatás ki/be",
       "Temporary": "Ideiglenes hatások",
       "Passive": "Passzív hatások",
-      "Inactive": "Inaktív hatások"
+      "Inactive": "Inaktív hatások",
+      "Label": "Hatások",
+      "None": "Nincsenek hatások.",
+      "New": "Új hatás"
+    },
+    "WeaponProperties": {
+      "Versatile": { "Label": "Sokoldalú", "Desc": "Egy vagy két kézzel is forgatható." },
+      "TwoHanded": { "Label": "Kétkezes", "Desc": "Két kezet igényel a forgatása." },
+      "Light": { "Label": "Könnyű", "Desc": "Kicsi és könnyen kezelhető — jól használható másodkézben." },
+      "Finesse": { "Label": "Ügyességi", "Desc": "Pontosságra, nem erőre épít." },
+      "Reach": { "Label": "Nyúlékony", "Desc": "A szokásosnál nagyobb távolságból sújt le." },
+      "Thrown": { "Label": "Dobható", "Desc": "Eldobható távolsági támadáshoz." },
+      "Cleave": { "Label": "Hasítás", "Desc": "Egy találó csapás átterjedhet egy második ellenfélre." },
+      "Piercing": { "Label": "Páncéltörő", "Desc": "Átüti a célpont páncéljának egy részét." },
+      "Guard": { "Label": "Védőállás", "Desc": "Segíti a védekezést — javítja a blokkolást vagy hárítást." },
+      "Loading": { "Label": "Töltés", "Desc": "Támadások között újra kell tölteni." }
     },
     "Roll": {
       "Title": "Dobás: {label}",
@@ -217,6 +239,17 @@
       "CriticalSuccess": "Kritikus siker"
     },
     "Character": {
+      "SectionDetails": "Karakter részletei",
+      "SectionPersonality": "Személyiség",
+      "SectionBiography": "Életrajz",
+      "SectionNotes": "Jegyzetek",
+      "Race": "Faj",
+      "Background": "Háttér",
+      "Homeregion": "Szülőföld",
+      "Alignment": "Beállítottság",
+      "Age": "Kor",
+      "Height": "Magasság",
+      "Weight": "Súly",
       "Appearance": "Megjelenés",
       "Traits": "Személyiségvonások",
       "Ideals": "Eszmék",
