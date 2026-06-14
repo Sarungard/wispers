@@ -113,7 +113,9 @@
       "WoundMod": "Sebmódosító",
       "WoundLight": "Könnyű",
       "WoundNormal": "Normál",
-      "WoundHeavy": "Súlyos"
+      "WoundHeavy": "Súlyos",
+      "Applied": "Alkalmazva",
+      "NoPermission": "Nincs jogosultság a varázslat hatásának alkalmazására rá: {name}."
     },
     "Consumable": {
       "Section": "Fogyóeszköz"
@@ -126,7 +128,13 @@
       "Inactive": "Inaktív hatások",
       "Label": "Hatások",
       "None": "Nincsenek hatások.",
-      "New": "Új hatás"
+      "New": "Új hatás",
+      "Gate": "Korlát",
+      "GateMin": "Min. jártasság",
+      "GateMinHint": "Csak akkor érvényesül, ha a tárggyal való jártasság legalább ennyi (0 = nincs jártassági korlát).",
+      "GateUnder": "Büntetés",
+      "GateUnderHint": "Csak páncélnál: csak akkor érvényesül, amíg a páncéljártasságod a páncél megkövetelt jártassága ALATT van.",
+      "GateNote": "A hatások csak felszerelt tárgynál érvényesülnek. Adj meg minimum jártasságot egy tulajdonság korlátozásához; páncélnál a „Büntetés” csak alulképzettség esetén érvényesül."
     },
     "WeaponProperties": {
       "Versatile": { "Label": "Sokoldalú", "Desc": "Egy vagy két kézzel is forgatható." },

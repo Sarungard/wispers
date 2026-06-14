@@ -3,12 +3,21 @@
     mechanical payload as transfer:true ActiveEffects on the item (wound-tables.md §4,
     effects-conditions.md §6) — this tab is where they're authored. CRUD is wired via
     the createEffect / editEffect / deleteEffect / toggleEffect sheet actions.
+
+    On equippable items (weapon/armor/shield) each effect can also be proficiency-gated
+    (effects-conditions.md §7): the min-proficiency input + (armor only) the
+    under-proficiency penalty toggle write flags.wispers.* on the effect, applied by
+    wispersActor._isEffectSuppressed. These controls edit effect flags (not item.system),
+    so they carry no `name` and are wired by a change listener in _onRender.
 --}}
 <section class="item-effects">
     <ol class="items-list effects-list">
         <li class="items-header flexrow">
             <h3 class="item-name effect-name">{{localize "CONSTANTS.Effect.Label"}}</h3>
-            <div class="effect-source">{{localize "EFFECT.TabDuration"}}</div>
+            {{#if gatable}}
+            <div class="effect-gate-head">{{localize "CONSTANTS.Effect.Gate"}}</div>
+            {{/if}}
+            <div class="effect-duration">{{localize "EFFECT.TabDuration"}}</div>
             <div class="item-controls effect-controls flexrow">
                 {{#if editable}}
                 <a class="effect-control" data-action="createEffect" title="{{localize 'DOCUMENT.Create' type='Effect'}}">
@@ -25,7 +34,23 @@
                     <img class="item-image" src="{{effect.img}}" />
                     <h4>{{effect.name}}</h4>
                 </div>
-                <div class="effect-duration">{{effect.duration.label}}</div>
+
+                {{#if @root.gatable}}
+                <div class="effect-gate">
+                    <label class="mini" title="{{localize 'CONSTANTS.Effect.GateMinHint'}}">{{localize "CONSTANTS.Effect.GateMin"}}</label>
+                    <input class="effect-gate-min" type="number" min="0" max="5" step="1"
+                           value="{{effect.minProficiency}}" {{#unless @root.editable}}disabled{{/unless}} />
+                    {{#if @root.isArmor}}
+                    <label class="effect-gate-under-label" title="{{localize 'CONSTANTS.Effect.GateUnderHint'}}">
+                        <input class="effect-gate-under" type="checkbox"
+                               {{#if effect.underProficiency}}checked{{/if}} {{#unless @root.editable}}disabled{{/unless}} />
+                        {{localize "CONSTANTS.Effect.GateUnder"}}
+                    </label>
+                    {{/if}}
+                </div>
+                {{/if}}
+
+                <div class="effect-duration">{{effect.durationLabel}}</div>
                 <div class="item-controls effect-controls flexrow">
                     <a class="effect-control" data-action="toggleEffect" title="{{localize 'CONSTANTS.Effect.Toggle'}}">
                         <i class="fas {{#if effect.disabled}}fa-toggle-off{{else}}fa-toggle-on{{/if}}"></i>
@@ -45,4 +70,8 @@
         {{/each}}
         </ol>
     </ol>
+
+    {{#if gatable}}
+    <p class="hint effect-gate-note">{{localize "CONSTANTS.Effect.GateNote"}}</p>
+    {{/if}}
 </section>

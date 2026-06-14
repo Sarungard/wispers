@@ -82,8 +82,21 @@ export default class WispersItemSheet extends api.HandlebarsApplicationMixin(she
             woundSeverityChoices: { light: "CONSTANTS.Wounds.Light", normal: "CONSTANTS.Wounds.Normal", heavy: "CONSTANTS.Wounds.Heavy" },
             // SetField -> array for the multi-select `selected=` argument.
             coversArray: sys.covers ? Array.from(sys.covers) : [],
-            // The item's ActiveEffects, for the Effects tab list.
-            effects: Array.from(item.effects),
+            // The item's ActiveEffects, pre-shaped for the Effects tab list (incl. the
+            // per-effect proficiency-gate flags read by the gate controls).
+            effects: Array.from(item.effects).map(e => ({
+                id: e.id,
+                name: e.name,
+                img: e.img,
+                disabled: e.disabled,
+                durationLabel: e.duration?.label,
+                minProficiency: e.flags?.wispers?.minProficiency ?? 0,
+                underProficiency: !!e.flags?.wispers?.underProficiency
+            })),
+            // Effects on equippable items can be proficiency-gated (effects-conditions.md §7);
+            // armor additionally supports an under-proficiency penalty gate.
+            gatable: ["weapon", "armor", "shield"].includes(item.type),
+            isArmor: item.type === "armor",
             editable: this.isEditable,
             typePartial: WispersItemSheet.TYPE_PARTS[item.type] ?? null,
             // Features aren't physical inventory, so they have no quantity/weight/
@@ -119,6 +132,26 @@ export default class WispersItemSheet extends api.HandlebarsApplicationMixin(she
         this.element.querySelectorAll(".tabs [data-tab]").forEach(el => {
             el.addEventListener("click", () => { this._activeTab = el.dataset.tab; });
         });
+
+        // Per-effect proficiency-gate controls (effects-conditions.md §7). These edit
+        // effect FLAGS, not item.system, so they carry no `name` (excluded from the
+        // form submit) and update the effect directly on change.
+        const effectOf = el => this.item.effects.get(el.closest("[data-effect-id]")?.dataset.effectId);
+        this.element.querySelectorAll(".effect-gate-min").forEach(input => {
+            input.addEventListener("change", async (ev) => {
+                const effect = effectOf(ev.currentTarget);
+                if (!effect) return;
+                const v = Math.max(0, Math.min(5, Math.trunc(Number(ev.currentTarget.value) || 0)));
+                await effect.update({ "flags.wispers.minProficiency": v });
+            });
+        });
+        this.element.querySelectorAll(".effect-gate-under").forEach(cb => {
+            cb.addEventListener("change", async (ev) => {
+                const effect = effectOf(ev.currentTarget);
+                if (!effect) return;
+                await effect.update({ "flags.wispers.underProficiency": ev.currentTarget.checked });
+            });
+        });
     }
 
     /** @override */
@@ -136,14 +169,22 @@ export default class WispersItemSheet extends api.HandlebarsApplicationMixin(she
     /*  ActiveEffect CRUD (Effects tab)             */
     /* -------------------------------------------- */
 
-    /** Create a new transfer ActiveEffect on this item and open its config. */
+    // Item types whose effects apply to the actor that OWNS the item (weapons/armor/
+    // shields while equipped, features/wounds while present) use transfer:true. Types
+    // whose effects are applied to a TARGET on use (spells — and consumables, when a
+    // use flow lands) author transfer:false effects that the cast/use flow copies onto
+    // the target instead of auto-applying to the holder. See effects-conditions.md §2.
+    static OWNER_EFFECT_TYPES = new Set(["weapon", "armor", "shield", "feature", "wound"]);
+
+    /** Create a new ActiveEffect on this item and open its config. */
     static async _onCreateEffect(event, target) {
         event.preventDefault();
+        const transfer = WispersItemSheet.OWNER_EFFECT_TYPES.has(this.item.type);
         const created = await this.item.createEmbeddedDocuments("ActiveEffect", [{
             name: game.i18n.localize("CONSTANTS.Effect.New"),
             img: "icons/svg/aura.svg",
             origin: this.item.uuid,
-            transfer: true,
+            transfer,
             disabled: false
         }]);
         created[0]?.sheet.render(true);

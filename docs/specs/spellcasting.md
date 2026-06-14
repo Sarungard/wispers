@@ -146,6 +146,14 @@ optional `target` (self/target) — applied on Success (and scaled on Critical S
 `effects[]` permissive (`kind`/`ref`/`value`/`duration`/`description`) and resolve `ref`
 through `effects-conditions.md` §5–6. A spell may both deal a wound (§4.1) and apply effects.
 
+> **Implemented (v1):** the primary effect path is **ActiveEffects authored on the spell Item**
+> (Effects tab, `transfer:false`). On a Success / Critical Success `_castSpell` calls
+> `_applySpellEffects(item)`, which copies the spell's enabled effects onto the target — the
+> casting user's selected token(s), or the caster if none is targeted. Applying to an actor the
+> caster doesn't own is refused with a warning (cross-client/GM-mediated application is Phase 2).
+> The structured `resolution.effects[]` list (condition-key resolution, scaling on crit) is the
+> later, richer layer on top of this.
+
 ## 5. AP cost
 
 **[USER]** `castingTime.value` is the AP cost, **open-ended** (drop the draft 1–6 bound). AP
@@ -312,7 +320,8 @@ Reuse the existing plumbing — don't fork the dialog.
 - [x] `spell.js`: revise schema per §6.2 (fix `school` choices; repurpose `castingTime`;
       add `degrees`/`scaling`/`resolution`; remove old `damage` block).
 - [~] `wispersCharacterSheet`: `_castSpell` ✓, `_spellDegree` ✓, cast chat card ✓; the shared
-      `_buildRollFormula` core is factored ✓. **The react/wound resolver is still pending.**
+      `_buildRollFormula` core is factored ✓; **spell effect application to target**
+      (`_applySpellEffects`, on Success+) ✓. **The react/wound resolver is still pending.**
 - [~] Spellbook tab UI: a `.rollable` cast control (die icon) ✓; degree thresholds are editable on the
       spell item sheet ✓. (No threshold readout on the spellbook row itself yet.)
 - [ ] `WispersItem.roll()`: redirect spells to the cast flow.

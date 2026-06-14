@@ -17,9 +17,14 @@ content against them.**
   **react** handler (subtractive mitigation: `effectiveThreat = max(0, threat − saveResult)`),
   `_effectiveWoundThresholds` + shield **block** reaction, and the shared `applyWound(...)` resolver.
   React UX is single-client / GM-mediated (mirror `wispersCombat._isResponsibleUser`).
-- **Effect application** — weapon-property + armor under-proficiency **suppression**: **equip-gate
-  implemented** (`wispersActor.allApplicableEffects()` suppresses effects from unequipped items).
-  **Proficiency gate pending** (layer onto the same method per `effects-conditions.md` §7).
+- **Effect application** — effects are item-sourced (Effects tab); `transfer` is set per item
+  type in `_onCreateEffect` (equipment/features/wounds → owner, spells/consumables → target).
+  **Equip + proficiency gate implemented** (`wispersActor._isEffectSuppressed`: drops effects from
+  unequipped items, and from items where the effect's `flags.wispers.minProficiency` /
+  `underProficiency` gate fails vs `_itemProficiency`; authored per-effect on the item Effects tab).
+  **Spell→target application implemented** (`_applySpellEffects` copies a spell's effects onto the
+  cast target on Success+; self if untargeted; self-buffs and GM/owner casts work; cross-client
+  targeting needs a GM relay — Phase 2).
   (Weapon proficiency resolution `_resolveWeaponProficiency` is done. The `ready` hook that
   builds `CONFIG.statusEffects` from the conditions compendium **now exists** —
   `buildConditionRegistry()` in `wispers.js`; it's a safe no-op until the pack has content.)

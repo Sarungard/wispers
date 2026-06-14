@@ -113,7 +113,9 @@
       "WoundMod": "Wound Modifier",
       "WoundLight": "Light",
       "WoundNormal": "Normal",
-      "WoundHeavy": "Heavy"
+      "WoundHeavy": "Heavy",
+      "Applied": "Applied",
+      "NoPermission": "No permission to apply the spell's effect to {name}."
     },
     "Consumable": {
       "Section": "Consumable"
@@ -126,7 +128,13 @@
       "Inactive": "Inactive Effects",
       "Label": "Effects",
       "None": "No effects.",
-      "New": "New Effect"
+      "New": "New Effect",
+      "Gate": "Gate",
+      "GateMin": "Min Prof",
+      "GateMinHint": "Applies only while proficiency with this item is at least this value (0 = no proficiency gate).",
+      "GateUnder": "Penalty",
+      "GateUnderHint": "Armor only: applies only while your armor proficiency is BELOW the armor's required proficiency.",
+      "GateNote": "Effects apply only while the item is equipped. Set a minimum proficiency to gate a property; for armor, 'Penalty' applies only while under-trained."
     },
     "WeaponProperties": {
       "Versatile": { "Label": "Versatile", "Desc": "Can be wielded in one or two hands." },

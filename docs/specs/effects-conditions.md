@@ -55,16 +55,26 @@ to any flat stat effect working safely.
 
 ## 2. Where effects come from
 
-- **Conditions** (§5) — named, reusable (Bleeding, Prone, Stunned, Staggered…). Token-toggleable.
-- **Wounds** (`wound-tables.md`) — wound Items carry transfer ActiveEffects.
-- **Passive features** (`feature` item, `featureType: passive`) — carry transfer ActiveEffects
-  applied while the feature is owned.
-- **Weapon properties** (`weapons-combat.md` §4) — proficiency-gated effects/actions granted
-  while the weapon is equipped (§7).
-- **Spells** (`spellcasting.md` §4.2) — on resolution, apply a condition / referenced effect to
-  the target (and/or deal a wound).
+**Everything is authored on an Item's Effects tab.** There is no actor-authored effect path —
+the effect source is always an Item, and the *item type* decides how the effect reaches an actor
+(`transfer` flag set at creation time by `WispersItemSheet._onCreateEffect`):
+
+- **Equipment** (weapon/armor/shield) — `transfer:true`, but **equip-gated**: applies to the
+  wearer/wielder only while `equipped` (suppression in `wispersActor.allApplicableEffects()`, §7).
+- **Features** (`feature` item — race/class/character features), **wounds**, and actor-placed
+  **conditions** — `transfer:true`, **no equip gate** (these item types have no `equipped` flag),
+  so they apply to the owning actor while present.
+- **Spells** (`spellcasting.md` §4.2) — `transfer:false` so they never buff the caster; on a
+  successful cast the cast flow **copies** the enabled effects onto the **target** actor(s)
+  (`_applySpellEffects`, self if no target). Cross-client targeting is GM-mediated/Phase 2.
+- **Conditions** (§5) — named, reusable (Bleeding, Prone, Stunned, Staggered…). Authored as
+  effect-bearing Items, surfaced as token-toggleable statuses.
 - **Active/reaction features & weapon maneuvers** (§6) — activatable actions that, when used,
   may apply a (often short-duration) effect.
+
+**Implemented:** the equipment equip-gate (`allApplicableEffects()` override), feature/wound
+owner-application (native transfer), and spell→target application (`_castSpell`). **Pending:** the
+proficiency half of the equip gate (weapon-property / armor under-proficiency suppression, §7).
 
 ## 3. Stat mods (native, on `.bonus` accumulators)
 
@@ -226,12 +236,28 @@ either:
 - a **passive effect** (an AE granted while the weapon is equipped), or
 - an **active maneuver** (an activatable AP-cost action, §6).
 
-**Proficiency-gated, equip-gated suppression.** Native AE transfer is unconditional, so a
-weapon-granted effect must be **suppressed** unless `equipped && effectiveProficiency ≥
-minProficiency` (effective proficiency per `weapons-combat.md` §2.1). Implement suppression in
-the actor's effect preparation: skip applying weapon-sourced effects whose gate fails (mirrors
-how dnd5e suppresses unequipped-item effects). Active maneuvers are simply **not offered** on
-the sheet when the gate fails.
+**Proficiency-gated, equip-gated suppression — implemented.** Native AE transfer is
+unconditional, so a weapon-granted effect must be **suppressed** unless the wielder is equipped
+and trained enough. Suppression lives in `wispersActor.allApplicableEffects()`, which overrides
+the generator core iterates in `applyActiveEffects()` and drops effects via
+`_isEffectSuppressed(effect)` (mirrors how dnd5e suppresses unequipped-item effects). Two stacking
+gates:
+
+- **Equip gate** — an effect whose parent Item carries an `equipped` flag (weapon/armor/shield) is
+  dropped while unequipped.
+- **Proficiency gate** — the effect declares its requirement via `flags.wispers`:
+  - `minProficiency` (0–5): dropped unless the wielder's proficiency with the item ≥ this (a
+    proficiency-gated property). Proficiency resolves via `wispersActor._itemProficiency(item)`
+    (weapon: specific slug → category → 0; armor: by `armorType`; shield/other: no track → gate
+    inert).
+  - `underProficiency` (bool): the armor **penalty** gate — dropped unless the wearer's proficiency
+    is *below* the armor's `requiredProficiency` (on while untrained).
+
+The gate reads the **base** proficiency `.value` (suppression runs before `prepareDerivedData`
+folds `.effective`), so effect-driven proficiency changes don't feed the gate — avoiding circular
+suppression. The flags are authored per-effect on the item Effects tab (a min-proficiency input,
+plus an under-proficiency checkbox for armor). Active maneuvers are simply **not offered** on the
+sheet when the gate fails (that UI is still future work).
 
 ## 8. Data model & content changes
 
@@ -287,7 +313,9 @@ the sheet when the gate fails.
 - [x] `config.js`: `effectScopes`; `conditions` (`{}` placeholder, ready-populated later); `weaponProperties` (`{}`).
 - [x] `wispersCharacterSheet`: `_collectRollMods`, fold levers into all rollers via `_buildRollFormula` (§4.2).
 - [~] `feature.js`: `activation` block ✓. **`_onActivateFeature` + activate controls pending.**
-- [ ] Weapon-effect suppression by equip + proficiency gate (§7).
+- [x] Weapon-effect suppression by equip + proficiency gate (§7). Both gates done in
+      `wispersActor._isEffectSuppressed` (`minProficiency` + armor `underProficiency`, via
+      `_itemProficiency`); authored per-effect on the item Effects tab.
 - [x] `ready` hook: build `CONFIG.statusEffects` from `packs/conditions` (`buildConditionRegistry()`).
 - [x] `system.json`: declare `packs/conditions` (corrected `ActiveEffect` → `Item`). **Authoring
       starter conditions pending.**

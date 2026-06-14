@@ -759,8 +759,20 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
         const degreeKey = WispersCharacterSheet._spellDegree(roll.total, sys.degrees ?? {});
         const degreeLabel = game.i18n.localize(CONFIG.WISPERS?.spellDegrees?.[degreeKey] ?? degreeKey);
         const schoolLabel = meta?.label ? game.i18n.localize(meta.label) : (schoolKey ?? "");
-        const metaHTML = `${game.i18n.localize("CONSTANTS.Roll.Spellpower")}: ${roll.total}`
+        let metaHTML = `${game.i18n.localize("CONSTANTS.Roll.Spellpower")}: ${roll.total}`
             + ` · ${game.i18n.localize("CONSTANTS.Roll.Degree")}: ${foundry.utils.escapeHTML(degreeLabel)}`;
+
+        // On Success / Critical Success, apply the spell's authored effects onto the
+        // target (spellcasting.md §4.2). Spell effects are transfer:false so they don't
+        // buff the caster — the cast copies them onto the target actor(s) instead.
+        if (degreeKey === "success" || degreeKey === "criticalSuccess") {
+            const applied = await this._applySpellEffects(item);
+            if (applied.length) {
+                const names = applied.map(a => foundry.utils.escapeHTML(a)).join(", ");
+                metaHTML += `<br>${game.i18n.localize("CONSTANTS.Spell.Applied")}: ${names}`;
+            }
+        }
+
         const descHTML = await WispersCharacterSheet._enrich(sys.description, item);
         const flavor = this._cardFlavor({
             imgSrc: item.img,
@@ -770,6 +782,46 @@ export default class WispersCharacterSheet extends api.HandlebarsApplicationMixi
             descriptionHTML: this._descBody(descHTML)
         });
         await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor });
+    }
+
+    /**
+     * Copy a spell's enabled (transfer:false) ActiveEffects onto the cast target(s)
+     * (spellcasting.md §4.2). Targets are the casting user's selected tokens; with no
+     * target the effects land on the caster (self-buff). Returns a `"<effect> → <actor>"`
+     * list for the chat card.
+     *
+     * Cross-client application (targeting an actor the caster doesn't own) needs a
+     * GM-mediated relay and is deferred (Phase 2) — here it applies directly, so it
+     * works for self-buffs and for a GM/owner casting. A permission failure is caught
+     * and surfaced as a warning rather than throwing.
+     */
+    async _applySpellEffects(item) {
+        const sources = Array.from(item.effects).filter(e => !e.disabled);
+        if (!sources.length) return [];
+
+        const effectData = sources.map(e => {
+            const data = e.toObject();
+            delete data._id;
+            data.transfer = false;        // standalone applied effect, not a transfer
+            data.origin = item.uuid;
+            return data;
+        });
+
+        const targets = Array.from(game.user?.targets ?? [])
+            .map(t => t.actor)
+            .filter(Boolean);
+        if (!targets.length) targets.push(this.actor);
+
+        const applied = [];
+        for (const target of targets) {
+            if (!target.isOwner) {
+                ui.notifications?.warn(game.i18n.format("CONSTANTS.Spell.NoPermission", { name: target.name }));
+                continue;
+            }
+            await target.createEmbeddedDocuments("ActiveEffect", effectData);
+            for (const e of sources) applied.push(`${e.name} → ${target.name}`);
+        }
+        return applied;
     }
 
     /** Highest degree whose authored threshold `total` meets (spellcasting.md §2). */

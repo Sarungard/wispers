@@ -878,8 +878,45 @@
   font-size: 11px;
   color: #6a553a;
 }
+.wispers.sheet.item .item-effects .item.effect .effect-gate {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wispers.sheet.item .item-effects .item.effect .effect-gate .effect-gate-min {
+  width: 42px;
+  text-align: center;
+  padding: 2px 4px;
+}
+.wispers.sheet.item .item-effects .item.effect .effect-gate .effect-gate-under-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #6a553a;
+  cursor: pointer;
+}
+.wispers.sheet.item .item-effects .item.effect .effect-gate .effect-gate-under-label input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #8b4513;
+}
 .wispers.sheet.item .item-effects .item.effect .hint {
   margin: 0;
+}
+.wispers.sheet.item .item-effects .items-header .effect-gate-head {
+  flex: 0 0 auto;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6a553a;
+}
+.wispers.sheet.item .item-effects .effect-gate-note {
+  margin-top: 8px;
 }
 .wispers.sheet.item .item-effects .item-controls.effect-controls {
   flex: 0 0 auto;
